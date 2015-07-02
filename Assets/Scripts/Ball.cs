@@ -20,7 +20,7 @@ public class Ball : MonoBehaviour {
 			this.transform.position = paddle.transform.position + paddleToBallVector;
 			if(Input.GetMouseButtonDown(0)){
 				hasStarted = true;
-				this.rigidbody2D.velocity = new Vector2 (2f,10f);
+				this.GetComponent<Rigidbody2D>().velocity = new Vector2 (2f,10f);
 			}
 		}
 	
@@ -31,8 +31,8 @@ public class Ball : MonoBehaviour {
 		
 		// Ball does not trigger Sound when Brick is Destroyed
 		if(hasStarted){
-			audio.Play();
-			rigidbody2D.velocity += tweak;
+			GetComponent<AudioSource>().Play();
+			GetComponent<Rigidbody2D>().velocity += tweak;
 		}
 	}
 }
