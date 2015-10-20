@@ -3,9 +3,11 @@ using System.Collections;
 
 public class LevelManager : MonoBehaviour {
 	
+	public int breakableCount = 0;
+	
 	public void LoadLevel(string name){
 		Application.LoadLevel(name);
-		Brick.breakableCount = 0;
+		breakableCount = 0;
 	}
 	
 	public void QuitRequest(){
@@ -14,11 +16,12 @@ public class LevelManager : MonoBehaviour {
 	
 	public void LoadNextLevel(){
 		Application.LoadLevel(Application.loadedLevel+1);
-		Brick.breakableCount = 0;
+		breakableCount = 0;
 	}
 	
 	public void BrickDestroyed(){
-		if(Brick.breakableCount <= 0)
+		breakableCount--;
+		if(breakableCount <= 0)
 			LoadNextLevel();
 	}
 }

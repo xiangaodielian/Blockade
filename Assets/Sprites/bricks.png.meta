@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: b7bfb7d431d98a34bb2dded38a23704c
+timeCreated: 1445294113
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: 0hits
@@ -7,6 +9,12 @@ TextureImporter:
     21300004: right
     21300006: 1hit
     21300008: 2hits
+    21300010: 1Hit
+    21300012: 2Hit
+    21300014: 3Hit
+    21300016: 4Hit
+    21300018: 5Hit
+    21300020: Unbreakable
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -25,9 +33,12 @@ TextureImporter:
   isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
-  maxTextureSize: 1024
+  maxTextureSize: 512
   textureSettings:
     filterMode: -1
     aniso: 16
@@ -35,6 +46,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
+  rGBM: 0
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
@@ -48,51 +60,61 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: 0hits
+    - name: 1Hit
       rect:
         serializedVersion: 2
         x: 0
-        y: 169
+        y: 216
         width: 128
         height: 41
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: left
+    - name: 2Hit
       rect:
         serializedVersion: 2
         x: 0
-        y: 127
-        width: 64
-        height: 41
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: right
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 85
-        width: 64
-        height: 41
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 1hit
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 43
+        y: 173
         width: 128
         height: 41
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: 2hits
+    - name: 3Hit
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 130
+        width: 128
+        height: 41
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: 4Hit
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 87
+        width: 128
+        height: 41
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: 5Hit
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 44
+        width: 128
+        height: 41
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Unbreakable
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1
         width: 128
         height: 41
       alignment: 0
@@ -100,3 +122,5 @@ TextureImporter:
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

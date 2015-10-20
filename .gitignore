@@ -1,2 +1,4 @@
 *.sln
 Temp/
+*.userprefs
+*.csproj

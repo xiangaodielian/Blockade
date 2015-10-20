@@ -7,13 +7,11 @@ public class Paddle : MonoBehaviour {
 	
 	private Ball ball;
 	
-	// Use this for initialization
-	void Start () {
+	void Start(){
 		ball = GameObject.FindObjectOfType<Ball>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update(){
 		if(!autoPlay){
 			MoveWithMouse();
 		} else {
