@@ -32,4 +32,8 @@ public class Paddle : MonoBehaviour {
 		paddlePos.x = Mathf.Clamp(ballPos.x, 0.5f,15.5f);
 		this.transform.position = paddlePos;
 	}
+	
+	public void CollectPowerup(Powerup.PowerupType powerupType){
+		Debug.Log(powerupType + " Collected");
+	}
 }

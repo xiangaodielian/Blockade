@@ -3,6 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour {
+	
 	private Paddle paddle;
 	private Vector3 paddleToBallVector;
 	private bool hasStarted = false;
