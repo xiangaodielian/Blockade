@@ -10,11 +10,12 @@ public class LoseCollider : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter2D(Collider2D collider){
+		Ball[] ballArray = FindObjectsOfType<Ball>();
+		
 		if(collider.tag == "Ball")
-			levelManager.LoadLevel("Lose");
-	}
-	
-	void Update(){
-	
+			if(ballArray.Length == 1)
+				levelManager.LoadLevel("Lose");
+			else
+				Destroy(collider.gameObject);
 	}
 }

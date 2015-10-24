@@ -16,18 +16,19 @@ public class Brick : MonoBehaviour {
 	[SerializeField] private bool hasPowerup = false;
 	[SerializeField] private bool randomPowerup = true;
 	[SerializeField] private Powerup.PowerupType powerupType;
-	[SerializeField] private GameObject powerupPrefab;
+	[SerializeField] private GameObject powerupPrefab = null;
 	
 	private Powerup powerup;
 	private Sprite curSprite = null;
 	private int hitPoints = 0;
-	private int timesHit;
+	private float timesHit;
 	private LevelManager levelManager;
 	private bool isBreakable = true;
+	private Ball collidingBall = null;
 	
 	void Start() {
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
-		timesHit = 0;
+		timesHit = 0f;
 		SetBrick();
 		
 		if(isBreakable)
@@ -36,10 +37,8 @@ public class Brick : MonoBehaviour {
 	
 	#if UNITY_EDITOR
 	void Update(){
-		if(!EditorApplication.isPlaying){
+		if(!EditorApplication.isPlaying)
 			SetBrick();
-			Debug.Log("MOO!");
-		}
 	}
 	#endif
 
@@ -83,7 +82,7 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void ChangeBrickSprite(){
-		int spriteIndex = hitPoints - (timesHit+1);
+		int spriteIndex = hitPoints - ((int)timesHit+1);
 		
 		if(spriteIndex < 0)
 			spriteIndex = 0;
@@ -92,12 +91,40 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision){
-		if(isBreakable)
+		if(isBreakable){
+			collidingBall = collision.collider.GetComponent<Ball>();
 			HandleHits();
+			collidingBall = null;
+		}
 	}
 	
 	void HandleHits(){
-		timesHit++;
+		if(collidingBall){
+			if(collidingBall.isExplosive){
+				float explosionDistanceX = 1f;
+				float explosionDistanceY = 0.31f;
+				Brick[] activeBricks = FindObjectsOfType<Brick>();
+				foreach(Brick brick in activeBricks){
+					Vector3 brickDistance = brick.transform.position - transform.position;
+					brickDistance = new Vector3(Mathf.Abs(brickDistance.x),Mathf.Abs(brickDistance.y),brickDistance.z);
+					if(brickDistance.x <= explosionDistanceX && brickDistance.y <= explosionDistanceY && brick.gameObject != this.gameObject)
+						brick.Explode();
+				}
+				
+				collidingBall.BallExploded();
+				timesHit++;
+			} else{
+				if(collidingBall.isIron)
+					timesHit += 2f;
+				else if(collidingBall.isFeather)
+					timesHit += 0.5f;
+				else
+					timesHit++;
+			}
+		} else{
+			timesHit++;
+		}
+		
 		if(timesHit >= hitPoints && hitPoints > 0){
 			AudioSource.PlayClipAtPoint(crack, transform.position, 0.6f);
 			if(hasPowerup)
@@ -115,5 +142,10 @@ public class Brick : MonoBehaviour {
 		powerup.powerupType = powerupType;
 		
 		Instantiate(powerupPrefab,transform.position,Quaternion.identity);
+	}
+	
+	public void Explode(){
+		if(isBreakable)
+			HandleHits();
 	}
 }
