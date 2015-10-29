@@ -3,28 +3,24 @@ using System.Collections;
 
 public class Paddle : MonoBehaviour {
 
-	public bool autoPlay = false;
 	public bool hasStarted = false;
+	public bool gamePaused = false;
 	
 	[SerializeField] private GameObject laserPrefab = null;
 	[SerializeField] private GameObject safetyNetPrefab = null;
 	
-	private Ball ball;
 	private bool hasLasers = false;
 	private bool mirrored = false;
 	private Vector3 targetScale = new Vector3();
 	
 	void Start(){
-		ball = GameObject.FindObjectOfType<Ball>();
 		targetScale = transform.localScale;
 	}
 	
 	void Update(){
-		if(!autoPlay){
+		if(!gamePaused)
 			MoveWithMouse();
-		} else {
-			AutoPlay();
-		}
+
 		
 		// Expand/Shrink scale over time
 		if(targetScale != transform.localScale)
@@ -44,16 +40,14 @@ public class Paddle : MonoBehaviour {
 		if(mirrored)
 			mousePosInBlocks = 16-mousePosInBlocks;
 		
-		paddlePos.x = Mathf.Clamp(mousePosInBlocks, 1f,15f);
+		paddlePos.x = Mathf.Clamp(mousePosInBlocks, 1.25f,14.75f);
 			
 		this.transform.position = paddlePos;
 	}
 	
-	void AutoPlay(){
-		Vector3 paddlePos = new Vector3(0.5f,this.transform.position.y,0f);
-		Vector3 ballPos = ball.transform.position;
-		paddlePos.x = Mathf.Clamp(ballPos.x, 0.5f,15.5f);
-		this.transform.position = paddlePos;
+	public void ResetBall(){
+		transform.localScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
+		hasStarted = false;
 	}
 	
 	public void CollectPowerup(Powerup.PowerupType powerupType){

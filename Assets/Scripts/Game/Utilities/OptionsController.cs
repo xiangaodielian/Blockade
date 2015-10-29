@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class OptionsController : MonoBehaviour {
 	
 	public Slider musicVolumeSlider;
@@ -11,15 +12,12 @@ public class OptionsController : MonoBehaviour {
 	public Slider ballColorBlueSlider;
 	public Image ballImage;
 	
-	private GameMaster gameMaster;
 	private MusicPlayer musicPlayer;
 	private AudioSource sfxTestPlayer;
 	private Color ballColor;
 	private float sfxVolumeOld;
 	
 	void Start(){
-		gameMaster = GameObject.FindObjectOfType<GameMaster>();
-		
 		musicPlayer = GameObject.FindObjectOfType<MusicPlayer>();
 		musicVolumeSlider.value = PrefsManager.GetMasterMusicVolume();
 		
@@ -28,11 +26,13 @@ public class OptionsController : MonoBehaviour {
 		sfxTestPlayer.volume = sfxVolumeSlider.value;
 		sfxVolumeOld = sfxTestPlayer.volume;
 		
-		ballColor = PrefsManager.GetBallColor();
-		ballColorRedSlider.value = ballColor.r;
-		ballColorGreenSlider.value = ballColor.g;
-		ballColorBlueSlider.value = ballColor.b;
-		ballImage.color = ballColor;
+		if(ballColorRedSlider != null){
+			ballColor = PrefsManager.GetBallColor();
+			ballColorRedSlider.value = ballColor.r;
+			ballColorGreenSlider.value = ballColor.g;
+			ballColorBlueSlider.value = ballColor.b;
+			ballImage.color = ballColor;
+		}
 	}
 	
 	void Update(){
@@ -42,12 +42,19 @@ public class OptionsController : MonoBehaviour {
 		}
 	}
 	
+	public void SetSliders(){
+		sfxVolumeSlider.value = PrefsManager.GetMasterSFXVolume();
+		musicVolumeSlider.value = PrefsManager.GetMasterMusicVolume();
+	}
+	
 	public void SetSFXVolume(){
-		sfxTestPlayer.volume = sfxVolumeSlider.value;
+		if(sfxTestPlayer)
+			sfxTestPlayer.volume = sfxVolumeSlider.value;
 	}
 	
 	public void SetMusicVolume(){
-		musicPlayer.SetVolume(musicVolumeSlider.value);
+		if(musicPlayer)
+			musicPlayer.SetVolume(musicVolumeSlider.value);
 	}
 	
 	// Sets Color of Ball (Red = 0, Green = 1, Blue = 2)
@@ -64,9 +71,9 @@ public class OptionsController : MonoBehaviour {
 	
 	public void SaveAndExit(){
 		PrefsManager.SetMasterMusicVolume(musicVolumeSlider.value);
-		PrefsManager.SetBallColor(ballColorRedSlider.value,ballColorGreenSlider.value,ballColorBlueSlider.value);
 		PrefsManager.SetMasterSFXVolume(sfxVolumeSlider.value);
-		gameMaster.ChangeToLevel("Start");
+		if(ballColorRedSlider != null)
+			PrefsManager.SetBallColor(ballColorRedSlider.value,ballColorGreenSlider.value,ballColorBlueSlider.value);
 	}
 	
 	public void ResetDefaults(){

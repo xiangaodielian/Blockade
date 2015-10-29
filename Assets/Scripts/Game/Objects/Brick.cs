@@ -36,16 +36,19 @@ public class Brick : MonoBehaviour {
 		timesHit = 0f;
 		SetBrick();
 		
-		if(isBreakable)
+		if(isBreakable && gameMaster)
 			gameMaster.breakableCount++;
 	}
 	
-	#if UNITY_EDITOR
 	void Update(){
+		#if UNITY_EDITOR
 		if(!EditorApplication.isPlaying)
 			SetBrick();
+		#endif
+		
+		if(!gameMaster)
+			gameMaster = GameObject.FindObjectOfType<GameMaster>();
 	}
-	#endif
 
 	void SetBrick()
 	{

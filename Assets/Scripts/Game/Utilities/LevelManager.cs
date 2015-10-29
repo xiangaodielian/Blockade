@@ -19,6 +19,10 @@ public class LevelManager {
 		return Application.loadedLevelName;
 	}
 	
+	public static int GetLevelNum(){
+		return Application.loadedLevel;
+	}
+	
 	public static void QuitApplication(){
 		Application.Quit();
 	}

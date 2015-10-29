@@ -8,45 +8,57 @@ public class GameMaster : MonoBehaviour {
 	public int playerLives = 3;
 	public int totalScore = 0;
 	
-	[SerializeField] private GameObject musicPlayerPrefab = null;
-	[SerializeField] private GameObject cameraPrefab = null;
-	
-	private MusicPlayer musicPlayer;
-	private Camera mainCamera;
+	private UIManager uiManager;
+	private GameObject playSpace;
+	private GameObject winMenu;
+	private GameObject loseMenu;
 	private string curLevel;
-	
-	void Awake(){
-		GameMasterCheck();
-		GameObject.DontDestroyOnLoad(gameObject);
-	}
+	private Paddle paddle = null;
+	private bool inGame = false;
 	
 	void Start(){
-		MusicPlayerCheck();
-		CameraCheck();
+		GameObject.DontDestroyOnLoad(gameObject);
+		uiManager = GetComponentInChildren<UIManager>();
+		playSpace = GameObject.FindGameObjectWithTag("PlaySpace");
+		winMenu = GameObject.FindGameObjectWithTag("WinMenu");
+		winMenu.SetActive(false);
+		loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
+		loseMenu.SetActive(false);
 		curLevel = LevelManager.GetCurrentLevel();
 	}
 	
 	void Update(){
+		if(Input.GetKeyDown(KeyCode.Escape) && inGame){
+			uiManager.ToggleInGameMenu();
+		}
+		
+		// New Level Loaded
+		if(curLevel != LevelManager.GetCurrentLevel()){
+			curLevel = LevelManager.GetCurrentLevel();
+			PerformChecks();
+		}
+	}
+	
+	// Checks for duplicate MusicPlayer, Camera, PlaySpace, and GameMaster
+	void PerformChecks(){
+		GameMasterCheck();
 		MusicPlayerCheck();
 		CameraCheck();
-		if(curLevel != LevelManager.GetCurrentLevel())
-			curLevel = LevelManager.GetCurrentLevel();
-			
-		if(LevelManager.GetCurrentLevel() == "Win" || LevelManager.GetCurrentLevel() == "Lose"){
-			Text scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
-			scoreText.text = "YOUR SCORE: " +totalScore;
+		PlaySpaceCheck();
+		LevelCheck(curLevel);
+	}
+
+	// Check for duplicate GameMasters. Destroy if found
+	void GameMasterCheck()
+	{
+		GameMaster[] otherMasters = GameObject.FindObjectsOfType<GameMaster>();
+		foreach(GameMaster master in otherMasters){
+			if(master != this)
+				Destroy(master.gameObject);
 		}
 	}
 
-	// Checks for other GameMasters on Awake. If others found, Destroys Self
-	void GameMasterCheck()
-	{
-		GameMaster[] otherMasters = FindObjectsOfType<GameMaster>();
-		if(otherMasters.Length >= 2)
-			Destroy(this.gameObject);
-	}
-
-	// Checks for multiple MusicPlayers. Destroys all non-children.
+	// Checks for duplicate MusicPlayers. Destroys all non-children.
 	void MusicPlayerCheck(){
 		MusicPlayer[] otherPlayers = FindObjectsOfType<MusicPlayer>();
 		if(otherPlayers.Length >= 2){
@@ -55,18 +67,9 @@ public class GameMaster : MonoBehaviour {
 					Destroy(player.gameObject);
 			}
 		}
-		
-		musicPlayer = (MusicPlayer)FindObjectOfType<MusicPlayer>();
-		if(musicPlayer && musicPlayer.transform.parent != this.transform)
-			musicPlayer.transform.parent = this.transform;
-		else if(!musicPlayer){
-			GameObject musicPlayerObj = (GameObject)Instantiate (musicPlayerPrefab, Vector3.zero, Quaternion.identity);
-			musicPlayer = musicPlayerObj.GetComponent<MusicPlayer>();
-			musicPlayer.transform.parent = this.transform;
-		}
 	}
 	
-	// Checks for multiple Cameras. Destroys all non-children.
+	// Checks for duplicate Cameras. Destroys all non-children.
 	void CameraCheck(){
 		Camera[] otherCameras = FindObjectsOfType<Camera>();
 		if(otherCameras.Length >= 2){
@@ -75,40 +78,109 @@ public class GameMaster : MonoBehaviour {
 					Destroy(cameras.gameObject);
 			}
 		}
-		
-		mainCamera = FindObjectOfType<Camera>();
-		if(mainCamera && mainCamera.transform.parent != this.transform)
-			mainCamera.transform.parent = this.transform;
-		else if(!mainCamera){
-			GameObject mainCameraObj = (GameObject)Instantiate(cameraPrefab);
-			mainCamera = mainCameraObj.GetComponent<Camera>();
-			mainCamera.transform.parent = this.transform;
+	}
+
+	// Check for multiple PlaySpaces, Destroy all non-children. Add as child if not already
+	void PlaySpaceCheck(){
+		GameObject[] playSpaces = GameObject.FindGameObjectsWithTag("PlaySpace");
+		if(playSpaces.Length > 1){
+			foreach(GameObject obj in playSpaces){
+				if(obj.transform.parent != this.transform)
+					Destroy(obj);
+			}
 		}
-		
-		GameObject.DontDestroyOnLoad(mainCamera.gameObject);
+	}
+	
+	// Check the Level and load appropriate UI
+	void LevelCheck(string level){
+		Text scoreText;
+		switch(level){
+			case "Splash":
+				uiManager.CloseAll();
+				playSpace.SetActive(false);
+				winMenu.SetActive(false);
+				loseMenu.SetActive(false);
+				inGame = false;
+				break;
+			
+			case "MainMenu":
+				uiManager.CloseAll();
+				uiManager.OpenMainMenu();
+				playSpace.SetActive(false);
+				winMenu.SetActive(false);
+				loseMenu.SetActive(false);
+				inGame = false;
+				totalScore = 0;
+				playerLives = 3;
+				break;
+				
+			case "Win":
+				uiManager.CloseAll();
+				playSpace.SetActive(false);
+				winMenu.SetActive(true);
+				inGame = false;
+				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
+				scoreText.text = "YOUR SCORE: " +totalScore;
+				break;
+				
+			case "Lose":
+				uiManager.CloseAll();
+				playSpace.SetActive(false);
+				loseMenu.SetActive(true);
+				inGame = false;
+				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
+				scoreText.text = "YOUR SCORE: " +totalScore;
+				break;
+				
+			default:
+				uiManager.CloseAll();
+				uiManager.OpenInGameUI();
+				playSpace.SetActive(true);
+				winMenu.SetActive(false);
+				loseMenu.SetActive(false);
+				inGame = true;
+				uiManager.LaunchPromptOn();
+				if(paddle == null)
+					paddle = (Paddle)GameObject.FindGameObjectWithTag("Player").GetComponent<Paddle>();
+				break;
+		}
+	}
+	
+	public void GameStart(){
+		uiManager.LaunchPromptOff();
+	}
+	
+	public void GamePause(){
+		Time.timeScale = Mathf.Abs(Time.timeScale - 1f);
+		paddle.gamePaused = !paddle.gamePaused;
 	}
 	
 	public void BrickDestroyed(int pointValue){
 		totalScore += pointValue;
 		breakableCount--;
 		if(breakableCount <= 0){
-			LevelManager.LoadNextLevel();
-			breakableCount = 0;
+			GamePause();
+			uiManager.EndLevelMenu();
 		}
 	}
 	
 	public void ChangeToLevel(string level){
-		GameObject.FindObjectOfType<GameMaster>().breakableCount = 0;
-		LevelManager.LoadLevel(level);
+		breakableCount = 0;
+		if(level == "Next")
+			LevelManager.LoadNextLevel();
+		else
+			LevelManager.LoadLevel(level);
 	}
 	
 	public void ResetCurrentLevel(){
-		GameObject.FindObjectOfType<GameMaster>().breakableCount = 0;
-		LevelManager.ReloadLevel();
+		paddle.ResetBall();
+		uiManager.ResetTimer();
+		uiManager.LaunchPromptOn();
 	}
 	
 	public void RestartGame(){
-		GameObject.FindObjectOfType<GameMaster>().totalScore = 0;
+		totalScore = 0;
+		playerLives = 3;
 		ChangeToLevel("Level_01");
 	}
 	

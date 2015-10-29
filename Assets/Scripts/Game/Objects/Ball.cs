@@ -14,6 +14,7 @@ public class Ball : MonoBehaviour {
 	[SerializeField] private GameObject ballPrefab = null;
 	[SerializeField] private Sprite[] spriteArray = new Sprite[5];
 	
+	private GameMaster gameMaster;
 	private Paddle paddle;
 	private Vector3 paddleToBallVector;
 	private bool isSticky = false;
@@ -24,6 +25,7 @@ public class Ball : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
 		ballColor = PrefsManager.GetBallColor();
 		paddle = GameObject.FindObjectOfType<Paddle>();
 		paddleToBallVector = transform.position - paddle.transform.position;
@@ -51,10 +53,13 @@ public class Ball : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!paddle.hasStarted){
+		if(!gameMaster)
+			gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
+		if(!paddle.hasStarted && !paddle.gamePaused){
 			// Lock Ball to Paddle until Mouse0 Pressed
 			transform.position = paddle.transform.position + paddleToBallVector;
 			if(Input.GetMouseButtonDown(0)){
+				gameMaster.GameStart();
 				paddle.hasStarted = true;
 				rigidBody.velocity = new Vector2 (0f,10f);
 			}
@@ -66,15 +71,14 @@ public class Ball : MonoBehaviour {
 			transform.position = paddle.transform.position + paddleToBallVector;
 			transform.position = new Vector3(transform.position.x,0.85f,transform.position.z);
 			if(Input.GetKeyDown (KeyCode.Mouse0)){
-				rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
+				rigidBody.velocity = new Vector2 (0f,15f)*velMultiplier;
 				stickOnPaddle = false;
 			}
 		}
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision){
-		paddleToBallVector = transform.position - paddle.transform.position;
-		Vector2 tweak = new Vector2(Random.Range(0f,0.2f),Random.Range(0f,0.2f));
+		Vector2 tweak = new Vector2(Random.Range(0.25f,0.5f)*(transform.position.x-paddle.transform.position.x),0f);
 		
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
@@ -85,7 +89,8 @@ public class Ball : MonoBehaviour {
 		// Ball does not trigger Sound when Brick is Destroyed
 		if(paddle.hasStarted){
 			audioSource.Play();
-			GetComponent<Rigidbody2D>().velocity += tweak;
+			if(collision.gameObject.tag == "Player")
+				GetComponent<Rigidbody2D>().velocity += tweak;
 		}
 	}
 	
