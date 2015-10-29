@@ -18,8 +18,17 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	void Update(){
-		if(!gamePaused)
-			MoveWithMouse();
+		if(!gamePaused){
+			#if UNITY_STANDALONE
+				Debug.Log("Standalone");
+				MoveWithMouse();
+			#endif
+			
+			#if UNITY_IOS || UNITY_ANDROID
+				Debug.Log("iOS || Android");
+				MoveWithTouch();
+			#endif
+		}
 
 		
 		// Expand/Shrink scale over time
@@ -43,6 +52,20 @@ public class Paddle : MonoBehaviour {
 		paddlePos.x = Mathf.Clamp(mousePosInBlocks, 1.25f,14.75f);
 			
 		this.transform.position = paddlePos;
+	}
+	
+	void MoveWithTouch(){
+		Vector3 paddlePos = new Vector3(transform.position.x,this.transform.position.y,0f);
+		float touchPosInBlocks = 0f;	
+		if(Input.touchCount > 0){
+			touchPosInBlocks = Input.GetTouch(0).position.x / Screen.width * 16;
+			if(mirrored)
+				touchPosInBlocks = 16-touchPosInBlocks;
+			
+			paddlePos.x = Mathf.Clamp(touchPosInBlocks, 1.25f,14.75f);
+			
+			this.transform.position = paddlePos;
+		}
 	}
 	
 	public void ResetBall(){
