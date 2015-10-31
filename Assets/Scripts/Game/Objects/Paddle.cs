@@ -10,7 +10,7 @@ public class Paddle : MonoBehaviour {
 	[SerializeField] private GameObject safetyNetPrefab = null;
 	
 	private bool hasLasers = false;
-	private bool mirrored = false;
+	public bool mirrored = false;
 	private Vector3 targetScale = new Vector3();
 	
 	void Start(){
@@ -20,12 +20,10 @@ public class Paddle : MonoBehaviour {
 	void Update(){
 		if(!gamePaused){
 			#if UNITY_STANDALONE
-				Debug.Log("Standalone");
 				MoveWithMouse();
 			#endif
 			
 			#if UNITY_IOS || UNITY_ANDROID
-				Debug.Log("iOS || Android");
 				MoveWithTouch();
 			#endif
 		}
@@ -43,33 +41,38 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	void MoveWithMouse(){
-		Vector3 paddlePos = new Vector3(0.5f,this.transform.position.y,0f);
-		float mousePosInBlocks = Input.mousePosition.x / Screen.width * 16;
+		Vector3 paddlePos = new Vector3(this.transform.position.x,this.transform.position.y,0f);
+		Vector3 mousePos = Input.mousePosition;
+		mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 		
 		if(mirrored)
-			mousePosInBlocks = 16-mousePosInBlocks;
+			mousePos.x = 16f-mousePos.x;
 		
-		paddlePos.x = Mathf.Clamp(mousePosInBlocks, 1.25f,14.75f);
+		Collider2D collider = GetComponent<Collider2D>();
+		paddlePos.x = Mathf.Clamp(mousePos.x,0.5f+collider.bounds.extents.x,15.5f-collider.bounds.extents.x);
 			
 		this.transform.position = paddlePos;
 	}
 	
 	void MoveWithTouch(){
-		Vector3 paddlePos = new Vector3(transform.position.x,this.transform.position.y,0f);
-		float touchPosInBlocks = 0f;	
 		if(Input.touchCount > 0){
-			touchPosInBlocks = Input.GetTouch(0).position.x / Screen.width * 16;
+			Vector3 paddlePos = new Vector3(transform.position.x,this.transform.position.y,0f);
+			Vector3 touchPos = Input.GetTouch(0).position;
+			touchPos.z = 0f;
+			touchPos = Camera.main.ScreenToWorldPoint(touchPos);
+
 			if(mirrored)
-				touchPosInBlocks = 16-touchPosInBlocks;
+				touchPos.x = 16f-touchPos.x;
 			
-			paddlePos.x = Mathf.Clamp(touchPosInBlocks, 1.25f,14.75f);
+			Collider2D collider = GetComponent<Collider2D>();
+			paddlePos.x = Mathf.Clamp(touchPos.x,0.5f+collider.bounds.extents.x,15.5f-collider.bounds.extents.x);
 			
 			this.transform.position = paddlePos;
 		}
 	}
 	
 	public void ResetBall(){
-		transform.localScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
+		targetScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
 		hasStarted = false;
 	}
 	

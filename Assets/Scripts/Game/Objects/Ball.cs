@@ -61,7 +61,11 @@ public class Ball : MonoBehaviour {
 			if(Input.GetMouseButtonDown(0)){
 				gameMaster.GameStart();
 				paddle.hasStarted = true;
-				rigidBody.velocity = new Vector2 (0f,10f);
+				#if UNITY_STANDALONE
+					rigidBody.velocity = new Vector2 (0f,10f);
+				#elif UNITY_IOS || UNITY_ANDROID
+					rigidBody.velocity = new Vector2 (0f,8f);
+				#endif
 			}
 		}
 		
@@ -69,9 +73,13 @@ public class Ball : MonoBehaviour {
 		if(stickOnPaddle){
 			rigidBody.velocity = Vector2.zero;
 			transform.position = paddle.transform.position + paddleToBallVector;
-			transform.position = new Vector3(transform.position.x,0.85f,transform.position.z);
+			transform.position = new Vector3(transform.position.x,1.1f,transform.position.z);
 			if(Input.GetKeyDown (KeyCode.Mouse0)){
-				rigidBody.velocity = new Vector2 (0f,15f)*velMultiplier;
+				#if UNITY_STANDALONE
+					rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
+				#elif UNITY_IOS || UNITY_ANDROID
+					rigidBody.velocity = new Vector2 (0f,8f)*velMultiplier;
+				#endif
 				stickOnPaddle = false;
 			}
 		}

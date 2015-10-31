@@ -15,8 +15,7 @@ public class UIManager : MonoBehaviour {
 		optionsController = GetComponentInChildren<OptionsController>();
 		optionsController.gameObject.SetActive(false);
 		mainMenu = GameObject.FindGameObjectWithTag("MainMenu");
-		// Change to False when Splash added
-		mainMenu.SetActive(true);
+		mainMenu.SetActive(false);
 	}
 	
 	public void OpenMainMenu(){
@@ -54,10 +53,6 @@ public class UIManager : MonoBehaviour {
 	
 	public void LaunchPromptOff(){
 		inGameUI.TogglePrompt(false);
-	}
-	
-	public void ResetTimer(){
-		inGameUI.ResetTimer();
 	}
 	
 	public void EndLevelMenu(){

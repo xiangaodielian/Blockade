@@ -8,6 +8,7 @@ public class GameMaster : MonoBehaviour {
 	public int playerLives = 3;
 	public int totalScore = 0;
 	
+	private MusicPlayer musicPlayer;
 	private UIManager uiManager;
 	private GameObject playSpace;
 	private GameObject winMenu;
@@ -16,10 +17,15 @@ public class GameMaster : MonoBehaviour {
 	private Paddle paddle = null;
 	private bool inGame = false;
 	
-	void Start(){
+	void Awake(){
 		GameObject.DontDestroyOnLoad(gameObject);
+	}
+	
+	void Start(){
+		musicPlayer = GetComponentInChildren<MusicPlayer>();
 		uiManager = GetComponentInChildren<UIManager>();
 		playSpace = GameObject.FindGameObjectWithTag("PlaySpace");
+		playSpace.SetActive(false);
 		winMenu = GameObject.FindGameObjectWithTag("WinMenu");
 		winMenu.SetActive(false);
 		loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
@@ -109,6 +115,8 @@ public class GameMaster : MonoBehaviour {
 				playSpace.SetActive(false);
 				winMenu.SetActive(false);
 				loseMenu.SetActive(false);
+				if(!musicPlayer.isPlaying)
+					musicPlayer.StartMusic();
 				inGame = false;
 				totalScore = 0;
 				playerLives = 3;
@@ -174,7 +182,6 @@ public class GameMaster : MonoBehaviour {
 	
 	public void ResetCurrentLevel(){
 		paddle.ResetBall();
-		uiManager.ResetTimer();
 		uiManager.LaunchPromptOn();
 	}
 	

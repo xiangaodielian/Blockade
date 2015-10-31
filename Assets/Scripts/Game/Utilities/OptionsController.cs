@@ -84,8 +84,8 @@ public class OptionsController : MonoBehaviour {
 		PrefsManager.SetMasterSFXVolume(sfxVolumeSlider.value);
 		
 		ballColorRedSlider.value = ballColorRedSlider.maxValue;
-		ballColorGreenSlider.value = ballColorGreenSlider.maxValue;
-		ballColorBlueSlider.value = ballColorBlueSlider.maxValue;
+		ballColorGreenSlider.value = ballColorGreenSlider.minValue;
+		ballColorBlueSlider.value = ballColorBlueSlider.minValue;
 		PrefsManager.SetBallColor(ballColorRedSlider.value,ballColorGreenSlider.value,ballColorBlueSlider.value);
 	}
 }

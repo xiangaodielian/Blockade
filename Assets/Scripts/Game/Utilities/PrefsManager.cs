@@ -19,7 +19,7 @@ public class PrefsManager{
 	}
 	
 	public static float GetMasterMusicVolume(){
-		return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
+		return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY,1f);
 	}
 	
 	public static void SetMasterSFXVolume(float volume){
@@ -31,7 +31,7 @@ public class PrefsManager{
 	}
 	
 	public static float GetMasterSFXVolume(){
-		return PlayerPrefs.GetFloat(MASTER_SFX_KEY);
+		return PlayerPrefs.GetFloat(MASTER_SFX_KEY,1f);
 	}
 	
 	// Set Level Unlock State (1 = unlocked)
@@ -56,9 +56,9 @@ public class PrefsManager{
 	}
 	
 	public static Color GetBallColor(){
-		float red = PlayerPrefs.GetFloat(BALL_COLOR_RED);
-		float green = PlayerPrefs.GetFloat(BALL_COLOR_GREEN);
-		float blue = PlayerPrefs.GetFloat(BALL_COLOR_BLUE);
+		float red = PlayerPrefs.GetFloat(BALL_COLOR_RED,1f);
+		float green = PlayerPrefs.GetFloat(BALL_COLOR_GREEN,0f);
+		float blue = PlayerPrefs.GetFloat(BALL_COLOR_BLUE,0f);
 		
 		return new Color(red,green,blue,1f);
 	}

@@ -34,9 +34,10 @@ public class InGameUI : MonoBehaviour {
 		livesImage.color = PrefsManager.GetBallColor();
 		launchPromptText = (Text)GameObject.Find("LaunchPromptText").GetComponent<Text>();
 		menuPanel = GameObject.Find("MenuPanel");
-		mainPanel = GameObject.Find("MainPanel");
+		mainPanel = GameObject.Find("MainMenuPanel");
 		optionsPanel = GameObject.Find("OptionsPanel");
 		endLevelPanel = GameObject.Find("EndLevelPanel");
+		mainPanel.SetActive(false);
 		optionsPanel.SetActive(false);
 		endLevelPanel.SetActive(false);
 		menuPanel.gameObject.SetActive(false);
@@ -49,6 +50,9 @@ public class InGameUI : MonoBehaviour {
 			
 		if(curScore != gameMaster.totalScore)
 			UpdateScoreText();
+			
+		if(livesImage.color != PrefsManager.GetBallColor())
+			livesImage.color = PrefsManager.GetBallColor();
 	}
 	
 	void UpdateTimeText(){
@@ -79,10 +83,6 @@ public class InGameUI : MonoBehaviour {
 	void UpdateScoreText(){
 		curScore = gameMaster.totalScore;
 		scoreText.text = curScore.ToString();
-	}
-	
-	public void ResetTimer(){
-		elapsedTime = 0;
 	}
 	
 	public void TogglePrompt(bool isOn){
@@ -124,8 +124,9 @@ public class InGameUI : MonoBehaviour {
 		int timeBonus = 0;
 		if(Time.timeSinceLevelLoad < 1.99f)
 			timeBonus = LevelManager.GetLevelNum()*1000;
-		else
-			timeBonus = (LevelManager.GetLevelNum()*1000)/(elapsedTime/10);
+		else{
+			timeBonus = (LevelManager.GetLevelNum()*1000)/Mathf.Clamp((elapsedTime/10),1,1000);	
+		}
 			
 		int elapsedSec = elapsedTime % 60;
 		int elapsedMin = elapsedTime / 60;
