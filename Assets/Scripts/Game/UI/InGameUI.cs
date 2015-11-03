@@ -33,6 +33,16 @@ public class InGameUI : MonoBehaviour {
 		livesImage = (Image)GameObject.Find("InGameLivesImage").GetComponent<Image>();
 		livesImage.color = PrefsManager.GetBallColor();
 		launchPromptText = (Text)GameObject.Find("LaunchPromptText").GetComponent<Text>();
+		#if UNITY_STANDALONE
+		launchPromptText.text = "CLICK TO LAUNCH!";
+		#elif UNITY_ANDROID || UNITY_IOS
+		launchPromptText.text = "TAP TO LAUNCH!";
+		#elif UNITY_WSA
+		if(Input.mousePresent)
+			launchPromptText.text = "CLICK TO LAUNCH!";
+		else
+			launchPromptText.text = "TAP TO LAUNCH!";
+		#endif
 		menuPanel = GameObject.Find("MenuPanel");
 		mainPanel = GameObject.Find("MainMenuPanel");
 		optionsPanel = GameObject.Find("OptionsPanel");

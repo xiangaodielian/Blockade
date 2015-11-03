@@ -13,6 +13,7 @@ public class GameMaster : MonoBehaviour {
 	private GameObject playSpace;
 	private GameObject winMenu;
 	private GameObject loseMenu;
+	private GameObject highScoresMenu;
 	private string curLevel;
 	private Paddle paddle = null;
 	private bool inGame = false;
@@ -30,6 +31,8 @@ public class GameMaster : MonoBehaviour {
 		winMenu.SetActive(false);
 		loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
 		loseMenu.SetActive(false);
+		highScoresMenu = GameObject.FindGameObjectWithTag("HighScoresMenu");
+		highScoresMenu.SetActive(false);
 		curLevel = LevelManager.GetCurrentLevel();
 	}
 	
@@ -106,6 +109,7 @@ public class GameMaster : MonoBehaviour {
 				playSpace.SetActive(false);
 				winMenu.SetActive(false);
 				loseMenu.SetActive(false);
+				highScoresMenu.SetActive(false);
 				inGame = false;
 				break;
 			
@@ -115,6 +119,7 @@ public class GameMaster : MonoBehaviour {
 				playSpace.SetActive(false);
 				winMenu.SetActive(false);
 				loseMenu.SetActive(false);
+				highScoresMenu.SetActive(false);
 				if(!musicPlayer.isPlaying)
 					musicPlayer.StartMusic();
 				inGame = false;
@@ -146,6 +151,7 @@ public class GameMaster : MonoBehaviour {
 				playSpace.SetActive(true);
 				winMenu.SetActive(false);
 				loseMenu.SetActive(false);
+				highScoresMenu.SetActive(false);
 				inGame = true;
 				uiManager.LaunchPromptOn();
 				if(paddle == null)
@@ -189,6 +195,19 @@ public class GameMaster : MonoBehaviour {
 		totalScore = 0;
 		playerLives = 3;
 		ChangeToLevel("Level_01");
+	}
+	
+	public void ShowHighScores(){
+		uiManager.CloseAll();
+		winMenu.SetActive(false);
+		loseMenu.SetActive(false);
+		highScoresMenu.SetActive(true);
+	}
+	
+	public void HideHighScores(){
+		highScoresMenu.SetActive(false);
+		uiManager.OpenMainMenu();
+		ChangeToLevel("MainMenu");
 	}
 	
 	public void QuitRequest(){

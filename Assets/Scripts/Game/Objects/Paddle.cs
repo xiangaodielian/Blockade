@@ -12,18 +12,24 @@ public class Paddle : MonoBehaviour {
 	private bool hasLasers = false;
 	public bool mirrored = false;
 	private Vector3 targetScale = new Vector3();
+	private AudioSource audioSource;
 	
 	void Start(){
 		targetScale = transform.localScale;
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 	}
 	
 	void Update(){
 		if(!gamePaused){
 			#if UNITY_STANDALONE
+			MoveWithMouse();
+			#elif UNITY_IOS || UNITY_ANDROID
+			MoveWithTouch();
+			#elif UNITY_WSA
+			if(Input.mousePresent)
 				MoveWithMouse();
-			#endif
-			
-			#if UNITY_IOS || UNITY_ANDROID
+			else
 				MoveWithTouch();
 			#endif
 		}
@@ -35,7 +41,7 @@ public class Paddle : MonoBehaviour {
 		
 		// Control Laser Firing
 		if(hasLasers){
-			if(Input.GetKeyDown(KeyCode.Mouse0))
+			if(Input.GetMouseButtonDown(0))
 				FireLasers();
 		}
 	}
@@ -161,7 +167,7 @@ public class Paddle : MonoBehaviour {
 	
 	// Fires Lasers
 	void FireLasers(){
-		// Add Sound
+		audioSource.Play();
 		float width = GetComponent<SpriteRenderer>().bounds.size.x;
 		float height = GetComponent<SpriteRenderer>().bounds.size.y;
 		Vector3 leftPos = new Vector3(transform.position.x-width/2.25f,transform.position.y+height/2f,transform.position.z);

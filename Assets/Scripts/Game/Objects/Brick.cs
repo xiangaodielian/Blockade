@@ -12,6 +12,7 @@ public class Brick : MonoBehaviour {
 	public enum BrickType {ONE, TWO, THREE, FOUR, FIVE, UNBREAKABLE};
 	
 	[SerializeField] private Sprite[] brickSprites = new Sprite[6];
+	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
 	[SerializeField] private BrickType brickType = BrickType.ONE;
 	[SerializeField] private bool hasPowerup = false;
 	[SerializeField] private bool randomPowerup = true;
@@ -21,17 +22,15 @@ public class Brick : MonoBehaviour {
 	
 	private Powerup powerup;
 	private Sprite curSprite = null;
+	private AudioClip curAudioClip = null;
 	private int hitPoints = 0;
 	private int pointValue = 0;
 	private float timesHit;
 	private GameMaster gameMaster;
 	private bool isBreakable = true;
 	private Ball collidingBall = null;
-	private AudioSource audioSource;
 	
 	void Start() {
-		audioSource = GetComponent<AudioSource>();
-		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		gameMaster = GameObject.FindObjectOfType<GameMaster>();
 		timesHit = 0f;
 		SetBrick();
@@ -54,23 +53,33 @@ public class Brick : MonoBehaviour {
 	{
 		switch (brickType) {
 			case BrickType.ONE:
+				gameObject.tag = "Breakable";
 				curSprite = brickSprites[0];
+				curAudioClip = audioClips[0];
 				hitPoints = 1;
 				break;
 			case BrickType.TWO:
+				gameObject.tag = "Breakable";
 				curSprite = brickSprites[1];
+				curAudioClip = audioClips[1];
 				hitPoints = 2;
 				break;
 			case BrickType.THREE:
+				gameObject.tag = "Breakable";
 				curSprite = brickSprites[2];
+				curAudioClip = audioClips[2];
 				hitPoints = 3;
 				break;
 			case BrickType.FOUR:
+				gameObject.tag = "Breakable";
 				curSprite = brickSprites[3];
+				curAudioClip = audioClips[3];
 				hitPoints = 4;
 				break;
 			case BrickType.FIVE:
+				gameObject.tag = "Breakable";
 				curSprite = brickSprites[4];
+				curAudioClip = audioClips[4];
 				hitPoints = 5;
 				break;
 			case BrickType.UNBREAKABLE:
@@ -97,6 +106,7 @@ public class Brick : MonoBehaviour {
 			spriteIndex = 0;
 			
 		GetComponent<SpriteRenderer>().sprite = brickSprites[spriteIndex];
+		curAudioClip = audioClips[spriteIndex];
 	}
 	
 	void OnCollisionEnter2D(Collision2D collision){
@@ -108,6 +118,7 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void HandleHits(){
+		AudioSource.PlayClipAtPoint(curAudioClip,transform.position,PrefsManager.GetMasterSFXVolume());
 		if(collidingBall){
 			if(collidingBall.isExplosive){
 				Instantiate(explosion,transform.position,Quaternion.identity);
@@ -137,7 +148,6 @@ public class Brick : MonoBehaviour {
 		}
 		
 		if(timesHit >= hitPoints && hitPoints > 0){
-			audioSource.Play();
 			if(hasPowerup)
 				DropPowerup();
 				

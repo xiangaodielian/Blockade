@@ -13,6 +13,7 @@ public class Ball : MonoBehaviour {
 	
 	[SerializeField] private GameObject ballPrefab = null;
 	[SerializeField] private Sprite[] spriteArray = new Sprite[5];
+	[SerializeField] private AudioClip[] audioClips = new AudioClip[8];
 	
 	private GameMaster gameMaster;
 	private Paddle paddle;
@@ -51,22 +52,30 @@ public class Ball : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update(){
+		if(audioSource.volume != PrefsManager.GetMasterSFXVolume())
+			audioSource.volume = PrefsManager.GetMasterSFXVolume();
+		
 		if(!gameMaster)
 			gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
 		if(!paddle.hasStarted && !paddle.gamePaused){
 			// Lock Ball to Paddle until Mouse0 Pressed
 			transform.position = paddle.transform.position + paddleToBallVector;
+			#if UNITY_STANDALONE || UNITY_WSA
+			rigidBody.velocity = new Vector2 (0f,10f);
 			if(Input.GetMouseButtonDown(0)){
 				gameMaster.GameStart();
 				paddle.hasStarted = true;
-				#if UNITY_STANDALONE
-					rigidBody.velocity = new Vector2 (0f,10f);
-				#elif UNITY_IOS || UNITY_ANDROID
-					rigidBody.velocity = new Vector2 (0f,8f);
-				#endif
 			}
+			#elif UNITY_IOS || UNITY_ANDROID
+			rigidBody.velocity = new Vector2 (0f,8f);
+			if(Input.touchCount > 0){
+				if(Input.GetTouch(0).phase == TouchPhase.Ended){
+					gameMaster.GameStart();
+					paddle.hasStarted = true;
+				}
+			}
+			#endif
 		}
 		
 		// Stick to Paddle when StickyBall active
@@ -74,14 +83,21 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = Vector2.zero;
 			transform.position = paddle.transform.position + paddleToBallVector;
 			transform.position = new Vector3(transform.position.x,1.1f,transform.position.z);
-			if(Input.GetKeyDown (KeyCode.Mouse0)){
-				#if UNITY_STANDALONE
-					rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
-				#elif UNITY_IOS || UNITY_ANDROID
-					rigidBody.velocity = new Vector2 (0f,8f)*velMultiplier;
-				#endif
-				stickOnPaddle = false;
+			#if UNITY_STANDALONE || UNITY_WSA
+			rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
+			if(Input.GetMouseButtonDown(0)){
+				gameMaster.GameStart();
+				stickOnPaddle = false;;
 			}
+			#elif UNITY_IOS || UNITY_ANDROID
+			rigidBody.velocity = new Vector2 (0f,8f)*velMultiplier;
+			if(Input.touchCount > 0){	
+				if(Input.GetTouch(0).phase == TouchPhase.Ended){
+					gameMaster.GameStart();
+					stickOnPaddle = false;
+				}
+			}
+			#endif
 		}
 	}
 	
@@ -94,9 +110,10 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = Vector2.zero;
 		}
 		
-		// Ball does not trigger Sound when Brick is Destroyed
+		// Ball does not trigger Sound when hitting Bricks
 		if(paddle.hasStarted){
-			audioSource.Play();
+			if(collision.gameObject.tag != "Breakable")
+				audioSource.Play();
 			if(collision.gameObject.tag == "Player")
 				GetComponent<Rigidbody2D>().velocity += tweak;
 		}
@@ -106,6 +123,7 @@ public class Ball : MonoBehaviour {
 		switch(ballState){
 			case BallState.Normal:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[0];
+				audioSource.clip = audioClips[0];
 				break;
 			
 			case BallState.Sticky:
@@ -114,6 +132,7 @@ public class Ball : MonoBehaviour {
 				
 			case BallState.Iron:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[2];
+				audioSource.clip = audioClips[1];
 				break;
 				
 			case BallState.Feather:
