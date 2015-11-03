@@ -16,7 +16,7 @@ public class LoseCollider : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider){
 		Ball[] ballArray = FindObjectsOfType<Ball>();
 		
-		if(collider.tag == "Ball")
+		if(collider.tag == "Ball"){
 			audioSouce.Play();
 			if(ballArray.Length == 1){
 				if(gameMaster.playerLives > 0){
@@ -26,5 +26,6 @@ public class LoseCollider : MonoBehaviour {
 					gameMaster.ChangeToLevel("Lose");
 			} else
 				Destroy(collider.gameObject);
+		}
 	}
 }
