@@ -34,6 +34,7 @@ public class GameMaster : MonoBehaviour {
 		highScoresMenu = GameObject.FindGameObjectWithTag("HighScoresMenu");
 		highScoresMenu.SetActive(false);
 		curLevel = LevelManager.GetCurrentLevel();
+		PerformChecks();
 	}
 	
 	void Update(){

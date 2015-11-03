@@ -82,7 +82,7 @@ public class Ball : MonoBehaviour {
 		if(stickOnPaddle){
 			rigidBody.velocity = Vector2.zero;
 			transform.position = paddle.transform.position + paddleToBallVector;
-			transform.position = new Vector3(transform.position.x,1.1f,transform.position.z);
+			transform.position = new Vector3(transform.position.x,1.35f,transform.position.z);
 			#if UNITY_STANDALONE || UNITY_WSA
 			rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
 			if(Input.GetMouseButtonDown(0)){
