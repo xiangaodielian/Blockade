@@ -26,7 +26,7 @@ public class Paddle : MonoBehaviour {
 			MoveWithMouse();
 			#elif UNITY_IOS || UNITY_ANDROID
 			MoveWithTouch();
-			#elif UNITY_WSA
+			#elif UNITY_WSA  || UNITY_WEBGL
 			if(Input.mousePresent)
 				MoveWithMouse();
 			else

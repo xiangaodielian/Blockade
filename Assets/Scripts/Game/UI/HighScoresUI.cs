@@ -39,7 +39,7 @@ public class HighScoresUI : MonoBehaviour {
 				HighScoreCheck();
 			else{
 				highScores[replaceScore].text = inputName.ToUpper()+": "+gameMaster.totalScore.ToString();
-				#if UNITY_STANDALONE	
+				#if UNITY_STANDALONE || UNITY_WEBGL
 				foreach(char c in Input.inputString){
 					if(c >= 'a' && c <= 'z' && inputName.Length < 3){
 						inputName += c;

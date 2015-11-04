@@ -37,7 +37,7 @@ public class InGameUI : MonoBehaviour {
 		launchPromptText.text = "CLICK TO LAUNCH!";
 		#elif UNITY_ANDROID || UNITY_IOS
 		launchPromptText.text = "TAP TO LAUNCH!";
-		#elif UNITY_WSA
+		#elif UNITY_WSA || UNITY_WEBGL
 		if(Input.mousePresent)
 			launchPromptText.text = "CLICK TO LAUNCH!";
 		else

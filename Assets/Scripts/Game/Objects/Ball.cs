@@ -61,7 +61,7 @@ public class Ball : MonoBehaviour {
 		if(!paddle.hasStarted && !paddle.gamePaused){
 			// Lock Ball to Paddle until Mouse0 Pressed
 			transform.position = paddle.transform.position + paddleToBallVector;
-			#if UNITY_STANDALONE || UNITY_WSA
+			#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
 			rigidBody.velocity = new Vector2 (0f,10f);
 			if(Input.GetMouseButtonDown(0)){
 				gameMaster.GameStart();
@@ -83,7 +83,7 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = Vector2.zero;
 			transform.position = paddle.transform.position + paddleToBallVector;
 			transform.position = new Vector3(transform.position.x,1.35f,transform.position.z);
-			#if UNITY_STANDALONE || UNITY_WSA
+			#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
 			rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
 			if(Input.GetMouseButtonDown(0)){
 				gameMaster.GameStart();
