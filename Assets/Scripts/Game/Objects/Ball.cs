@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour {
 			Vector2 otherVel = new Vector2();
 			Ball[] otherBalls = FindObjectsOfType<Ball>();
 			foreach(Ball ball in otherBalls){
-				if(ball.rigidBody.velocity.magnitude > otherVel.magnitude)
+				if(ball.rigidBody.velocity.magnitude != otherVel.magnitude)
 					otherVel = ball.rigidBody.velocity;
 				if(ball.ballState != BallState.Normal){
 					ballState = ball.ballState;
@@ -48,7 +48,7 @@ public class Ball : MonoBehaviour {
 				}
 			}
 			
-			rigidBody.velocity = new Vector2(Random.Range(0f,1f),Random.Range(0f,1f))*otherVel.magnitude;
+			rigidBody.velocity = new Vector2(Random.Range(0f,1f),Random.Range(0f,1f)).normalized*otherVel.magnitude;
 		}
 	}
 	
@@ -59,6 +59,11 @@ public class Ball : MonoBehaviour {
 		if(!gameMaster)
 			gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
 		if(!paddle.hasStarted && !paddle.gamePaused){
+			if(isSticky){
+				isSticky = false;
+				ballState = BallState.Normal;
+				ChangeSprite();
+			}
 			// Lock Ball to Paddle until Mouse0 Pressed
 			transform.position = paddle.transform.position + paddleToBallVector;
 			#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
@@ -87,7 +92,8 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
 			if(Input.GetMouseButtonDown(0)){
 				gameMaster.GameStart();
-				stickOnPaddle = false;;
+				stickOnPaddle = false;
+				audioSource.clip = audioClips[0];
 			}
 			#elif UNITY_IOS || UNITY_ANDROID
 			rigidBody.velocity = new Vector2 (0f,8f)*velMultiplier;
@@ -95,6 +101,7 @@ public class Ball : MonoBehaviour {
 				if(Input.GetTouch(0).phase == TouchPhase.Ended){
 					gameMaster.GameStart();
 					stickOnPaddle = false;
+					audioSource.clip = audioClips[0];
 				}
 			}
 			#endif
@@ -106,6 +113,8 @@ public class Ball : MonoBehaviour {
 		
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
+			audioSource.clip = audioClips[3];
+			audioSource.Play();
 			stickOnPaddle = true;
 			rigidBody.velocity = Vector2.zero;
 		}
@@ -151,7 +160,6 @@ public class Ball : MonoBehaviour {
 	
 	// SpeedUp or SlowDown
 	public void SetVelocity(float scale){
-		// Add Sounds
 		rigidBody.velocity *= scale;
 		velMultiplier *= scale;
 	}
@@ -188,7 +196,6 @@ public class Ball : MonoBehaviour {
 	public void FeatherBall(){
 		if(!isExplosive){
 			if(!isIron){
-				// Add Sound
 				ballState = BallState.Feather;
 				ChangeSprite();
 				isFeather = true;

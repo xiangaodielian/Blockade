@@ -10,7 +10,7 @@ public class Powerup : MonoBehaviour {
 	public PowerupType powerupType;
 	
 	[SerializeField] private Sprite[] spriteArray = new Sprite[12];
-	[SerializeField] private AudioClip[] audioClips = new AudioClip[3];
+	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
 	
 	private GameMaster gameMaster;
 	private Sprite curSprite = null;
@@ -71,6 +71,7 @@ public class Powerup : MonoBehaviour {
 				curSprite = spriteArray [9];
 				break;
 			case PowerupType.StickyBall:
+				curAudioClip = audioClips[3];
 				curSprite = spriteArray [10];
 				break;
 			case PowerupType.Mirror:

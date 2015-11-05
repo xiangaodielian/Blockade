@@ -3,6 +3,6 @@
 		<UnityInstallationDir>C:\Program Files (x86)\Unity 5\Editor</UnityInstallationDir>
 		<UnityWSAPlayerDir>C:\Program Files (x86)\Unity 5\Editor\Data\PlaybackEngines\metrosupport</UnityWSAPlayerDir>
 		<UnityWSAToolsDir>$(SolutionDir)Unity\Tools</UnityWSAToolsDir>
-		<UnityProjectDir>C:\Users\Joe\Documents\Unity\BlockBreaker</UnityProjectDir>
+		<UnityProjectDir>C:\Users\Joe\Documents\Unity\Blockade</UnityProjectDir>
 	</PropertyGroup>
 </Project>

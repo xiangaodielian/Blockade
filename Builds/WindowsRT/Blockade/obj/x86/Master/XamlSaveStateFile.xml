@@ -1,0 +1,16 @@
+<XamlCompilerSaveState>
+  <ReferenceAssemblyList>
+    <ReferenceAssembly PathName="c:\program files (x86)\microsoft sdks\windows\v8.1\extensionsdks\microsoft.vclibs\12.0\references\commonconfiguration\neutral\platform.winmd" HashGuid="58b6b6d1-928e-9908-9804-eb460e5e101b" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\assembly-csharp.dll" HashGuid="e04b41bc-d6ca-7af0-2eaf-f35dfbed1f55" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\players\windows81\x86\master\bridgeinterface.winmd" HashGuid="503a3024-4037-701d-bf22-e50bcff483a6" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\unityengine.analytics.dll" HashGuid="04a78b70-0dba-cac6-3153-4f6d97dce8c2" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\unityengine.dll" HashGuid="db8fb636-7f56-f50d-2ba6-1f56d617fb24" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\unityengine.networking.dll" HashGuid="9c684a33-ea01-edfc-815f-6ba05398ff4a" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\unityengine.ui.dll" HashGuid="9dba3825-467a-3ad0-7cf1-2f8742391e56" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\players\windows81\x86\master\unityenginedelegates.winmd" HashGuid="d5bfa646-8453-25f8-b5ef-24280c447d94" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\players\windows81\x86\master\unityengineproxy.dll" HashGuid="c68902b1-e655-bdea-7e4a-c1ebeeed34ec" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\players\windows81\x86\master\unityplayer.winmd" HashGuid="d7b45378-89d4-38ea-6d85-f30264101114" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\players\windows81\x86\master\winrtbridge.winmd" HashGuid="8e66effc-fd69-6be0-cfe2-50a3d5bb16c6" />
+    <ReferenceAssembly PathName="c:\users\joe\documents\unity\blockade\builds\windowsrt\blockade\winrtlegacy.dll" HashGuid="4433f70f-5eaf-e215-b0b1-1afd40aa6625" />
+  </ReferenceAssemblyList>
+</XamlCompilerSaveState>
