@@ -7,6 +7,7 @@ public class PrefsManager{
 	const string MASTER_SFX_KEY = "master_sfx_volume";
 	const string LATEST_CHECKPOINT = "latest_checkpoint";
 	const string LEVEL_UNLOCKED = "level_unlocked";
+	const string CURRENT_LEVEL = "current_level";
 	const string BALL_COLOR_RED = "ball_color_red";
 	const string BALL_COLOR_GREEN = "ball_color_green";
 	const string BALL_COLOR_BLUE = "ball_color_blue";
@@ -59,6 +60,14 @@ public class PrefsManager{
 	
 	public static int GetLevelUnlocked(){
 		return PlayerPrefs.GetInt(LEVEL_UNLOCKED,1);
+	}
+	
+	public static void SetCurrentLevel(int level){
+		PlayerPrefs.SetInt(CURRENT_LEVEL,level);
+	}
+	
+	public static int GetCurrentLevel(){
+		return PlayerPrefs.GetInt(CURRENT_LEVEL,1);
 	}
 	
 	public static int GetLevelNumber(){
