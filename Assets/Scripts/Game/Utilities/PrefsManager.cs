@@ -5,7 +5,9 @@ public class PrefsManager{
 	
 	const string MASTER_VOLUME_KEY = "master_volume";
 	const string MASTER_SFX_KEY = "master_sfx_volume";
-	const string LEVEL_KEY = "level_unlocked_";
+	const string LATEST_CHECKPOINT = "latest_checkpoint";
+	const string SCORE_AT_CHECKPOINT = "score_at_checkpoint";
+	const string LEVEL_UNLOCKED = "level_unlocked";
 	const string BALL_COLOR_RED = "ball_color_red";
 	const string BALL_COLOR_GREEN = "ball_color_green";
 	const string BALL_COLOR_BLUE = "ball_color_blue";
@@ -44,25 +46,32 @@ public class PrefsManager{
 		return PlayerPrefs.GetFloat(MASTER_SFX_KEY,1f);
 	}
 	
-	// Set Level Unlock State (1 = unlocked)
-	public static void UnlockLevel(int level){
-		if(level <= Application.levelCount-1){
-			PlayerPrefs.SetInt(LEVEL_KEY + level.ToString(),1);
-		} else{
-			Debug.LogError("Level Not in Build Order");
-		}
+	public static void SetLatestCheckpoint(int levelNum){
+		PlayerPrefs.SetInt(LATEST_CHECKPOINT,levelNum);
 	}
 	
-	public static bool IsLevelUnlocked(int level){
-		int levelValue = PlayerPrefs.GetInt(LEVEL_KEY + level.ToString());
-		bool isLevelUnlocked = (levelValue == 1);
-		
-		if(level <= Application.levelCount-1){
-			return isLevelUnlocked;
-		} else{
-			Debug.LogError("Level Not in Build Order");
-			return false;
-		}
+	public static int GetLatestCheckpoint(){
+		return PlayerPrefs.GetInt(LATEST_CHECKPOINT,1);
+	}
+	
+	public static void SetScoreAtCheckpoint(int score){
+		PlayerPrefs.SetInt(SCORE_AT_CHECKPOINT,score);
+	}
+	
+	public static int GetScoreAtCheckpoint(){
+		return PlayerPrefs.GetInt(SCORE_AT_CHECKPOINT,0);
+	}
+	
+	public static void SetLevelUnlocked(int level){
+		PlayerPrefs.SetInt(LEVEL_UNLOCKED,level);
+	}
+	
+	public static int GetLevelUnlocked(){
+		return PlayerPrefs.GetInt(LEVEL_UNLOCKED,1);
+	}
+	
+	public static int GetLevelNumber(){
+		return Application.loadedLevel-1;
 	}
 	
 	public static Color GetBallColor(){
@@ -83,19 +92,19 @@ public class PrefsManager{
 		int highScore = 0;
 		switch(rank){
 			case 1:
-				highScore = PlayerPrefs.GetInt(HIGH_SCORE_1,10000);
+				highScore = PlayerPrefs.GetInt(HIGH_SCORE_1,50000);
 				break;
 			case 2:
-				highScore = PlayerPrefs.GetInt(HIGH_SCORE_2,8000);
+				highScore = PlayerPrefs.GetInt(HIGH_SCORE_2,30000);
 				break;
 			case 3:
-				highScore = PlayerPrefs.GetInt(HIGH_SCORE_3,6000);
+				highScore = PlayerPrefs.GetInt(HIGH_SCORE_3,20000);
 				break;
 			case 4:
-				highScore = PlayerPrefs.GetInt(HIGH_SCORE_4,4000);
+				highScore = PlayerPrefs.GetInt(HIGH_SCORE_4,10000);
 				break;
 			case 5:
-				highScore = PlayerPrefs.GetInt(HIGH_SCORE_5,2000);
+				highScore = PlayerPrefs.GetInt(HIGH_SCORE_5,5000);
 				break;
 			default:
 				Debug.LogError("High Score Rank out of range!");

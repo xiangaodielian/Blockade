@@ -157,6 +157,12 @@ public class GameMaster : MonoBehaviour {
 				uiManager.LaunchPromptOn();
 				if(paddle == null)
 					paddle = (Paddle)GameObject.FindGameObjectWithTag("Player").GetComponent<Paddle>();
+				if(PrefsManager.GetLevelNumber() % 5 == 0){
+					PrefsManager.SetLatestCheckpoint(PrefsManager.GetLevelNumber());
+					PrefsManager.SetScoreAtCheckpoint(totalScore);
+				}
+				if(PrefsManager.GetLevelNumber() >= PrefsManager.GetLatestCheckpoint())
+					PrefsManager.SetLevelUnlocked(PrefsManager.GetLevelNumber());
 				break;
 		}
 	}
@@ -181,10 +187,21 @@ public class GameMaster : MonoBehaviour {
 	
 	public void ChangeToLevel(string level){
 		breakableCount = 0;
-		if(level == "Next")
-			LevelManager.LoadNextLevel();
-		else
+		if(level == "LatestCheckpoint"){
+			totalScore = PrefsManager.GetScoreAtCheckpoint();
+			int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
+			if(latestCheckpoint < 10)
+				level = "Level_0"+latestCheckpoint;
+			else
+				level = "Level_"+latestCheckpoint;
+				
 			LevelManager.LoadLevel(level);
+		}else if(level == "Next")
+			LevelManager.LoadNextLevel();
+		else{
+			totalScore = 0;
+			LevelManager.LoadLevel(level);
+		}
 	}
 	
 	public void ResetCurrentLevel(){
@@ -193,9 +210,16 @@ public class GameMaster : MonoBehaviour {
 	}
 	
 	public void RestartGame(){
-		totalScore = 0;
+		totalScore = PrefsManager.GetScoreAtCheckpoint();
 		playerLives = 3;
-		ChangeToLevel("Level_01");
+		string levelName = "";
+		int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
+		if(latestCheckpoint < 10)
+			levelName = "Level_0"+latestCheckpoint;
+		else
+			levelName = "Level_"+latestCheckpoint;
+			
+		ChangeToLevel(levelName);
 	}
 	
 	public void ShowHighScores(){

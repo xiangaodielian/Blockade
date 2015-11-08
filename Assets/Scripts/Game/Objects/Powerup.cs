@@ -10,7 +10,7 @@ public class Powerup : MonoBehaviour {
 	public PowerupType powerupType;
 	
 	[SerializeField] private Sprite[] spriteArray = new Sprite[12];
-	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
+	[SerializeField] private AudioClip[] audioClips = new AudioClip[11];
 	
 	private GameMaster gameMaster;
 	private Sprite curSprite = null;
@@ -54,28 +54,35 @@ public class Powerup : MonoBehaviour {
 				break;
 			case PowerupType.Lasers:
 				curSprite = spriteArray [4];
+				curAudioClip = audioClips[7];
 				break;
 			case PowerupType.Explode:
 				curSprite = spriteArray [5];
+				curAudioClip = audioClips[9];
 				break;
 			case PowerupType.Multiball:
 				curSprite = spriteArray [6];
+				curAudioClip = audioClips[5];
 				break;
 			case PowerupType.SafetyNet:
 				curSprite = spriteArray [7];
+				curAudioClip = audioClips[10];
 				break;
 			case PowerupType.IronBall:
 				curSprite = spriteArray [8];
+				curAudioClip = audioClips[6];
 				break;
 			case PowerupType.FeatherBall:
 				curSprite = spriteArray [9];
+				curAudioClip = audioClips[4];
 				break;
 			case PowerupType.StickyBall:
-				curAudioClip = audioClips[3];
 				curSprite = spriteArray [10];
+				curAudioClip = audioClips[3];
 				break;
 			case PowerupType.Mirror:
 				curSprite = spriteArray [11];
+				curAudioClip = audioClips[8];
 				break;
 			default:
 				Debug.LogError ("No Type Chosen For " + gameObject);

@@ -3,38 +3,51 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
-	private InGameUI inGameUI;
-	private OptionsController optionsController;
-	private GameObject mainMenu;
 	private GameMaster gameMaster;
+	private GameObject mainMenu;
+	private GameObject levelSelectMenu;
+	private GameObject optionsMenu;
+	private InGameUI inGameUI;
 	
 	void Start(){
 		gameMaster = FindObjectOfType<GameMaster>();
 		inGameUI = GetComponentInChildren<InGameUI>();
 		inGameUI.gameObject.SetActive(false);
-		optionsController = GetComponentInChildren<OptionsController>();
-		optionsController.gameObject.SetActive(false);
 		mainMenu = GameObject.FindGameObjectWithTag("MainMenu");
 		mainMenu.SetActive(false);
+		levelSelectMenu = GameObject.FindGameObjectWithTag("LevelSelectMenu");
+		levelSelectMenu.SetActive(false);
+		optionsMenu = GameObject.FindGameObjectWithTag("OptionsMenu");
+		optionsMenu.SetActive(false);
 	}
 	
 	public void OpenMainMenu(){
 		mainMenu.SetActive(true);
-		optionsController.gameObject.SetActive(false);
+		levelSelectMenu.SetActive(false);
+		optionsMenu.SetActive(false);
+		inGameUI.gameObject.SetActive(false);
+	}
+	
+	public void OpenLevelSelectMenu(){
+		mainMenu.SetActive(false);
+		levelSelectMenu.SetActive(true);
+		optionsMenu.SetActive(false);
 		inGameUI.gameObject.SetActive(false);
 	}
 	
 	public void OpenOptionsMenu(){
-		optionsController.gameObject.SetActive(true);
+		optionsMenu.SetActive(true);
 		mainMenu.SetActive(false);
+		levelSelectMenu.SetActive(false);
 		inGameUI.gameObject.SetActive(false);
-		optionsController.SetSliders();
+		optionsMenu.GetComponent<OptionsController>().SetSliders();
 	}
 	
 	public void OpenInGameUI(){
 		inGameUI.gameObject.SetActive(true);
 		mainMenu.SetActive(false);
-		optionsController.gameObject.SetActive(false);
+		levelSelectMenu.SetActive(false);
+		optionsMenu.SetActive(false);
 	}
 	
 	public void ToggleInGameMenu(){
@@ -43,7 +56,8 @@ public class UIManager : MonoBehaviour {
 	
 	public void CloseAll(){
 		mainMenu.SetActive(false);
-		optionsController.gameObject.SetActive(false);
+		levelSelectMenu.SetActive(false);
+		optionsMenu.SetActive(false);
 		inGameUI.gameObject.SetActive(false);
 	}
 	

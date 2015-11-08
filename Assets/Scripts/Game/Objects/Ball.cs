@@ -59,8 +59,11 @@ public class Ball : MonoBehaviour {
 		if(!gameMaster)
 			gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
 		if(!paddle.hasStarted && !paddle.gamePaused){
-			if(isSticky){
+			if(isSticky || isIron || isFeather || isExplosive){
 				isSticky = false;
+				isIron = false;
+				isFeather = false;
+				isExplosive = false;
 				ballState = BallState.Normal;
 				ChangeSprite();
 			}
@@ -113,7 +116,7 @@ public class Ball : MonoBehaviour {
 		
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
-			audioSource.clip = audioClips[3];
+			audioSource.clip = audioClips[5];
 			audioSource.Play();
 			stickOnPaddle = true;
 			rigidBody.velocity = Vector2.zero;
@@ -132,6 +135,7 @@ public class Ball : MonoBehaviour {
 		switch(ballState){
 			case BallState.Normal:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[0];
+				GetComponent<SpriteRenderer>().color = PrefsManager.GetBallColor();
 				audioSource.clip = audioClips[0];
 				break;
 			
@@ -141,15 +145,19 @@ public class Ball : MonoBehaviour {
 				
 			case BallState.Iron:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[2];
+				GetComponent<SpriteRenderer>().color = Color.white;
 				audioSource.clip = audioClips[1];
 				break;
 				
 			case BallState.Feather:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[3];
+				GetComponent<SpriteRenderer>().color = Color.white;
+				audioSource.clip = audioClips[2];
 				break;
 				
 			case BallState.Explosive:
 				GetComponent<SpriteRenderer>().sprite = spriteArray[4];
+				GetComponent<SpriteRenderer>().color = Color.white;
 				break;
 				
 			default:
@@ -166,12 +174,10 @@ public class Ball : MonoBehaviour {
 	
 	// Split into two Balls
 	public void MultiballSplit(){
-		// Add Sound
 		Instantiate(ballPrefab,transform.position,Quaternion.identity);
 	}
 	
 	public void StickyBall(){
-		// Add Sound
 		ballState = BallState.Sticky;
 		ChangeSprite();
 		isSticky = true;
@@ -180,7 +186,6 @@ public class Ball : MonoBehaviour {
 	public void IronBall(){
 		if(!isExplosive){
 			if(!isFeather){
-				// Add Sound
 				ballState = BallState.Iron;
 				ChangeSprite();
 				isIron = true;
@@ -210,7 +215,6 @@ public class Ball : MonoBehaviour {
 	
 	public void ExplosiveBall(){
 		if(!isIron || !isFeather){
-			// Add Sound
 			ballState = BallState.Explosive;
 			ChangeSprite();
 			isExplosive = true;
@@ -218,7 +222,7 @@ public class Ball : MonoBehaviour {
 	}
 	
 	public void BallExploded(){
-		// Add Sound
+		AudioSource.PlayClipAtPoint(audioClips[4],transform.position,PrefsManager.GetMasterSFXVolume());
 		ballState = BallState.Normal;
 		ChangeSprite();
 		isExplosive = false;

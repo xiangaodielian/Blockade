@@ -13,11 +13,14 @@ public class Paddle : MonoBehaviour {
 	public bool mirrored = false;
 	private Vector3 targetScale = new Vector3();
 	private AudioSource audioSource;
+	private GameObject laserGuns;
 	
 	void Start(){
 		targetScale = transform.localScale;
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
+		laserGuns = GameObject.Find("LaserGuns");
+		laserGuns.transform.localScale = new Vector3(1f,0.2f,1f);
 	}
 	
 	void Update(){
@@ -38,6 +41,12 @@ public class Paddle : MonoBehaviour {
 		// Expand/Shrink scale over time
 		if(targetScale != transform.localScale)
 			transform.localScale = Vector3.Lerp(transform.localScale,targetScale,3f*Time.deltaTime);
+		
+		// Control LaserGuns deployment
+		if(hasLasers && laserGuns.transform.localScale.y != 1f)
+			laserGuns.transform.localScale = Vector3.Lerp(laserGuns.transform.localScale,new Vector3(1f,1f,1f),3f*Time.deltaTime);
+		if(!hasLasers && laserGuns.transform.localScale.y != 0.2f)
+			laserGuns.transform.localScale = Vector3.Lerp(laserGuns.transform.localScale,new Vector3(1f,0.2f,1f),3f*Time.deltaTime);
 		
 		// Control Laser Firing
 		if(hasLasers){
@@ -78,6 +87,8 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	public void ResetBall(){
+		mirrored = false;
+		hasLasers = false;
 		targetScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
 		hasStarted = false;
 	}
@@ -151,7 +162,6 @@ public class Paddle : MonoBehaviour {
 	
 	// Expand or Shrink width of Paddle (1 for Expand, -1 for Shrink)
 	void Expand(int direction){
-		// Add Sound
 		float targetXScale = transform.localScale.x;
 		targetXScale += 0.5f*direction;
 		targetXScale = Mathf.Clamp(targetXScale,0.5f,1.5f);
@@ -161,7 +171,6 @@ public class Paddle : MonoBehaviour {
 	
 	// Adds Lasers to Paddle
 	void AddLasers(){
-		// Add Animation + LaserShooters
 		hasLasers = true;
 	}
 	
@@ -170,8 +179,8 @@ public class Paddle : MonoBehaviour {
 		audioSource.Play();
 		float width = GetComponent<SpriteRenderer>().bounds.size.x;
 		float height = GetComponent<SpriteRenderer>().bounds.size.y;
-		Vector3 leftPos = new Vector3(transform.position.x-width/2.25f,transform.position.y+height/2f,transform.position.z);
-		Vector3 rightPos = new Vector3(transform.position.x+width/2.25f,transform.position.y+height/2f,transform.position.z);
+		Vector3 leftPos = new Vector3(transform.position.x-width/2.95f,transform.position.y+height/2f,transform.position.z);
+		Vector3 rightPos = new Vector3(transform.position.x+width/2.95f,transform.position.y+height/2f,transform.position.z);
 
 		Instantiate(laserPrefab,leftPos,Quaternion.identity);
 		Instantiate(laserPrefab,rightPos,Quaternion.identity);
@@ -179,7 +188,6 @@ public class Paddle : MonoBehaviour {
 	
 	// Add a SafetyNet
 	void CreateSafetyNet(){
-		// Add Sound
 		Instantiate(safetyNetPrefab);
 	}
 }
