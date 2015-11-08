@@ -6,7 +6,6 @@ public class PrefsManager{
 	const string MASTER_VOLUME_KEY = "master_volume";
 	const string MASTER_SFX_KEY = "master_sfx_volume";
 	const string LATEST_CHECKPOINT = "latest_checkpoint";
-	const string SCORE_AT_CHECKPOINT = "score_at_checkpoint";
 	const string LEVEL_UNLOCKED = "level_unlocked";
 	const string BALL_COLOR_RED = "ball_color_red";
 	const string BALL_COLOR_GREEN = "ball_color_green";
@@ -52,14 +51,6 @@ public class PrefsManager{
 	
 	public static int GetLatestCheckpoint(){
 		return PlayerPrefs.GetInt(LATEST_CHECKPOINT,1);
-	}
-	
-	public static void SetScoreAtCheckpoint(int score){
-		PlayerPrefs.SetInt(SCORE_AT_CHECKPOINT,score);
-	}
-	
-	public static int GetScoreAtCheckpoint(){
-		return PlayerPrefs.GetInt(SCORE_AT_CHECKPOINT,0);
 	}
 	
 	public static void SetLevelUnlocked(int level){

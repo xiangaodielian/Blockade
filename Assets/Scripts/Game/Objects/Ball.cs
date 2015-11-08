@@ -127,7 +127,7 @@ public class Ball : MonoBehaviour {
 			if(collision.gameObject.tag != "Breakable")
 				audioSource.Play();
 			if(collision.gameObject.tag == "Player")
-				GetComponent<Rigidbody2D>().velocity += tweak;
+				rigidBody.velocity += tweak;
 		}
 	}
 	
