@@ -198,10 +198,8 @@ public class GameMaster : MonoBehaviour {
 			LevelManager.LoadLevel(level);
 		}else if(level == "Next")
 			LevelManager.LoadNextLevel();
-		else{
-			totalScore = 0;
+		else
 			LevelManager.LoadLevel(level);
-		}
 	}
 	
 	public void ResetCurrentLevel(){
