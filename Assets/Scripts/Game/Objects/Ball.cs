@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  Ball Class - Blockade
+  Controlling class for Ball
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -15,7 +23,6 @@ public class Ball : MonoBehaviour {
 	[SerializeField] private Sprite[] spriteArray = new Sprite[5];
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[8];
 	
-	private GameMaster gameMaster;
 	private Paddle paddle;
 	private Vector3 paddleToBallVector;
 	private bool isSticky = false;
@@ -24,9 +31,7 @@ public class Ball : MonoBehaviour {
 	private Color ballColor;
 	private AudioSource audioSource;
 
-	// Use this for initialization
-	void Start () {
-		gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
+	void Start(){
 		ballColor = PrefsManager.GetBallColor();
 		paddle = GameObject.FindObjectOfType<Paddle>();
 		paddleToBallVector = transform.position - paddle.transform.position;
@@ -55,9 +60,7 @@ public class Ball : MonoBehaviour {
 	void Update(){
 		if(audioSource.volume != PrefsManager.GetMasterSFXVolume())
 			audioSource.volume = PrefsManager.GetMasterSFXVolume();
-		
-		if(!gameMaster)
-			gameMaster = GameObject.FindObjectOfType<GameMaster>().GetComponent<GameMaster>();
+
 		if(!paddle.hasStarted && !paddle.gamePaused){
 			if(isSticky || isIron || isFeather || isExplosive){
 				isSticky = false;
@@ -72,14 +75,14 @@ public class Ball : MonoBehaviour {
 			#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
 			rigidBody.velocity = new Vector2 (0f,10f);
 			if(Input.GetMouseButtonDown(0)){
-				gameMaster.GameStart();
+				GameMaster.instance.GameStart();
 				paddle.hasStarted = true;
 			}
 			#elif UNITY_IOS || UNITY_ANDROID
 			rigidBody.velocity = new Vector2 (0f,8f);
 			if(Input.touchCount > 0){
 				if(Input.GetTouch(0).phase == TouchPhase.Ended){
-					gameMaster.GameStart();
+					GameMaster.instance.GameStart();
 					paddle.hasStarted = true;
 				}
 			}
@@ -94,7 +97,7 @@ public class Ball : MonoBehaviour {
 			#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
 			rigidBody.velocity = new Vector2 (0f,10f)*velMultiplier;
 			if(Input.GetMouseButtonDown(0)){
-				gameMaster.GameStart();
+				GameMaster.instance.GameStart();
 				stickOnPaddle = false;
 				audioSource.clip = audioClips[0];
 			}
@@ -102,7 +105,7 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = new Vector2 (0f,8f)*velMultiplier;
 			if(Input.touchCount > 0){	
 				if(Input.GetTouch(0).phase == TouchPhase.Ended){
-					gameMaster.GameStart();
+					GameMaster.instance.GameStart();
 					stickOnPaddle = false;
 					audioSource.clip = audioClips[0];
 				}
@@ -131,6 +134,7 @@ public class Ball : MonoBehaviour {
 		}
 	}
 	
+	//Change current Sprite to reflect Ball State (Normal, Iron, etc)
 	void ChangeSprite(){
 		switch(ballState){
 			case BallState.Normal:
@@ -177,12 +181,14 @@ public class Ball : MonoBehaviour {
 		Instantiate(ballPrefab,transform.position,Quaternion.identity);
 	}
 	
+	//Change to Sticky
 	public void StickyBall(){
 		ballState = BallState.Sticky;
 		ChangeSprite();
 		isSticky = true;
 	}
 	
+	//Change to Iron
 	public void IronBall(){
 		if(!isExplosive){
 			if(!isFeather){
@@ -198,6 +204,7 @@ public class Ball : MonoBehaviour {
 		}
 	}
 	
+	//Change to Feather
 	public void FeatherBall(){
 		if(!isExplosive){
 			if(!isIron){
@@ -213,6 +220,7 @@ public class Ball : MonoBehaviour {
 		}
 	}
 	
+	//Change to Explosive
 	public void ExplosiveBall(){
 		if(!isIron || !isFeather){
 			ballState = BallState.Explosive;
@@ -221,6 +229,7 @@ public class Ball : MonoBehaviour {
 		}
 	}
 	
+	//Explosive Ball hit Brick
 	public void BallExploded(){
 		AudioSource.PlayClipAtPoint(audioClips[4],transform.position,PrefsManager.GetMasterSFXVolume());
 		ballState = BallState.Normal;

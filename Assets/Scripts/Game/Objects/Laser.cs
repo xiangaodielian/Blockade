@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  Laser Class - Blockade
+  Controlling class for Laser
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]

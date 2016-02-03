@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*------------------------------/
+  LevelManager Class - Blockade
+  Manages Level loading and
+  saving functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 public class LevelManager {

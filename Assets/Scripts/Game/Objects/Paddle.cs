@@ -1,16 +1,25 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  Paddle Class - Blockade
+  Controlling class for Paddle
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(AudioSource))]
 public class Paddle : MonoBehaviour {
 
 	public bool hasStarted = false;
 	public bool gamePaused = false;
 	
-	[SerializeField] private GameObject laserPrefab = null;
-	[SerializeField] private GameObject safetyNetPrefab = null;
+	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
+	[SerializeField] private GameObject safetyNetPrefab = null;		//Ref to Safety Net Prefab
 	
 	private bool hasLasers = false;
-	public bool mirrored = false;
+	public bool mirrored = false;					//FALSE - normal motion TRUE - reversed motion
 	private Vector3 targetScale = new Vector3();
 	private AudioSource audioSource;
 	private GameObject laserGuns;
@@ -55,6 +64,7 @@ public class Paddle : MonoBehaviour {
 		}
 	}
 	
+	//Control Paddle motion using a mouse
 	void MoveWithMouse(){
 		Vector3 paddlePos = new Vector3(this.transform.position.x,this.transform.position.y,0f);
 		Vector3 mousePos = Input.mousePosition;
@@ -69,6 +79,7 @@ public class Paddle : MonoBehaviour {
 		this.transform.position = paddlePos;
 	}
 	
+	//Control Paddle motion using finger on a touch device
 	void MoveWithTouch(){
 		if(Input.touchCount > 0){
 			Vector3 paddlePos = new Vector3(transform.position.x,this.transform.position.y,0f);

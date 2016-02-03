@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*-----------------------------------/
+  OptionsController Class - Blockade
+  Controlling class for setting and
+  loading game preferences
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/----------------------------------*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -12,13 +20,11 @@ public class OptionsController : MonoBehaviour {
 	public Slider ballColorBlueSlider;
 	public Image ballImage;
 	
-	private MusicPlayer musicPlayer;
 	private AudioSource sfxTestPlayer;
 	private Color ballColor;
 	private float sfxVolumeOld;
 	
 	void Start(){
-		musicPlayer = GameObject.FindObjectOfType<MusicPlayer>();
 		musicVolumeSlider.value = PrefsManager.GetMasterMusicVolume();
 		
 		sfxTestPlayer = GetComponent<AudioSource>();
@@ -53,8 +59,8 @@ public class OptionsController : MonoBehaviour {
 	}
 	
 	public void SetMusicVolume(){
-		if(musicPlayer)
-			musicPlayer.SetVolume(musicVolumeSlider.value);
+		if(MusicPlayer.instance)
+			MusicPlayer.instance.SetVolume(musicVolumeSlider.value);
 	}
 	
 	// Sets Color of Ball (Red = 0, Green = 1, Blue = 2)

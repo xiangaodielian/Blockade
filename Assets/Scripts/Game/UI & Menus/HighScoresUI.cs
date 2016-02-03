@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿/*------------------------------/
+  HighScoresUI Class - Blockade
+  Manages High Score page and
+  updates High Score data
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
 public class HighScoresUI : MonoBehaviour {
 
-	private GameMaster gameMaster;
 	private Text[] highScores = new Text[5];
 	private int replaceScore = 0;
 	private bool enterHighScore = false;
@@ -16,7 +23,6 @@ public class HighScoresUI : MonoBehaviour {
 	#endif
 	
 	void Start(){
-		gameMaster = FindObjectOfType<GameMaster>();
 		highScores[0] = GameObject.Find("HighScore1").GetComponent<Text>();
 		highScores[0].text = PrefsManager.GetHighScoreName(1).ToUpper()+": "+PrefsManager.GetHighScore(1);
 		highScores[1] = GameObject.Find("HighScore2").GetComponent<Text>();
@@ -38,19 +44,19 @@ public class HighScoresUI : MonoBehaviour {
 			if(!enterHighScore)
 				HighScoreCheck();
 			else{
-				highScores[replaceScore].text = inputName.ToUpper()+": "+gameMaster.totalScore.ToString();
+				highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.totalScore.ToString();
 				#if UNITY_STANDALONE || UNITY_WEBGL
 				foreach(char c in Input.inputString){
 					if(c >= 'a' && c <= 'z' && inputName.Length < 3){
 						inputName += c;
-						highScores[replaceScore].text = inputName.ToUpper()+": "+gameMaster.totalScore.ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.totalScore.ToString();
 					} else if(c == '\b' && inputName.Length > 0){
 						inputName = inputName.Substring(0,inputName.Length-1);
-						highScores[replaceScore].text = inputName.ToUpper()+": "+gameMaster.totalScore.ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.totalScore.ToString();
 					}
 					if(c == '\r'){
 						PrefsManager.SetHighScoreName(replaceScore+1,inputName);
-						PrefsManager.SetHighScore(replaceScore+1,gameMaster.totalScore);
+						PrefsManager.SetHighScore(replaceScore+1,GameMaster.instance.totalScore);
 						enterHighScore = false;
 						finishedEntering = true;
 						inputName = "";
@@ -86,7 +92,7 @@ public class HighScoresUI : MonoBehaviour {
 	
 	void HighScoreCheck(){
 		for(int i=1;i<6;i++){
-			if(gameMaster.totalScore > PrefsManager.GetHighScore(i)){
+			if(GameMaster.instance.totalScore > PrefsManager.GetHighScore(i)){
 				replaceScore = i-1;
 				enterHighScore = true;
 				break;

@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  InGameUI Class - Blockade
+  Controls all GUI visible in-game
+  and their functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour {
 	
-	private GameMaster gameMaster;
 	private Text scoreText;
 	private int curScore = 0;
 	private Text timeText;
@@ -19,20 +26,20 @@ public class InGameUI : MonoBehaviour {
 	private GameObject endLevelPanel;
 	private bool promptActive = false;
 	
-	void Awake(){
+	void Start(){
 		elapsedTime = 0;
-		gameMaster = (GameMaster)FindObjectOfType<GameMaster>();
 		scoreText = (Text)GameObject.Find("InGameScore").GetComponent<Text>();
-		curScore = gameMaster.totalScore;
+		curScore = GameMaster.instance.totalScore;
 		scoreText.text = curScore.ToString();
 		timeText = (Text)GameObject.Find("InGameTime").GetComponent<Text>();
 		timeText.text = "00:00";
 		livesText = (Text)GameObject.Find("InGameLives").GetComponent<Text>();
-		livesRemaining = gameMaster.playerLives;
+		livesRemaining = GameMaster.instance.playerLives;
 		UpdateLivesText();
 		livesImage = (Image)GameObject.Find("InGameLivesImage").GetComponent<Image>();
 		livesImage.color = PrefsManager.GetBallColor();
 		launchPromptText = (Text)GameObject.Find("LaunchPromptText").GetComponent<Text>();
+		
 		#if UNITY_STANDALONE
 		launchPromptText.text = "CLICK TO LAUNCH!";
 		#elif UNITY_ANDROID || UNITY_IOS
@@ -43,6 +50,7 @@ public class InGameUI : MonoBehaviour {
 		else
 			launchPromptText.text = "TAP TO LAUNCH!";
 		#endif
+		
 		menuPanel = GameObject.Find("MenuPanel");
 		mainPanel = GameObject.Find("MainMenuPanel");
 		optionsPanel = GameObject.Find("OptionsPanel");
@@ -55,16 +63,18 @@ public class InGameUI : MonoBehaviour {
 	
 	void Update(){
 		UpdateTimeText();
-		if(livesRemaining != gameMaster.playerLives)
+		
+		if(livesRemaining != GameMaster.instance.playerLives)
 			UpdateLivesText();
 			
-		if(curScore != gameMaster.totalScore)
+		if(curScore != GameMaster.instance.totalScore)
 			UpdateScoreText();
 			
 		if(livesImage.color != PrefsManager.GetBallColor())
 			livesImage.color = PrefsManager.GetBallColor();
 	}
 	
+	//Update Time Played Display for Current Level
 	void UpdateTimeText(){
 		elapsedTime = (int)Time.timeSinceLevelLoad;
 		int elapsedSec = elapsedTime % 60;
@@ -82,16 +92,18 @@ public class InGameUI : MonoBehaviour {
 		}
 	}
 	
+	//Update Lives Remaining Display
 	void UpdateLivesText(){
-		livesRemaining = gameMaster.playerLives;
+		livesRemaining = GameMaster.instance.playerLives;
 		if(livesRemaining < 10)
 			livesText.text = "X 0"+livesRemaining.ToString();
 		else
 			livesText.text = "X "+livesRemaining.ToString();
 	}
 	
+	//Update Current Score Display
 	void UpdateScoreText(){
-		curScore = gameMaster.totalScore;
+		curScore = GameMaster.instance.totalScore;
 		scoreText.text = curScore.ToString();
 	}
 	
@@ -99,8 +111,9 @@ public class InGameUI : MonoBehaviour {
 		launchPromptText.gameObject.SetActive(isOn);
 	}
 	
+	//Toggle In Game Menu
 	public void ToggleMenu(){
-		gameMaster.GamePause();
+		GameMaster.instance.GamePause();
 		if(promptActive){
 			launchPromptText.gameObject.SetActive(true);
 			promptActive = false;
@@ -129,6 +142,7 @@ public class InGameUI : MonoBehaviour {
 		endLevelPanel.SetActive(isOn);
 	}
 	
+	//Calculate Bonus Points for Level based on Time in Level
 	public void CalculateTimeBonus(){
 		Text timeBonusText = (Text)GameObject.Find("TimeBonusText").GetComponent<Text>();
 		int timeBonus = 0;
@@ -152,6 +166,6 @@ public class InGameUI : MonoBehaviour {
 				timeBonusText.text = elapsedMin+":"+elapsedSec+" = "+timeBonus;
 		}
 		
-		gameMaster.totalScore += timeBonus;
+		GameMaster.instance.totalScore += timeBonus;
 	}
 }

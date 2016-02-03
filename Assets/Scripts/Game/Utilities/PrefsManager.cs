@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*------------------------------/
+  PrefsManager Class - Blockade
+  Manages all Player Prefs calls
+  and applies settings
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 public class PrefsManager{

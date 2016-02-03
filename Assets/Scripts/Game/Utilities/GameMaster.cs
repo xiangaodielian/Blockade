@@ -1,45 +1,45 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  GameMaster Class - Blockade
+  Controlling class for all
+  manager classes
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
 public class GameMaster : MonoBehaviour {
 
-	public int breakableCount = 0;
-	public int playerLives = 3;
-	public int totalScore = 0;
+	//Singleton Instance of GameMaster
+	public static GameMaster instance {get; private set;}
 	
-	private MusicPlayer musicPlayer;
-	private UIManager uiManager;
-	private GameObject playSpace;
-	private GameObject winMenu;
-	private GameObject loseMenu;
-	private GameObject highScoresMenu;
+	public int breakableCount = 0;			//Number of Breakable Bricks in level
+	public int playerLives = 3;				//Remaining Player Lives
+	public int totalScore = 0;				//Accumulated Score
+	
+	private GameObject playSpace;			//Ref to Playable area (Walls, Background, etc)
 	private string curLevel;
 	private Paddle paddle = null;
-	private bool inGame = false;
+	private bool inGame = false;			//FALSE - in Menu Screens TRUE - in Game
 	
 	void Awake(){
-		GameObject.DontDestroyOnLoad(gameObject);
+		if(instance != null && instance != this)
+			Destroy(gameObject);
+		instance = this;
+		DontDestroyOnLoad(gameObject);
 	}
 	
 	void Start(){
-		musicPlayer = GetComponentInChildren<MusicPlayer>();
-		uiManager = GetComponentInChildren<UIManager>();
 		playSpace = GameObject.FindGameObjectWithTag("PlaySpace");
 		playSpace.SetActive(false);
-		winMenu = GameObject.FindGameObjectWithTag("WinMenu");
-		winMenu.SetActive(false);
-		loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
-		loseMenu.SetActive(false);
-		highScoresMenu = GameObject.FindGameObjectWithTag("HighScoresMenu");
-		highScoresMenu.SetActive(false);
 		curLevel = LevelManager.GetCurrentLevel();
-		PerformChecks();
 	}
 	
 	void Update(){
 		if(Input.GetKeyDown(KeyCode.Escape) && inGame){
-			uiManager.ToggleInGameMenu();
+			UIManager.instance.ToggleInGameMenu();
 		}
 		
 		// New Level Loaded
@@ -49,49 +49,26 @@ public class GameMaster : MonoBehaviour {
 		}
 	}
 	
-	// Checks for duplicate MusicPlayer, Camera, PlaySpace, and GameMaster
-	void PerformChecks(){
-		GameMasterCheck();
-		MusicPlayerCheck();
+	//Checks for duplicate Camera, PlaySpace, and Current Level
+	private void PerformChecks(){
 		CameraCheck();
 		PlaySpaceCheck();
 		LevelCheck(curLevel);
 	}
-
-	// Check for duplicate GameMasters. Destroy if found
-	void GameMasterCheck()
-	{
-		GameMaster[] otherMasters = GameObject.FindObjectsOfType<GameMaster>();
-		foreach(GameMaster master in otherMasters){
-			if(master != this)
-				Destroy(master.gameObject);
-		}
-	}
-
-	// Checks for duplicate MusicPlayers. Destroys all non-children.
-	void MusicPlayerCheck(){
-		MusicPlayer[] otherPlayers = FindObjectsOfType<MusicPlayer>();
-		if(otherPlayers.Length >= 2){
-			foreach(MusicPlayer player in otherPlayers){
-				if(player.transform.parent != this.transform)
-					Destroy(player.gameObject);
-			}
-		}
-	}
 	
 	// Checks for duplicate Cameras. Destroys all non-children.
-	void CameraCheck(){
+	private void CameraCheck(){
 		Camera[] otherCameras = FindObjectsOfType<Camera>();
-		if(otherCameras.Length >= 2){
-			foreach(Camera cameras in otherCameras){
-				if(cameras.transform.parent != this.transform)
-					Destroy(cameras.gameObject);
+		if(otherCameras.Length > 1){
+			foreach(Camera cams in otherCameras){
+				if(cams.transform.parent != this.transform)
+					Destroy(cams.gameObject);
 			}
 		}
 	}
 
-	// Check for multiple PlaySpaces, Destroy all non-children. Add as child if not already
-	void PlaySpaceCheck(){
+	// Check for multiple PlaySpaces, Destroy all non-children.
+	private void PlaySpaceCheck(){
 		GameObject[] playSpaces = GameObject.FindGameObjectsWithTag("PlaySpace");
 		if(playSpaces.Length > 1){
 			foreach(GameObject obj in playSpaces){
@@ -102,59 +79,47 @@ public class GameMaster : MonoBehaviour {
 	}
 	
 	// Check the Level and load appropriate UI
-	void LevelCheck(string level){
+	private void LevelCheck(string level){
 		Text scoreText;
 		switch(level){
 			case "Splash":
-				uiManager.CloseAll();
+				UIManager.instance.CloseAll();
 				playSpace.SetActive(false);
-				winMenu.SetActive(false);
-				loseMenu.SetActive(false);
-				highScoresMenu.SetActive(false);
 				inGame = false;
 				break;
 			
 			case "MainMenu":
-				uiManager.CloseAll();
-				uiManager.OpenMainMenu();
+				UIManager.instance.OpenMainMenu();
 				playSpace.SetActive(false);
-				winMenu.SetActive(false);
-				loseMenu.SetActive(false);
-				highScoresMenu.SetActive(false);
-				if(!musicPlayer.isPlaying)
-					musicPlayer.StartMusic();
+				if(!MusicPlayer.instance.isPlaying)
+					MusicPlayer.instance.StartMusic();
 				inGame = false;
 				totalScore = 0;
 				playerLives = 3;
 				break;
 				
 			case "Win":
-				uiManager.CloseAll();
+				UIManager.instance.OpenEndGameMenu(level);
 				playSpace.SetActive(false);
-				winMenu.SetActive(true);
 				inGame = false;
 				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
 				scoreText.text = "YOUR SCORE: " +totalScore;
 				break;
 				
 			case "Lose":
-				uiManager.CloseAll();
+				UIManager.instance.OpenEndGameMenu(level);
 				playSpace.SetActive(false);
-				loseMenu.SetActive(true);
 				inGame = false;
 				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
 				scoreText.text = "YOUR SCORE: " +totalScore;
 				break;
 				
+			//In Game
 			default:
-				uiManager.CloseAll();
-				uiManager.OpenInGameUI();
+				UIManager.instance.OpenInGameUI();
 				playSpace.SetActive(true);
-				winMenu.SetActive(false);
-				loseMenu.SetActive(false);
-				highScoresMenu.SetActive(false);
 				inGame = true;
-				uiManager.LaunchPromptOn();
+				UIManager.instance.ToggleLaunchPrompt(true);
 				if(paddle == null)
 					paddle = (Paddle)GameObject.FindGameObjectWithTag("Player").GetComponent<Paddle>();
 				PrefsManager.SetCurrentLevel(PrefsManager.GetLevelNumber());
@@ -167,23 +132,27 @@ public class GameMaster : MonoBehaviour {
 	}
 	
 	public void GameStart(){
-		uiManager.LaunchPromptOff();
+		UIManager.instance.ToggleLaunchPrompt(false);
 	}
 	
+	//Pause Playback (Menu Open)
 	public void GamePause(){
 		Time.timeScale = Mathf.Abs(Time.timeScale - 1f);
 		paddle.gamePaused = !paddle.gamePaused;
 	}
 	
+	//Add value of Destroyed Brick to Score and decrement breakableCount
+	//If breakableCount hits 0, end Level
 	public void BrickDestroyed(int pointValue){
 		totalScore += pointValue;
 		breakableCount--;
 		if(breakableCount <= 0){
 			GamePause();
-			uiManager.EndLevelMenu();
+			UIManager.instance.EndLevelMenu();
 		}
 	}
 	
+	//Reset breakableCount and load Level "level"
 	public void ChangeToLevel(string level){
 		breakableCount = 0;
 		if(level == "Next")
@@ -200,11 +169,13 @@ public class GameMaster : MonoBehaviour {
 		}
 	}
 	
+	//Reset Ball after Player Death
 	public void ResetCurrentLevel(){
 		paddle.ResetBall();
-		uiManager.LaunchPromptOn();
+		UIManager.instance.ToggleLaunchPrompt(true);
 	}
 	
+	//Reset Current Level after Player loses all Lives
 	public void RestartGame(){
 		totalScore = 0;
 		playerLives = 3;
@@ -218,19 +189,7 @@ public class GameMaster : MonoBehaviour {
 		ChangeToLevel(levelName);
 	}
 	
-	public void ShowHighScores(){
-		uiManager.CloseAll();
-		winMenu.SetActive(false);
-		loseMenu.SetActive(false);
-		highScoresMenu.SetActive(true);
-	}
-	
-	public void HideHighScores(){
-		highScoresMenu.SetActive(false);
-		uiManager.OpenMainMenu();
-		ChangeToLevel("MainMenu");
-	}
-	
+	//Quit Application
 	public void QuitRequest(){
 		LevelManager.QuitApplication();
 	}

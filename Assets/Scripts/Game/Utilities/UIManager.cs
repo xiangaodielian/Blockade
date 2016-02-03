@@ -1,53 +1,77 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  UIManager Class - Blockade
+  Manages all GUI elements and
+  their functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
-	private GameMaster gameMaster;
+	//Singleton instance for UIManager
+	public static UIManager instance {get; private set;}
+	
 	private GameObject mainMenu;
 	private GameObject levelSelectMenu;
 	private GameObject optionsMenu;
+	private GameObject highScoresMenu;
+	private GameObject winMenu;
+	private GameObject loseMenu;
 	private InGameUI inGameUI;
 	
+	void Awake(){
+		if(instance != null && instance != this)
+			Destroy(gameObject);
+		instance = this;
+		DontDestroyOnLoad(gameObject);
+	}
+	
 	void Start(){
-		gameMaster = FindObjectOfType<GameMaster>();
 		inGameUI = GetComponentInChildren<InGameUI>();
-		inGameUI.gameObject.SetActive(false);
 		mainMenu = GameObject.FindGameObjectWithTag("MainMenu");
-		mainMenu.SetActive(false);
 		levelSelectMenu = GameObject.FindGameObjectWithTag("LevelSelectMenu");
-		levelSelectMenu.SetActive(false);
 		optionsMenu = GameObject.FindGameObjectWithTag("OptionsMenu");
-		optionsMenu.SetActive(false);
+		highScoresMenu = GameObject.FindGameObjectWithTag("HighScoresMenu");
+		winMenu = GameObject.FindGameObjectWithTag("WinMenu");
+		loseMenu = GameObject.FindGameObjectWithTag("LoseMenu");
+		CloseAll();
 	}
 	
 	public void OpenMainMenu(){
+		CloseAll();
 		mainMenu.SetActive(true);
-		levelSelectMenu.SetActive(false);
-		optionsMenu.SetActive(false);
-		inGameUI.gameObject.SetActive(false);
 	}
 	
 	public void OpenLevelSelectMenu(){
-		mainMenu.SetActive(false);
+		CloseAll();
 		levelSelectMenu.SetActive(true);
-		optionsMenu.SetActive(false);
-		inGameUI.gameObject.SetActive(false);
 	}
 	
 	public void OpenOptionsMenu(){
+		CloseAll();
 		optionsMenu.SetActive(true);
-		mainMenu.SetActive(false);
-		levelSelectMenu.SetActive(false);
-		inGameUI.gameObject.SetActive(false);
 		optionsMenu.GetComponent<OptionsController>().SetSliders();
 	}
 	
+	public void OpenHighScoreMenu(){
+		CloseAll();
+		highScoresMenu.SetActive(true);
+	}
+	
 	public void OpenInGameUI(){
+		CloseAll();
 		inGameUI.gameObject.SetActive(true);
-		mainMenu.SetActive(false);
-		levelSelectMenu.SetActive(false);
-		optionsMenu.SetActive(false);
+	}
+	
+	public void OpenEndGameMenu(string level){
+		CloseAll();
+		if(level == "Win")
+			winMenu.SetActive(true);
+		else
+			loseMenu.SetActive(true);
 	}
 	
 	public void ToggleInGameMenu(){
@@ -58,15 +82,14 @@ public class UIManager : MonoBehaviour {
 		mainMenu.SetActive(false);
 		levelSelectMenu.SetActive(false);
 		optionsMenu.SetActive(false);
+		highScoresMenu.SetActive(false);
 		inGameUI.gameObject.SetActive(false);
+		winMenu.SetActive(false);
+		loseMenu.SetActive(false);
 	}
 	
-	public void LaunchPromptOn(){
-		inGameUI.TogglePrompt(true);
-	}
-	
-	public void LaunchPromptOff(){
-		inGameUI.TogglePrompt(false);
+	public void ToggleLaunchPrompt(bool visible){
+		inGameUI.TogglePrompt(visible);
 	}
 	
 	public void EndLevelMenu(){
@@ -76,7 +99,7 @@ public class UIManager : MonoBehaviour {
 	
 	public void ProceedToNextLevel(){
 		inGameUI.ToggleEndLevelPanel(false);
-		gameMaster.GamePause();
-		gameMaster.ChangeToLevel("Next");
+		GameMaster.instance.GamePause();
+		GameMaster.instance.ChangeToLevel("Next");
 	}
 }

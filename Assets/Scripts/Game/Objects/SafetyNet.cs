@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*--------------------------------/
+  SafetyNet Class - Blockade
+  Controlling class for SafetyNet
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-------------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 public class SafetyNet : MonoBehaviour {

@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  Powerup Class - Blockade
+  Controlling class for Powerup
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 2 Feb, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 
 [ExecuteInEditMode]
@@ -12,14 +20,12 @@ public class Powerup : MonoBehaviour {
 	[SerializeField] private Sprite[] spriteArray = new Sprite[12];
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[11];
 	
-	private GameMaster gameMaster;
 	private Sprite curSprite = null;
 	private Paddle player;
 	private int pointValue = 25;
 	private AudioClip curAudioClip = null;
 	
 	void Start(){
-		gameMaster = (GameMaster)FindObjectOfType<GameMaster>();
 		player = (Paddle)FindObjectOfType<Paddle>();
 		#if UNITY_IOS || UNITY_ANDROID || UNITY_WSA
 		transform.localScale = new Vector3(0.75f,0.75f,1f);
@@ -33,6 +39,7 @@ public class Powerup : MonoBehaviour {
 	}
 	#endif
 
+	//Set the Sprite and AudioClip for selected Powerup Type
 	void SetPowerup()
 	{
 		switch (powerupType) {
@@ -92,13 +99,14 @@ public class Powerup : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().sprite = curSprite;
 	}
 	
+	//Powerup Collected
 	void OnTriggerEnter2D(Collider2D col){
 		if(col.tag == "Player"){
 			if(curAudioClip != null)
 				AudioSource.PlayClipAtPoint(curAudioClip,player.transform.position,PrefsManager.GetMasterSFXVolume());
 			player.CollectPowerup(powerupType);
 			Destroy(gameObject);
-			gameMaster.totalScore += pointValue;
+			GameMaster.instance.totalScore += pointValue;
 		}
 			
 	}
