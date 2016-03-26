@@ -1,0 +1,1334 @@
+fileFormatVersion: 2
+guid: e50fda6b74edf0c468523c5cd9d544ef
+timeCreated: 1457043384
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: doorA_grp
+    100002: doorA_grp 1
+    100004: doorA_grp 2
+    100006: doorB_grp
+    100008: doorB_grp 1
+    100010: doorB_grp 2
+    100012: doorC_grp
+    100014: doorC_grp 1
+    100016: doorC_grp 2
+    100018: doorD_grp
+    100020: doorD_grp 1
+    100022: doorD_grp 2
+    100024: doorE_grp
+    100026: doorE_grp 1
+    100028: doorE_grp 2
+    100030: doorF_grp
+    100032: doorF_grp 1
+    100034: doorF_grp 2
+    100036: doorG_grp
+    100038: doorG_grp 1
+    100040: doorG_grp 2
+    100042: doorH_grp
+    100044: doorJ_grp
+    100046: doorK_grp
+    100048: doorL_grp
+    100050: doors_grp
+    100052: doors_grp 1
+    100054: doors_grp 2
+    100056: leftDoor_geo
+    100058: leftDoor_geo 1
+    100060: leftDoor_geo 10
+    100062: leftDoor_geo 11
+    100064: leftDoor_geo 12
+    100066: leftDoor_geo 13
+    100068: leftDoor_geo 14
+    100070: leftDoor_geo 15
+    100072: leftDoor_geo 16
+    100074: leftDoor_geo 17
+    100076: leftDoor_geo 18
+    100078: leftDoor_geo 19
+    100080: leftDoor_geo 2
+    100082: leftDoor_geo 20
+    100084: leftDoor_geo 21
+    100086: leftDoor_geo 22
+    100088: leftDoor_geo 23
+    100090: leftDoor_geo 24
+    100092: leftDoor_geo 3
+    100094: leftDoor_geo 4
+    100096: leftDoor_geo 5
+    100098: leftDoor_geo 6
+    100100: leftDoor_geo 7
+    100102: leftDoor_geo 8
+    100104: leftDoor_geo 9
+    100106: LeftWall_grp
+    100108: //RootNode
+    100110: rightDoor_geo
+    100112: rightDoor_geo 1
+    100114: rightDoor_geo 10
+    100116: rightDoor_geo 11
+    100118: rightDoor_geo 12
+    100120: rightDoor_geo 13
+    100122: rightDoor_geo 14
+    100124: rightDoor_geo 15
+    100126: rightDoor_geo 16
+    100128: rightDoor_geo 17
+    100130: rightDoor_geo 18
+    100132: rightDoor_geo 19
+    100134: rightDoor_geo 2
+    100136: rightDoor_geo 20
+    100138: rightDoor_geo 21
+    100140: rightDoor_geo 22
+    100142: rightDoor_geo 23
+    100144: rightDoor_geo 24
+    100146: rightDoor_geo 3
+    100148: rightDoor_geo 4
+    100150: rightDoor_geo 5
+    100152: rightDoor_geo 6
+    100154: rightDoor_geo 7
+    100156: rightDoor_geo 8
+    100158: rightDoor_geo 9
+    100160: RightWall_grp
+    100162: shield_geo1
+    100164: shield_geo1 1
+    100166: shield_geo1 2
+    100168: shield_geo1 3
+    100170: shield_geo2
+    100172: shield_geo2 1
+    100174: shield_geo2 2
+    100176: shield_geo2 3
+    100178: shield_geo3
+    100180: shield_geo3 1
+    100182: shield_geo3 2
+    100184: shield_geo4
+    100186: shield_geo4 1
+    100188: shield_geo4 2
+    100190: shield_geo4 3
+    100192: shield_geo5
+    100194: shield_geo5 1
+    100196: shield_geo5 2
+    100198: shield_geo5 3
+    100200: shield_geo6
+    100202: shield_geo6 1
+    100204: shield_geo6 2
+    100206: shield_geo7
+    100208: shield_geo7 1
+    100210: shield_geo7 2
+    100212: shieldProjector_geo1
+    100214: shieldProjector_geo1 1
+    100216: shieldProjector_geo1 2
+    100218: shieldProjector_geo10
+    100220: shieldProjector_geo11
+    100222: shieldProjector_geo2
+    100224: shieldProjector_geo2 1
+    100226: shieldProjector_geo2 2
+    100228: shieldProjector_geo3
+    100230: shieldProjector_geo3 1
+    100232: shieldProjector_geo3 2
+    100234: shieldProjector_geo4
+    100236: shieldProjector_geo4 1
+    100238: shieldProjector_geo4 2
+    100240: shieldProjector_geo5
+    100242: shieldProjector_geo5 1
+    100244: shieldProjector_geo5 2
+    100246: shieldProjector_geo6
+    100248: shieldProjector_geo6 1
+    100250: shieldProjector_geo6 2
+    100252: shieldProjector_geo7
+    100254: shieldProjector_geo7 1
+    100256: shieldProjector_geo7 2
+    100258: shieldProjector_geo8
+    100260: shieldProjector_geo9
+    100262: shieldProjectors_grp
+    100264: shieldProjectors_grp 1
+    100266: shieldProjectors_grp 2
+    100268: ship_geo
+    100270: TopWall_grp
+    100272: wallBase_geo
+    100274: wallBase_geo 1
+    100276: wallBase_geo 2
+    100278: Walls_grp
+    400000: doorA_grp
+    400002: doorA_grp 1
+    400004: doorA_grp 2
+    400006: doorB_grp
+    400008: doorB_grp 1
+    400010: doorB_grp 2
+    400012: doorC_grp
+    400014: doorC_grp 1
+    400016: doorC_grp 2
+    400018: doorD_grp
+    400020: doorD_grp 1
+    400022: doorD_grp 2
+    400024: doorE_grp
+    400026: doorE_grp 1
+    400028: doorE_grp 2
+    400030: doorF_grp
+    400032: doorF_grp 1
+    400034: doorF_grp 2
+    400036: doorG_grp
+    400038: doorG_grp 1
+    400040: doorG_grp 2
+    400042: doorH_grp
+    400044: doorJ_grp
+    400046: doorK_grp
+    400048: doorL_grp
+    400050: doors_grp
+    400052: doors_grp 1
+    400054: doors_grp 2
+    400056: leftDoor_geo
+    400058: leftDoor_geo 1
+    400060: leftDoor_geo 10
+    400062: leftDoor_geo 11
+    400064: leftDoor_geo 12
+    400066: leftDoor_geo 13
+    400068: leftDoor_geo 14
+    400070: leftDoor_geo 15
+    400072: leftDoor_geo 16
+    400074: leftDoor_geo 17
+    400076: leftDoor_geo 18
+    400078: leftDoor_geo 19
+    400080: leftDoor_geo 2
+    400082: leftDoor_geo 20
+    400084: leftDoor_geo 21
+    400086: leftDoor_geo 22
+    400088: leftDoor_geo 23
+    400090: leftDoor_geo 24
+    400092: leftDoor_geo 3
+    400094: leftDoor_geo 4
+    400096: leftDoor_geo 5
+    400098: leftDoor_geo 6
+    400100: leftDoor_geo 7
+    400102: leftDoor_geo 8
+    400104: leftDoor_geo 9
+    400106: LeftWall_grp
+    400108: //RootNode
+    400110: rightDoor_geo
+    400112: rightDoor_geo 1
+    400114: rightDoor_geo 10
+    400116: rightDoor_geo 11
+    400118: rightDoor_geo 12
+    400120: rightDoor_geo 13
+    400122: rightDoor_geo 14
+    400124: rightDoor_geo 15
+    400126: rightDoor_geo 16
+    400128: rightDoor_geo 17
+    400130: rightDoor_geo 18
+    400132: rightDoor_geo 19
+    400134: rightDoor_geo 2
+    400136: rightDoor_geo 20
+    400138: rightDoor_geo 21
+    400140: rightDoor_geo 22
+    400142: rightDoor_geo 23
+    400144: rightDoor_geo 24
+    400146: rightDoor_geo 3
+    400148: rightDoor_geo 4
+    400150: rightDoor_geo 5
+    400152: rightDoor_geo 6
+    400154: rightDoor_geo 7
+    400156: rightDoor_geo 8
+    400158: rightDoor_geo 9
+    400160: RightWall_grp
+    400162: shield_geo1
+    400164: shield_geo1 1
+    400166: shield_geo1 2
+    400168: shield_geo1 3
+    400170: shield_geo2
+    400172: shield_geo2 1
+    400174: shield_geo2 2
+    400176: shield_geo2 3
+    400178: shield_geo3
+    400180: shield_geo3 1
+    400182: shield_geo3 2
+    400184: shield_geo4
+    400186: shield_geo4 1
+    400188: shield_geo4 2
+    400190: shield_geo4 3
+    400192: shield_geo5
+    400194: shield_geo5 1
+    400196: shield_geo5 2
+    400198: shield_geo5 3
+    400200: shield_geo6
+    400202: shield_geo6 1
+    400204: shield_geo6 2
+    400206: shield_geo7
+    400208: shield_geo7 1
+    400210: shield_geo7 2
+    400212: shieldProjector_geo1
+    400214: shieldProjector_geo1 1
+    400216: shieldProjector_geo1 2
+    400218: shieldProjector_geo10
+    400220: shieldProjector_geo11
+    400222: shieldProjector_geo2
+    400224: shieldProjector_geo2 1
+    400226: shieldProjector_geo2 2
+    400228: shieldProjector_geo3
+    400230: shieldProjector_geo3 1
+    400232: shieldProjector_geo3 2
+    400234: shieldProjector_geo4
+    400236: shieldProjector_geo4 1
+    400238: shieldProjector_geo4 2
+    400240: shieldProjector_geo5
+    400242: shieldProjector_geo5 1
+    400244: shieldProjector_geo5 2
+    400246: shieldProjector_geo6
+    400248: shieldProjector_geo6 1
+    400250: shieldProjector_geo6 2
+    400252: shieldProjector_geo7
+    400254: shieldProjector_geo7 1
+    400256: shieldProjector_geo7 2
+    400258: shieldProjector_geo8
+    400260: shieldProjector_geo9
+    400262: shieldProjectors_grp
+    400264: shieldProjectors_grp 1
+    400266: shieldProjectors_grp 2
+    400268: ship_geo
+    400270: TopWall_grp
+    400272: wallBase_geo
+    400274: wallBase_geo 1
+    400276: wallBase_geo 2
+    400278: Walls_grp
+    2300000: leftDoor_geo
+    2300002: leftDoor_geo 1
+    2300004: leftDoor_geo 10
+    2300006: leftDoor_geo 11
+    2300008: leftDoor_geo 12
+    2300010: leftDoor_geo 13
+    2300012: leftDoor_geo 14
+    2300014: leftDoor_geo 15
+    2300016: leftDoor_geo 16
+    2300018: leftDoor_geo 17
+    2300020: leftDoor_geo 18
+    2300022: leftDoor_geo 19
+    2300024: leftDoor_geo 2
+    2300026: leftDoor_geo 20
+    2300028: leftDoor_geo 21
+    2300030: leftDoor_geo 22
+    2300032: leftDoor_geo 23
+    2300034: leftDoor_geo 24
+    2300036: leftDoor_geo 3
+    2300038: leftDoor_geo 4
+    2300040: leftDoor_geo 5
+    2300042: leftDoor_geo 6
+    2300044: leftDoor_geo 7
+    2300046: leftDoor_geo 8
+    2300048: leftDoor_geo 9
+    2300050: rightDoor_geo
+    2300052: rightDoor_geo 1
+    2300054: rightDoor_geo 10
+    2300056: rightDoor_geo 11
+    2300058: rightDoor_geo 12
+    2300060: rightDoor_geo 13
+    2300062: rightDoor_geo 14
+    2300064: rightDoor_geo 15
+    2300066: rightDoor_geo 16
+    2300068: rightDoor_geo 17
+    2300070: rightDoor_geo 18
+    2300072: rightDoor_geo 19
+    2300074: rightDoor_geo 2
+    2300076: rightDoor_geo 20
+    2300078: rightDoor_geo 21
+    2300080: rightDoor_geo 22
+    2300082: rightDoor_geo 23
+    2300084: rightDoor_geo 24
+    2300086: rightDoor_geo 3
+    2300088: rightDoor_geo 4
+    2300090: rightDoor_geo 5
+    2300092: rightDoor_geo 6
+    2300094: rightDoor_geo 7
+    2300096: rightDoor_geo 8
+    2300098: rightDoor_geo 9
+    2300100: shield_geo1
+    2300102: shield_geo1 1
+    2300104: shield_geo1 2
+    2300106: shield_geo1 3
+    2300108: shield_geo2
+    2300110: shield_geo2 1
+    2300112: shield_geo2 2
+    2300114: shield_geo2 3
+    2300116: shield_geo3
+    2300118: shield_geo3 1
+    2300120: shield_geo3 2
+    2300122: shield_geo4
+    2300124: shield_geo4 1
+    2300126: shield_geo4 2
+    2300128: shield_geo4 3
+    2300130: shield_geo5
+    2300132: shield_geo5 1
+    2300134: shield_geo5 2
+    2300136: shield_geo5 3
+    2300138: shield_geo6
+    2300140: shield_geo6 1
+    2300142: shield_geo6 2
+    2300144: shield_geo7
+    2300146: shield_geo7 1
+    2300148: shield_geo7 2
+    2300150: shieldProjector_geo1
+    2300152: shieldProjector_geo1 1
+    2300154: shieldProjector_geo1 2
+    2300156: shieldProjector_geo10
+    2300158: shieldProjector_geo11
+    2300160: shieldProjector_geo2
+    2300162: shieldProjector_geo2 1
+    2300164: shieldProjector_geo2 2
+    2300166: shieldProjector_geo3
+    2300168: shieldProjector_geo3 1
+    2300170: shieldProjector_geo3 2
+    2300172: shieldProjector_geo4
+    2300174: shieldProjector_geo4 1
+    2300176: shieldProjector_geo4 2
+    2300178: shieldProjector_geo5
+    2300180: shieldProjector_geo5 1
+    2300182: shieldProjector_geo5 2
+    2300184: shieldProjector_geo6
+    2300186: shieldProjector_geo6 1
+    2300188: shieldProjector_geo6 2
+    2300190: shieldProjector_geo7
+    2300192: shieldProjector_geo7 1
+    2300194: shieldProjector_geo7 2
+    2300196: shieldProjector_geo8
+    2300198: shieldProjector_geo9
+    2300200: ship_geo
+    2300202: wallBase_geo
+    2300204: wallBase_geo 1
+    2300206: wallBase_geo 2
+    3300000: leftDoor_geo
+    3300002: leftDoor_geo 1
+    3300004: leftDoor_geo 10
+    3300006: leftDoor_geo 11
+    3300008: leftDoor_geo 12
+    3300010: leftDoor_geo 13
+    3300012: leftDoor_geo 14
+    3300014: leftDoor_geo 15
+    3300016: leftDoor_geo 16
+    3300018: leftDoor_geo 17
+    3300020: leftDoor_geo 18
+    3300022: leftDoor_geo 19
+    3300024: leftDoor_geo 2
+    3300026: leftDoor_geo 20
+    3300028: leftDoor_geo 21
+    3300030: leftDoor_geo 22
+    3300032: leftDoor_geo 23
+    3300034: leftDoor_geo 24
+    3300036: leftDoor_geo 3
+    3300038: leftDoor_geo 4
+    3300040: leftDoor_geo 5
+    3300042: leftDoor_geo 6
+    3300044: leftDoor_geo 7
+    3300046: leftDoor_geo 8
+    3300048: leftDoor_geo 9
+    3300050: rightDoor_geo
+    3300052: rightDoor_geo 1
+    3300054: rightDoor_geo 10
+    3300056: rightDoor_geo 11
+    3300058: rightDoor_geo 12
+    3300060: rightDoor_geo 13
+    3300062: rightDoor_geo 14
+    3300064: rightDoor_geo 15
+    3300066: rightDoor_geo 16
+    3300068: rightDoor_geo 17
+    3300070: rightDoor_geo 18
+    3300072: rightDoor_geo 19
+    3300074: rightDoor_geo 2
+    3300076: rightDoor_geo 20
+    3300078: rightDoor_geo 21
+    3300080: rightDoor_geo 22
+    3300082: rightDoor_geo 23
+    3300084: rightDoor_geo 24
+    3300086: rightDoor_geo 3
+    3300088: rightDoor_geo 4
+    3300090: rightDoor_geo 5
+    3300092: rightDoor_geo 6
+    3300094: rightDoor_geo 7
+    3300096: rightDoor_geo 8
+    3300098: rightDoor_geo 9
+    3300100: shield_geo1
+    3300102: shield_geo1 1
+    3300104: shield_geo1 2
+    3300106: shield_geo1 3
+    3300108: shield_geo2
+    3300110: shield_geo2 1
+    3300112: shield_geo2 2
+    3300114: shield_geo2 3
+    3300116: shield_geo3
+    3300118: shield_geo3 1
+    3300120: shield_geo3 2
+    3300122: shield_geo4
+    3300124: shield_geo4 1
+    3300126: shield_geo4 2
+    3300128: shield_geo4 3
+    3300130: shield_geo5
+    3300132: shield_geo5 1
+    3300134: shield_geo5 2
+    3300136: shield_geo5 3
+    3300138: shield_geo6
+    3300140: shield_geo6 1
+    3300142: shield_geo6 2
+    3300144: shield_geo7
+    3300146: shield_geo7 1
+    3300148: shield_geo7 2
+    3300150: shieldProjector_geo1
+    3300152: shieldProjector_geo1 1
+    3300154: shieldProjector_geo1 2
+    3300156: shieldProjector_geo10
+    3300158: shieldProjector_geo11
+    3300160: shieldProjector_geo2
+    3300162: shieldProjector_geo2 1
+    3300164: shieldProjector_geo2 2
+    3300166: shieldProjector_geo3
+    3300168: shieldProjector_geo3 1
+    3300170: shieldProjector_geo3 2
+    3300172: shieldProjector_geo4
+    3300174: shieldProjector_geo4 1
+    3300176: shieldProjector_geo4 2
+    3300178: shieldProjector_geo5
+    3300180: shieldProjector_geo5 1
+    3300182: shieldProjector_geo5 2
+    3300184: shieldProjector_geo6
+    3300186: shieldProjector_geo6 1
+    3300188: shieldProjector_geo6 2
+    3300190: shieldProjector_geo7
+    3300192: shieldProjector_geo7 1
+    3300194: shieldProjector_geo7 2
+    3300196: shieldProjector_geo8
+    3300198: shieldProjector_geo9
+    3300200: ship_geo
+    3300202: wallBase_geo
+    3300204: wallBase_geo 1
+    3300206: wallBase_geo 2
+    4300000: ship_geo
+    4300002: wallBase_geo
+    4300004: leftDoor_geo
+    4300006: rightDoor_geo
+    4300008: leftDoor_geo
+    4300010: rightDoor_geo
+    4300012: leftDoor_geo
+    4300014: rightDoor_geo
+    4300016: leftDoor_geo
+    4300018: rightDoor_geo
+    4300020: leftDoor_geo
+    4300022: rightDoor_geo
+    4300024: leftDoor_geo
+    4300026: rightDoor_geo
+    4300028: leftDoor_geo
+    4300030: rightDoor_geo
+    4300032: shieldProjector_geo1
+    4300034: shield_geo7
+    4300036: shieldProjector_geo2
+    4300038: shield_geo6
+    4300040: shieldProjector_geo3
+    4300042: shield_geo5
+    4300044: shieldProjector_geo4
+    4300046: shield_geo4
+    4300048: shieldProjector_geo5
+    4300050: shield_geo3
+    4300052: shieldProjector_geo6
+    4300054: shield_geo2
+    4300056: shieldProjector_geo7
+    4300058: shield_geo1
+    4300060: wallBase_geo
+    4300062: leftDoor_geo
+    4300064: rightDoor_geo
+    4300066: leftDoor_geo
+    4300068: rightDoor_geo
+    4300070: leftDoor_geo
+    4300072: rightDoor_geo
+    4300074: leftDoor_geo
+    4300076: rightDoor_geo
+    4300078: leftDoor_geo
+    4300080: rightDoor_geo
+    4300082: leftDoor_geo
+    4300084: rightDoor_geo
+    4300086: leftDoor_geo
+    4300088: rightDoor_geo
+    4300090: shieldProjector_geo1
+    4300092: shield_geo7
+    4300094: shieldProjector_geo2
+    4300096: shield_geo6
+    4300098: shieldProjector_geo3
+    4300100: shield_geo5
+    4300102: shieldProjector_geo4
+    4300104: shield_geo4
+    4300106: shieldProjector_geo5
+    4300108: shield_geo3
+    4300110: shieldProjector_geo6
+    4300112: shield_geo2
+    4300114: shieldProjector_geo7
+    4300116: shield_geo1
+    4300118: leftDoor_geo
+    4300120: rightDoor_geo
+    4300122: leftDoor_geo
+    4300124: rightDoor_geo
+    4300126: leftDoor_geo
+    4300128: rightDoor_geo
+    4300130: leftDoor_geo
+    4300132: rightDoor_geo
+    4300134: leftDoor_geo
+    4300136: rightDoor_geo
+    4300138: leftDoor_geo
+    4300140: rightDoor_geo
+    4300142: leftDoor_geo
+    4300144: rightDoor_geo
+    4300146: leftDoor_geo
+    4300148: rightDoor_geo
+    4300150: leftDoor_geo
+    4300152: rightDoor_geo
+    4300154: leftDoor_geo
+    4300156: rightDoor_geo
+    4300158: leftDoor_geo
+    4300160: rightDoor_geo
+    4300162: shieldProjector_geo1
+    4300164: shield_geo7
+    4300166: shieldProjector_geo2
+    4300168: shield_geo6
+    4300170: shieldProjector_geo3
+    4300172: shield_geo5
+    4300174: shieldProjector_geo4
+    4300176: shield_geo4
+    4300178: shieldProjector_geo5
+    4300180: shield_geo3
+    4300182: shieldProjector_geo6
+    4300184: shield_geo2
+    4300186: shieldProjector_geo7
+    4300188: shield_geo1
+    4300190: shieldProjector_geo8
+    4300192: shield_geo2
+    4300194: shieldProjector_geo9
+    4300196: shield_geo1
+    4300198: shieldProjector_geo10
+    4300200: shield_geo4
+    4300202: shieldProjector_geo11
+    4300204: shield_geo5
+    4300206: wallBase_geo
+    7400000: IdleIn
+    7400002: Deploy
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: IdleIn
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 2
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ship_geo
+        weight: 1
+      - path: Walls_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp/leftDoor_geo
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp/rightDoor_geo
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp/leftDoor_geo 1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp/rightDoor_geo 1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp/leftDoor_geo 2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp/rightDoor_geo 2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp/leftDoor_geo 3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp/rightDoor_geo 3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp/leftDoor_geo 4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp/rightDoor_geo 4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp/leftDoor_geo 5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp/rightDoor_geo 5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp/leftDoor_geo 6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp/rightDoor_geo 6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo1/shield_geo7
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo2/shield_geo6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo3/shield_geo5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo4/shield_geo4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo5/shield_geo3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo6/shield_geo2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo7
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo7/shield_geo1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/wallBase_geo
+        weight: 1
+      - path: Walls_grp/RightWall_grp
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1/leftDoor_geo 7
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1/rightDoor_geo 7
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1/leftDoor_geo 8
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1/rightDoor_geo 8
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1/leftDoor_geo 9
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1/rightDoor_geo 9
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1/leftDoor_geo 10
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1/rightDoor_geo 10
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1/leftDoor_geo 11
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1/rightDoor_geo 11
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1/leftDoor_geo 12
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1/rightDoor_geo 12
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1/leftDoor_geo 13
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1/rightDoor_geo 13
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo1
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo1
+          1/shield_geo7 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo2
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo2
+          1/shield_geo6 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo3
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo3
+          1/shield_geo5 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo4
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo4
+          1/shield_geo4 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo5
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo5
+          1/shield_geo3 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo6
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo6
+          1/shield_geo2 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo7
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo7
+          1/shield_geo1 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/wallBase_geo 1
+        weight: 1
+      - path: Walls_grp/TopWall_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2/leftDoor_geo 14
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2/rightDoor_geo 14
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2/leftDoor_geo 15
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2/rightDoor_geo 15
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2/leftDoor_geo 16
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2/rightDoor_geo 16
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2/leftDoor_geo 17
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2/rightDoor_geo 17
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2/leftDoor_geo 18
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2/rightDoor_geo 18
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2/leftDoor_geo 19
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2/rightDoor_geo 19
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2/leftDoor_geo 20
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2/rightDoor_geo 20
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp/leftDoor_geo 21
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp/rightDoor_geo 21
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp/leftDoor_geo 22
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp/rightDoor_geo 22
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp/leftDoor_geo 23
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp/rightDoor_geo 23
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp/leftDoor_geo 24
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp/rightDoor_geo 24
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo1 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo1 2/shield_geo7
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo2 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo2 2/shield_geo6
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo3 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo3 2/shield_geo5
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo4 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo4 2/shield_geo4
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo5 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo5 2/shield_geo3
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo6 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo6 2/shield_geo2
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo7 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo7 2/shield_geo1
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo8
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo8/shield_geo2
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo9
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo9/shield_geo1
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo10
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo10/shield_geo4
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo11
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo11/shield_geo5
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/wallBase_geo 2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Deploy
+      takeName: Take 001
+      firstFrame: 2
+      lastFrame: 31
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: .991967916
+        functionName: ShowShields
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 0beafc75df6218e40b97437327c9a8ad,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask:
+      - path: 
+        weight: 1
+      - path: ship_geo
+        weight: 1
+      - path: Walls_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp/leftDoor_geo
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorA_grp/rightDoor_geo
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp/leftDoor_geo 1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorB_grp/rightDoor_geo 1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp/leftDoor_geo 2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorC_grp/rightDoor_geo 2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp/leftDoor_geo 3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorD_grp/rightDoor_geo 3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp/leftDoor_geo 4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorE_grp/rightDoor_geo 4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp/leftDoor_geo 5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorF_grp/rightDoor_geo 5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp/leftDoor_geo 6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/doors_grp/doorG_grp/rightDoor_geo 6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo1/shield_geo7
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo2/shield_geo6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo3/shield_geo5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo4/shield_geo4
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo5
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo5/shield_geo3
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo6
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo6/shield_geo2
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo7
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/shieldProjectors_grp/shieldProjector_geo7/shield_geo1
+        weight: 1
+      - path: Walls_grp/LeftWall_grp/wallBase_geo
+        weight: 1
+      - path: Walls_grp/RightWall_grp
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1/leftDoor_geo 7
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorA_grp 1/rightDoor_geo 7
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1/leftDoor_geo 8
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorB_grp 1/rightDoor_geo 8
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1/leftDoor_geo 9
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorC_grp 1/rightDoor_geo 9
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1/leftDoor_geo 10
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorD_grp 1/rightDoor_geo 10
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1/leftDoor_geo 11
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorE_grp 1/rightDoor_geo 11
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1/leftDoor_geo 12
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorF_grp 1/rightDoor_geo 12
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1/leftDoor_geo 13
+        weight: 1
+      - path: Walls_grp/RightWall_grp/doors_grp 1/doorG_grp 1/rightDoor_geo 13
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo1
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo1
+          1/shield_geo7 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo2
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo2
+          1/shield_geo6 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo3
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo3
+          1/shield_geo5 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo4
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo4
+          1/shield_geo4 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo5
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo5
+          1/shield_geo3 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo6
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo6
+          1/shield_geo2 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo7
+          1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/shieldProjectors_grp 1/shieldProjector_geo7
+          1/shield_geo1 1
+        weight: 1
+      - path: Walls_grp/RightWall_grp/wallBase_geo 1
+        weight: 1
+      - path: Walls_grp/TopWall_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2/leftDoor_geo 14
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorA_grp 2/rightDoor_geo 14
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2/leftDoor_geo 15
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorB_grp 2/rightDoor_geo 15
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2/leftDoor_geo 16
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorC_grp 2/rightDoor_geo 16
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2/leftDoor_geo 17
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorD_grp 2/rightDoor_geo 17
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2/leftDoor_geo 18
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorE_grp 2/rightDoor_geo 18
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2/leftDoor_geo 19
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorF_grp 2/rightDoor_geo 19
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2/leftDoor_geo 20
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorG_grp 2/rightDoor_geo 20
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp/leftDoor_geo 21
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorH_grp/rightDoor_geo 21
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp/leftDoor_geo 22
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorJ_grp/rightDoor_geo 22
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp/leftDoor_geo 23
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorK_grp/rightDoor_geo 23
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp/leftDoor_geo 24
+        weight: 1
+      - path: Walls_grp/TopWall_grp/doors_grp 2/doorL_grp/rightDoor_geo 24
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo1 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo1 2/shield_geo7
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo2 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo2 2/shield_geo6
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo3 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo3 2/shield_geo5
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo4 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo4 2/shield_geo4
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo5 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo5 2/shield_geo3
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo6 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo6 2/shield_geo2
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo7 2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo7 2/shield_geo1
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo8
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo8/shield_geo2
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo9
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo9/shield_geo1
+          3
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo10
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo10/shield_geo4
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo11
+        weight: 1
+      - path: Walls_grp/TopWall_grp/shieldProjectors_grp 2/shieldProjector_geo11/shield_geo5
+          2
+        weight: 1
+      - path: Walls_grp/TopWall_grp/wallBase_geo 2
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

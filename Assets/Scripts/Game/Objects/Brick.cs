@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*----------------------------/
+  Brick Class - Blockade
+  Controlling class for Brick
+  object and its functions
+  Writen by Joe Arthur
+  Latest Revision - 24 Mar, 2016
+/-----------------------------*/
+
+using UnityEngine;
 using System.Collections;
 using System;
 #if UNITY_EDITOR
@@ -8,35 +16,57 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class Brick : MonoBehaviour {
 
-	public AudioClip crack;
+	#region Variables
+
+	[System.Serializable] private class MaterialArrays{
+		public Color[] brickGlowColors = new Color[6];
+		public float[] glowIntensities = new float[6];
+	}
+
+	[System.Serializable] private class PowerupDetails{
+		public bool hasPowerup = false;
+		public bool randomPowerup = false;
+		public Powerup.PowerupType powerupType;
+		public GameObject powerupPrefab = null;
+		public GameObject explosionPrefab = null;
+	}
+
 	public enum BrickType {ONE, TWO, THREE, FOUR, FIVE, UNBREAKABLE};
 	
-	[SerializeField] private Sprite[] brickSprites = new Sprite[6];
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
+	[SerializeField] private MaterialArrays materialArrays = null;
+	[SerializeField] private PowerupDetails powerupDetails = null;
 	[SerializeField] private BrickType brickType = BrickType.ONE;
-	[SerializeField] private bool hasPowerup = false;
-	[SerializeField] private bool randomPowerup = true;
-	[SerializeField] private Powerup.PowerupType powerupType;
-	[SerializeField] private GameObject powerupPrefab = null;
-	[SerializeField] private ParticleSystem explosion = null;
-	
-	private Powerup powerup;
-	private Sprite curSprite = null;
+
+	private Powerup powerup = null;
+	private Color curColor = Color.white;
+	private float curIntensity = 1f;
 	private AudioClip curAudioClip = null;
 	private int hitPoints = 0;
 	private int pointValue = 0;
-	private float timesHit;
-	private GameMaster gameMaster;
+	private float timesHit = 0;
 	private bool isBreakable = true;
 	private Ball collidingBall = null;
+	private Material bodyMaterial = null;
+	
+	#endregion
+	#region MonoDevelop Functions
 	
 	void Start() {
-		gameMaster = GameObject.FindObjectOfType<GameMaster>();
+		#if UNITY_EDITOR
+		if(!EditorApplication.isPlaying)
+			bodyMaterial = GetComponent<MeshRenderer>().sharedMaterials[1];
+		else
+			bodyMaterial = GetComponent<MeshRenderer>().materials[1];
+		#else
+		bodyMaterial = GetComponent<MeshRenderer>().materials[1];
+		#endif
+		
 		timesHit = 0f;
 		SetBrick();
 		
-		if(isBreakable && gameMaster)
-			gameMaster.breakableCount++;
+		if(isBreakable)
+			GameMaster.instance.gameValues.breakableCount++;
 	}
 	
 	void Update(){
@@ -44,46 +74,53 @@ public class Brick : MonoBehaviour {
 		if(!EditorApplication.isPlaying)
 			SetBrick();
 		#endif
-		
-		if(!gameMaster)
-			gameMaster = GameObject.FindObjectOfType<GameMaster>();
 	}
-
+	
+	#endregion
+	#region Brick Utility Functions
+	
+	//Set initial values for Brick Sprite, Audio, and HP
 	void SetBrick()
 	{
 		switch (brickType) {
 			case BrickType.ONE:
 				gameObject.tag = "Breakable";
-				curSprite = brickSprites[0];
+				curColor = materialArrays.brickGlowColors[0];
+				curIntensity = materialArrays.glowIntensities[0];
 				curAudioClip = audioClips[0];
 				hitPoints = 1;
 				break;
 			case BrickType.TWO:
 				gameObject.tag = "Breakable";
-				curSprite = brickSprites[1];
+				curColor = materialArrays.brickGlowColors[1];
+				curIntensity = materialArrays.glowIntensities[1];
 				curAudioClip = audioClips[1];
 				hitPoints = 2;
 				break;
 			case BrickType.THREE:
 				gameObject.tag = "Breakable";
-				curSprite = brickSprites[2];
+				curColor = materialArrays.brickGlowColors[2];
+				curIntensity = materialArrays.glowIntensities[2];
 				curAudioClip = audioClips[2];
 				hitPoints = 3;
 				break;
 			case BrickType.FOUR:
 				gameObject.tag = "Breakable";
-				curSprite = brickSprites[3];
+				curColor = materialArrays.brickGlowColors[3];
+				curIntensity = materialArrays.glowIntensities[3];
 				curAudioClip = audioClips[3];
 				hitPoints = 4;
 				break;
 			case BrickType.FIVE:
 				gameObject.tag = "Breakable";
-				curSprite = brickSprites[4];
+				curColor = materialArrays.brickGlowColors[4];
+				curIntensity = materialArrays.glowIntensities[4];
 				curAudioClip = audioClips[4];
 				hitPoints = 5;
 				break;
 			case BrickType.UNBREAKABLE:
-				curSprite = brickSprites[5];
+				curColor = materialArrays.brickGlowColors[5];
+				curIntensity = materialArrays.glowIntensities[5];
 				hitPoints = -1;
 				isBreakable = false;
 				break;
@@ -93,23 +130,27 @@ public class Brick : MonoBehaviour {
 		}
 		
 		pointValue = 50*hitPoints;
-		GetComponent<SpriteRenderer>().sprite = curSprite;
+		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
 		
-		if(randomPowerup)
-			powerupType = (Powerup.PowerupType)UnityEngine.Random.Range(0,System.Enum.GetNames(typeof(Powerup.PowerupType)).Length);
+		if(powerupDetails.randomPowerup)
+			powerupDetails.powerupType = (Powerup.PowerupType)UnityEngine.Random.Range(0,System.Enum.GetNames(typeof(Powerup.PowerupType)).Length);
 	}
 	
-	void ChangeBrickSprite(){
-		int spriteIndex = hitPoints - ((int)timesHit+1);
+	//Change Glow Color when hit
+	void ChangeBrickColor(){
+		int colorIndex = hitPoints - ((int)timesHit+1);
 		
-		if(spriteIndex < 0)
-			spriteIndex = 0;
+		if(colorIndex < 0)
+			colorIndex = 0;
 			
-		GetComponent<SpriteRenderer>().sprite = brickSprites[spriteIndex];
-		curAudioClip = audioClips[spriteIndex];
+		curColor = materialArrays.brickGlowColors[colorIndex];
+		curIntensity = materialArrays.glowIntensities[colorIndex];
+			
+		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
+		curAudioClip = audioClips[colorIndex];
 	}
 	
-	void OnCollisionEnter2D(Collision2D collision){
+	void OnCollisionEnter(Collision collision){
 		if(isBreakable){
 			collidingBall = collision.collider.GetComponent<Ball>();
 			HandleHits();
@@ -120,8 +161,10 @@ public class Brick : MonoBehaviour {
 	void HandleHits(){
 		AudioSource.PlayClipAtPoint(curAudioClip,transform.position,PrefsManager.GetMasterSFXVolume());
 		if(collidingBall){
-			if(collidingBall.isExplosive){
-				Instantiate(explosion,transform.position,Quaternion.identity);
+			if(collidingBall.ballState == Ball.BallState.Explosive){
+				Vector3 explosionPos = transform.position;
+				explosionPos.z -= 2f;
+				Instantiate(powerupDetails.explosionPrefab,explosionPos,Quaternion.identity);
 				collidingBall.BallExploded();
 				
 				float explosionDistanceX = 1f;
@@ -136,9 +179,9 @@ public class Brick : MonoBehaviour {
 				
 				timesHit++;
 			} else{
-				if(collidingBall.isIron)
+				if(collidingBall.ballState == Ball.BallState.Iron)
 					timesHit += 2f;
-				else if(collidingBall.isFeather)
+				else if(collidingBall.ballState == Ball.BallState.Feather)
 					timesHit += 0.5f;
 				else
 					timesHit++;
@@ -148,25 +191,56 @@ public class Brick : MonoBehaviour {
 		}
 		
 		if(timesHit >= hitPoints && hitPoints > 0){
-			if(hasPowerup)
+			if(powerupDetails.hasPowerup)
 				DropPowerup();
 				
-			gameMaster.BrickDestroyed(pointValue);
+			GameMaster.instance.BrickDestroyed(pointValue);
 			Destroy(gameObject);
 		} else {
-			ChangeBrickSprite();
+			ChangeBrickColor();
+		}
+	}
+
+	//Sets Powerup passed in argument
+	public void SetPowerup(Powerup.PowerupType type){
+		powerupDetails.hasPowerup = true;
+		powerupDetails.randomPowerup = false;
+		powerupDetails.powerupType = type;
+	}
+
+	//Sets Random Powerup with some random chance
+	public void SetPowerup(){
+		int chanceForPowerup = UnityEngine.Random.Range(0,1000);
+
+		if(chanceForPowerup > 750){
+			powerupDetails.hasPowerup = true;
+			powerupDetails.randomPowerup = true;
+		}
+	}
+
+	public void ShowPowerup(bool show){
+		if(powerupDetails.hasPowerup){
+			if(show){
+				GetComponent<MeshRenderer>().materials[0].SetColor("_Color", Color.red);
+				bodyMaterial.SetColor("_EmissionColor", Color.red);
+			} else{
+				GetComponent<MeshRenderer>().materials[0].SetColor("_Color", Color.white);
+				bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
+			}
 		}
 	}
 	
 	void DropPowerup(){
-		powerup = powerupPrefab.GetComponent<Powerup>();
-		powerup.powerupType = powerupType;
+		powerup = powerupDetails.powerupPrefab.GetComponent<Powerup>();
+		powerup.powerupType = powerupDetails.powerupType;
 		
-		Instantiate(powerupPrefab,transform.position,Quaternion.identity);
+		Instantiate(powerupDetails.powerupPrefab,transform.position,Quaternion.identity);
 	}
 	
 	public void Explode(){
 		if(isBreakable)
 			HandleHits();
 	}
+	
+	#endregion
 }

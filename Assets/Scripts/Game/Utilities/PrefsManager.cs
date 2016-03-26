@@ -3,13 +3,15 @@
   Manages all Player Prefs calls
   and applies settings
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 4 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
 using System.Collections;
 
 public class PrefsManager{
+	
+	#region Pref Keys
 	
 	const string MASTER_VOLUME_KEY = "master_volume";
 	const string MASTER_SFX_KEY = "master_sfx_volume";
@@ -29,6 +31,9 @@ public class PrefsManager{
 	const string HIGH_SCORE_4 = "high_score_4";
 	const string HIGH_SCORE_NAME_5 = "high_score_name_5";
 	const string HIGH_SCORE_5 = "high_score_5";
+	
+	#endregion
+	#region Volume Functions
 	
 	public static void SetMasterMusicVolume(float volume){
 		if(volume >= 0f && volume <= 1f){
@@ -53,6 +58,9 @@ public class PrefsManager{
 	public static float GetMasterSFXVolume(){
 		return PlayerPrefs.GetFloat(MASTER_SFX_KEY,1f);
 	}
+	
+	#endregion
+	#region Level Functions
 	
 	public static void SetLatestCheckpoint(int levelNum){
 		PlayerPrefs.SetInt(LATEST_CHECKPOINT,levelNum);
@@ -79,8 +87,11 @@ public class PrefsManager{
 	}
 	
 	public static int GetLevelNumber(){
-		return Application.loadedLevel-1;
+		return LevelManager.GetLevelNum()-1;
 	}
+	
+	#endregion
+	#region Other Pref Functions
 	
 	public static Color GetBallColor(){
 		float red = PlayerPrefs.GetFloat(BALL_COLOR_RED,1f);
@@ -95,6 +106,9 @@ public class PrefsManager{
 		PlayerPrefs.SetFloat(BALL_COLOR_GREEN,green);
 		PlayerPrefs.SetFloat(BALL_COLOR_BLUE,blue);
 	}
+	
+	#endregion
+	#region High Score Functions
 	
 	public static int GetHighScore(int rank){
 		int highScore = 0;
@@ -211,4 +225,6 @@ public class PrefsManager{
 				break;
 		}
 	}
+	
+	#endregion
 }

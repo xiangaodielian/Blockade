@@ -10,88 +10,85 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AudioSource))]
 public class OptionsController : MonoBehaviour {
 	
-	public Slider musicVolumeSlider;
-	public Slider sfxVolumeSlider;
-	public Slider ballColorRedSlider;
-	public Slider ballColorGreenSlider;
-	public Slider ballColorBlueSlider;
-	public Image ballImage;
+	#region Variables
 	
-	private AudioSource sfxTestPlayer;
+	//Singleton Instance of OptionsController
+	public static OptionsController instance {get; private set;}
+	
+	private float musicVolume;
+	private float sfxVolume;
 	private Color ballColor;
 	private float sfxVolumeOld;
 	
+	#endregion
+	#region MonoDevelop Functions
+	
+	void Awake(){
+		if(instance != null && instance != this)
+			Destroy(gameObject);
+		instance = this;
+	}
+
 	void Start(){
-		musicVolumeSlider.value = PrefsManager.GetMasterMusicVolume();
-		
-		sfxTestPlayer = GetComponent<AudioSource>();
-		sfxVolumeSlider.value = PrefsManager.GetMasterSFXVolume();
-		sfxTestPlayer.volume = sfxVolumeSlider.value;
-		sfxVolumeOld = sfxTestPlayer.volume;
-		
-		if(ballColorRedSlider != null){
-			ballColor = PrefsManager.GetBallColor();
-			ballColorRedSlider.value = ballColor.r;
-			ballColorGreenSlider.value = ballColor.g;
-			ballColorBlueSlider.value = ballColor.b;
-			ballImage.color = ballColor;
-		}
+		musicVolume = PrefsManager.GetMasterMusicVolume();
+		sfxVolume = PrefsManager.GetMasterSFXVolume();
+		ballColor = PrefsManager.GetBallColor();
 	}
 	
-	void Update(){
-		if(sfxVolumeOld != sfxTestPlayer.volume && Input.GetMouseButtonUp(0)){
-			sfxTestPlayer.Play();
-			sfxVolumeOld = sfxTestPlayer.volume;
-		}
+	#endregion
+	#region Set Option Functions and Checks
+	
+	public void SetSFXVolume(float value){
+		sfxVolume = value;
 	}
 	
-	public void SetSliders(){
-		sfxVolumeSlider.value = PrefsManager.GetMasterSFXVolume();
-		musicVolumeSlider.value = PrefsManager.GetMasterMusicVolume();
-	}
-	
-	public void SetSFXVolume(){
-		if(sfxTestPlayer)
-			sfxTestPlayer.volume = sfxVolumeSlider.value;
-	}
-	
-	public void SetMusicVolume(){
+	public void SetMusicVolume(float value){
+		musicVolume = value;
 		if(MusicPlayer.instance)
-			MusicPlayer.instance.SetVolume(musicVolumeSlider.value);
+			MusicPlayer.instance.SetVolume(value);
 	}
 	
 	// Sets Color of Ball (Red = 0, Green = 1, Blue = 2)
-	public void SetBallColor(int color){
+	public void SetBallColor(int color, float value){
 		if(color == 0)
-			ballColor.r = ballColorRedSlider.value;
+			ballColor.r = value;
 		if(color == 1)
-			ballColor.g = ballColorGreenSlider.value;
+			ballColor.g = value;
 		if(color == 2)
-			ballColor.b = ballColorBlueSlider.value;
-			
-		ballImage.color = ballColor;
+			ballColor.b = value;
+	}
+
+	public bool SliderCheck(float musCheck, float sfxCheck){
+
+		if(musCheck == musicVolume && sfxCheck == sfxVolume)
+			return true;
+
+		return false;
 	}
 	
-	public void SaveAndExit(){
-		PrefsManager.SetMasterMusicVolume(musicVolumeSlider.value);
-		PrefsManager.SetMasterSFXVolume(sfxVolumeSlider.value);
-		if(ballColorRedSlider != null)
-			PrefsManager.SetBallColor(ballColorRedSlider.value,ballColorGreenSlider.value,ballColorBlueSlider.value);
+	#endregion
+	#region Save and Reset Functions
+	
+	public void SaveOptions(){
+		PrefsManager.SetMasterMusicVolume(musicVolume);
+		PrefsManager.SetMasterSFXVolume(sfxVolume);
+		PrefsManager.SetBallColor(ballColor.r,ballColor.g,ballColor.b);
 	}
 	
 	public void ResetDefaults(){
-		musicVolumeSlider.value = musicVolumeSlider.maxValue;
-		PrefsManager.SetMasterMusicVolume(musicVolumeSlider.value);
+		musicVolume = 1f;
+		PrefsManager.SetMasterMusicVolume(musicVolume);
 		
-		sfxVolumeSlider.value = sfxVolumeSlider.maxValue;
-		PrefsManager.SetMasterSFXVolume(sfxVolumeSlider.value);
+		sfxVolume = 1f;
+		PrefsManager.SetMasterSFXVolume(sfxVolume);
 		
-		ballColorRedSlider.value = ballColorRedSlider.maxValue;
-		ballColorGreenSlider.value = ballColorGreenSlider.minValue;
-		ballColorBlueSlider.value = ballColorBlueSlider.minValue;
-		PrefsManager.SetBallColor(ballColorRedSlider.value,ballColorGreenSlider.value,ballColorBlueSlider.value);
+		ballColor.r = 1f;
+		ballColor.g = 0f;
+		ballColor.b = 0f;
+		PrefsManager.SetBallColor(ballColor.r,ballColor.g,ballColor.b);
 	}
+	
+	#endregion
 }

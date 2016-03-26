@@ -3,7 +3,7 @@
   Manages MusicPlayer object
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 22 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -12,22 +12,29 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour {
 	
+	#region Variables
+	
 	//Singleton instance for MusicPlayer
 	public static MusicPlayer instance {get; private set;}
 	
-	public bool isPlaying = false;
+	[HideInInspector] public bool isPlaying = false;
 	
 	private AudioSource audioSource;
+	
+	#endregion
+	#region MonoDevelop Functions
 	
 	void Awake(){
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
-		GameObject.DontDestroyOnLoad(gameObject);
 		
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterMusicVolume();
 	}
+	
+	#endregion
+	#region Music Utlity Functions
 	
 	public void StartMusic(){
 		audioSource.Play();
@@ -37,4 +44,6 @@ public class MusicPlayer : MonoBehaviour {
 	public void SetVolume(float value){
 		audioSource.volume = value;
 	}
+	
+	#endregion
 }

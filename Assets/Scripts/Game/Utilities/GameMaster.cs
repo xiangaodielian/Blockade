@@ -1,160 +1,219 @@
-﻿/*----------------------------/
+/*----------------------------/
   GameMaster Class - Blockade
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 24 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
+[RequireComponent(typeof(InputManager))]
+[RequireComponent(typeof(OptionsController))]
 public class GameMaster : MonoBehaviour {
-
+	
+	#region variables
+	
 	//Singleton Instance of GameMaster
 	public static GameMaster instance {get; private set;}
-	
-	public int breakableCount = 0;			//Number of Breakable Bricks in level
-	public int playerLives = 3;				//Remaining Player Lives
-	public int totalScore = 0;				//Accumulated Score
-	
-	private GameObject playSpace;			//Ref to Playable area (Walls, Background, etc)
+
+	[System.Serializable] private class Prefabs{
+		public GameObject splashPrefab = null;
+		public GameObject musicPlayerPrefab = null;
+		public GameObject cameraPrefab = null;
+		public GameObject playSpacePrefab = null;
+		public GameObject paddlePrefab = null;
+		public GameObject guiManagerPrefab = null;
+		public GameObject starsPSPrefab = null;
+	}
+
+	[System.Serializable] public class GameValues{
+		public int breakableCount = 0;		//Number of Breakable Bricks in level
+		public int playerLives = 3;			//Remaining Player Lives
+		public int totalScore = 0;			//Accumulated Score
+	}
+
+	public GameValues gameValues = null;
+	[HideInInspector] public bool allowStart = false;
+	[HideInInspector] public bool inGame = false;				//FALSE = in Menu Screens TRUE = in Game
+	[HideInInspector] public bool gamePaused = false;
+	[HideInInspector] public AsyncOperation async = null;
+
+	[SerializeField] private Prefabs prefabs = null;
+
+	private GameObject stars = null;				//Ref to Stars (Background) Particle System
 	private string curLevel;
-	private Paddle paddle = null;
-	private bool inGame = false;			//FALSE - in Menu Screens TRUE - in Game
+	private int lifeGrantedAt = 0;
+	
+	#endregion
+	#region MonoDevelop Functions
 	
 	void Awake(){
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
 		DontDestroyOnLoad(gameObject);
+
+		InstantiatePrefabs();
 	}
 	
 	void Start(){
-		playSpace = GameObject.FindGameObjectWithTag("PlaySpace");
-		playSpace.SetActive(false);
 		curLevel = LevelManager.GetCurrentLevel();
-	}
-	
-	void Update(){
-		if(Input.GetKeyDown(KeyCode.Escape) && inGame){
-			UIManager.instance.ToggleInGameMenu();
-		}
-		
-		// New Level Loaded
-		if(curLevel != LevelManager.GetCurrentLevel()){
-			curLevel = LevelManager.GetCurrentLevel();
-			PerformChecks();
-		}
-	}
-	
-	//Checks for duplicate Camera, PlaySpace, and Current Level
-	private void PerformChecks(){
-		CameraCheck();
-		PlaySpaceCheck();
 		LevelCheck(curLevel);
 	}
 	
-	// Checks for duplicate Cameras. Destroys all non-children.
-	private void CameraCheck(){
-		Camera[] otherCameras = FindObjectsOfType<Camera>();
-		if(otherCameras.Length > 1){
-			foreach(Camera cams in otherCameras){
-				if(cams.transform.parent != this.transform)
-					Destroy(cams.gameObject);
-			}
+	void Update(){		
+		// New Level Loaded
+		if(curLevel != LevelManager.GetCurrentLevel()){
+			curLevel = LevelManager.GetCurrentLevel();
+			LevelCheck(curLevel);
 		}
-	}
 
-	// Check for multiple PlaySpaces, Destroy all non-children.
-	private void PlaySpaceCheck(){
-		GameObject[] playSpaces = GameObject.FindGameObjectsWithTag("PlaySpace");
-		if(playSpaces.Length > 1){
-			foreach(GameObject obj in playSpaces){
-				if(obj.transform.parent != this.transform)
-					Destroy(obj);
-			}
+		if(gameValues.totalScore-lifeGrantedAt > 5000){
+			if(gameValues.playerLives < 99)
+				gameValues.playerLives++;
+
+			lifeGrantedAt = gameValues.totalScore;
 		}
 	}
 	
+	#endregion
+	#region Utility Functions
+
+	//Instantiates Prefabs for MusicPlayer, Camera, and UIManager, and StarsPS
+	//Makes them children of GameMaster to keep them loaded between scenes
+	void InstantiatePrefabs(){
+		if(!MusicPlayer.instance){
+			Instantiate(prefabs.musicPlayerPrefab);
+			MusicPlayer.instance.transform.SetParent(this.transform);
+		} else{
+			if(MusicPlayer.instance.transform.parent != this.transform)
+				MusicPlayer.instance.transform.SetParent(this.transform);
+		}
+
+		if(!CameraManager.instance){
+			Instantiate(prefabs.cameraPrefab);
+			CameraManager.instance.transform.SetParent(this.transform);
+		} else{
+			if(CameraManager.instance.transform.parent != this.transform)
+				CameraManager.instance.transform.SetParent(this.transform);
+		}
+
+		if(!UIManager.instance){
+			Instantiate(prefabs.guiManagerPrefab);
+			UIManager.instance.transform.SetParent(this.transform);
+		} else{
+			if(UIManager.instance.transform.parent != this.transform)
+				UIManager.instance.transform.SetParent(this.transform);
+		}
+
+		stars = Instantiate(prefabs.starsPSPrefab);
+		stars.transform.SetParent(this.transform);
+		stars.SetActive(false);
+	}
+
 	// Check the Level and load appropriate UI
 	private void LevelCheck(string level){
-		Text scoreText;
 		switch(level){
 			case "Splash":
+				Instantiate(prefabs.splashPrefab);
 				UIManager.instance.CloseAll();
-				playSpace.SetActive(false);
 				inGame = false;
 				break;
 			
 			case "MainMenu":
 				UIManager.instance.OpenMainMenu();
-				playSpace.SetActive(false);
+				stars.SetActive(true);
+				if(PlaySpace.instance)
+					Destroy(PlaySpace.instance.gameObject);
 				if(!MusicPlayer.instance.isPlaying)
 					MusicPlayer.instance.StartMusic();
+				if(allowStart)
+					UIManager.instance.EndGame();
 				inGame = false;
-				totalScore = 0;
-				playerLives = 3;
+				gameValues.totalScore = 0;
+				gameValues.playerLives = 3;
 				break;
 				
 			case "Win":
+				if(PlaySpace.instance)
+					Destroy(PlaySpace.instance.gameObject);
+				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
-				playSpace.SetActive(false);
 				inGame = false;
-				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
-				scoreText.text = "YOUR SCORE: " +totalScore;
 				break;
 				
 			case "Lose":
+				gameValues.playerLives = 3;
+				if(PlaySpace.instance)
+					Destroy(PlaySpace.instance.gameObject);
+				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
-				playSpace.SetActive(false);
 				inGame = false;
-				scoreText = (Text)GameObject.Find("Score").GetComponent<Text>();
-				scoreText.text = "YOUR SCORE: " +totalScore;
 				break;
 				
 			//In Game
 			default:
 				UIManager.instance.OpenInGameUI();
-				playSpace.SetActive(true);
+				if(!PlaySpace.instance){
+					UIManager.instance.ToggleLaunchPrompt(false);
+					Instantiate(prefabs.playSpacePrefab);
+					PlaySpace.instance.transform.SetParent(this.transform);
+					PlaySpace.instance.StartTimer();
+				} else
+					UIManager.instance.BeginGame();
+				if(!Paddle.instance)
+					Instantiate(prefabs.paddlePrefab);
 				inGame = true;
-				UIManager.instance.ToggleLaunchPrompt(true);
-				if(paddle == null)
-					paddle = (Paddle)GameObject.FindGameObjectWithTag("Player").GetComponent<Paddle>();
 				PrefsManager.SetCurrentLevel(PrefsManager.GetLevelNumber());
 				if(PrefsManager.GetLevelNumber() > PrefsManager.GetLatestCheckpoint()){
 					PrefsManager.SetLatestCheckpoint(PrefsManager.GetLevelNumber());
 					PrefsManager.SetLevelUnlocked(PrefsManager.GetLevelNumber());
 				}
+				if(PrefsManager.GetLevelNumber() > 10)
+					PopulatePowerups();
 				break;
 		}
 	}
-	
-	public void GameStart(){
-		UIManager.instance.ToggleLaunchPrompt(false);
-	}
-	
+
+	#endregion
+	#region Gameplay Functions
+
 	//Pause Playback (Menu Open)
 	public void GamePause(){
 		Time.timeScale = Mathf.Abs(Time.timeScale - 1f);
-		paddle.gamePaused = !paddle.gamePaused;
+		gamePaused = !gamePaused;
 	}
 	
 	//Add value of Destroyed Brick to Score and decrement breakableCount
 	//If breakableCount hits 0, end Level
 	public void BrickDestroyed(int pointValue){
-		totalScore += pointValue;
-		breakableCount--;
-		if(breakableCount <= 0){
+		gameValues.totalScore += pointValue;
+		gameValues.breakableCount--;
+		if(gameValues.breakableCount <= 0){
 			GamePause();
 			UIManager.instance.EndLevelMenu();
 		}
 	}
+
+	void PopulatePowerups(){
+		List<Brick> bricks = new List<Brick>();
+		bricks.AddRange(FindObjectsOfType<Brick>());
+
+		foreach(Brick brick in bricks){
+			if(brick.tag == "Breakable")
+				brick.SetPowerup();
+		}
+	}
+	
+	#endregion
+	#region Level/Application Management
 	
 	//Reset breakableCount and load Level "level"
 	public void ChangeToLevel(string level){
-		breakableCount = 0;
+		gameValues.breakableCount = 0;
 		if(level == "Next")
 			LevelManager.LoadNextLevel();
 		else{
@@ -168,17 +227,35 @@ public class GameMaster : MonoBehaviour {
 			LevelManager.LoadLevel(level);
 		}
 	}
+
+	public IEnumerator ChangeToLevelAsync(string level){
+		gameValues.breakableCount = 0;
+		if(level == "LatestCheckpoint"){
+			int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
+			if(latestCheckpoint < 10)
+				level = "Level_0"+latestCheckpoint;
+			else
+				level = "Level_"+latestCheckpoint;
+		}
+
+		async = LevelManager.LoadLevelAsync(level);
+		while(!async.isDone){
+			yield return null;
+		}
+
+		async = null;
+	}
 	
 	//Reset Ball after Player Death
 	public void ResetCurrentLevel(){
-		paddle.ResetBall();
+		Paddle.instance.ResetBall();
 		UIManager.instance.ToggleLaunchPrompt(true);
 	}
 	
 	//Reset Current Level after Player loses all Lives
 	public void RestartGame(){
-		totalScore = 0;
-		playerLives = 3;
+		gameValues.totalScore = 0;
+		gameValues.playerLives = 3;
 		string levelName = "";
 		int currentLevel = PrefsManager.GetCurrentLevel();
 		if(currentLevel < 10)
@@ -193,4 +270,6 @@ public class GameMaster : MonoBehaviour {
 	public void QuitRequest(){
 		LevelManager.QuitApplication();
 	}
+	
+	#endregion
 }

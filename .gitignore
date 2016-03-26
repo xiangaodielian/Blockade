@@ -1,6 +1,8 @@
-*.sln
+Builds/
+Library/
 Temp/
+obj/
+
+*.sln
 *.userprefs
 *.csproj
-!*.exe
-!*.app

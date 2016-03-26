@@ -1,0 +1,365 @@
+fileFormatVersion: 2
+guid: 1af828e600600c44d9b9a59ca4414c82
+timeCreated: 1455994421
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: laser_L_grp
+    100002: laser_R_grp
+    100004: laserBase_L_geo
+    100006: laserBase_R_geo
+    100008: laserDoor_L_grp
+    100010: laserDoor_R_grp
+    100012: laserDoors_grp
+    100014: lasers_grp
+    100016: laserTop_L_geo
+    100018: laserTop_R_geo
+    100020: leftDoor_L_geo
+    100022: leftDoor_R_geo
+    100024: //RootNode
+    100026: paddleBase_geo
+    100028: rightDoor_L_geo
+    100030: rightDoor_R_geo
+    400000: laser_L_grp
+    400002: laser_R_grp
+    400004: laserBase_L_geo
+    400006: laserBase_R_geo
+    400008: laserDoor_L_grp
+    400010: laserDoor_R_grp
+    400012: laserDoors_grp
+    400014: lasers_grp
+    400016: laserTop_L_geo
+    400018: laserTop_R_geo
+    400020: leftDoor_L_geo
+    400022: leftDoor_R_geo
+    400024: //RootNode
+    400026: paddleBase_geo
+    400028: rightDoor_L_geo
+    400030: rightDoor_R_geo
+    2300000: laserBase_L_geo
+    2300002: laserBase_R_geo
+    2300004: laserTop_L_geo
+    2300006: laserTop_R_geo
+    2300008: leftDoor_L_geo
+    2300010: leftDoor_R_geo
+    2300012: paddleBase_geo
+    2300014: rightDoor_L_geo
+    2300016: rightDoor_R_geo
+    3300000: laserBase_L_geo
+    3300002: laserBase_R_geo
+    3300004: laserTop_L_geo
+    3300006: laserTop_R_geo
+    3300008: leftDoor_L_geo
+    3300010: leftDoor_R_geo
+    3300012: paddleBase_geo
+    3300014: rightDoor_L_geo
+    3300016: rightDoor_R_geo
+    4300000: leftDoor_R_geo
+    4300002: rightDoor_R_geo
+    4300004: leftDoor_L_geo
+    4300006: rightDoor_L_geo
+    4300008: paddleBase_geo
+    4300010: laserBase_R_geo
+    4300012: laserTop_R_geo
+    4300014: laserBase_L_geo
+    4300016: laserTop_L_geo
+    7400000: DeployLasers
+    7400002: IdleIn
+    7400004: IdleOut
+    7400006: FireLasers
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: DeployLasers
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: laserDoors_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/leftDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/rightDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/leftDoor_R_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/rightDoor_R_geo
+        weight: 1
+      - path: lasers_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo/laserTop_L_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo/laserTop_R_geo
+        weight: 1
+      - path: paddleBase_geo
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: IdleIn
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: laserDoors_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/leftDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/rightDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/leftDoor_R_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/rightDoor_R_geo
+        weight: 1
+      - path: lasers_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo/laserTop_L_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo/laserTop_R_geo
+        weight: 1
+      - path: paddleBase_geo
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: IdleOut
+      takeName: Take 001
+      firstFrame: 30
+      lastFrame: 31
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: laserDoors_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/leftDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/rightDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/leftDoor_R_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/rightDoor_R_geo
+        weight: 1
+      - path: lasers_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo/laserTop_L_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo/laserTop_R_geo
+        weight: 1
+      - path: paddleBase_geo
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: FireLasers
+      takeName: Take 001
+      firstFrame: 31
+      lastFrame: 41
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: laserDoors_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/leftDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_L_grp/rightDoor_L_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/leftDoor_R_geo
+        weight: 1
+      - path: laserDoors_grp/laserDoor_R_grp/rightDoor_R_geo
+        weight: 1
+      - path: lasers_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo
+        weight: 1
+      - path: lasers_grp/laser_L_grp/laserBase_L_geo/laserTop_L_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo
+        weight: 1
+      - path: lasers_grp/laser_R_grp/laserBase_R_geo/laserTop_R_geo
+        weight: 1
+      - path: paddleBase_geo
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

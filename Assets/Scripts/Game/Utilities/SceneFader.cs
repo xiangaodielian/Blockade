@@ -1,55 +1,76 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/*-----------------------------------/
+  SceneFader Class - Blockade
+  Controls Fade Transitions between
+  scenes
+  Writen by Joe Arthur
+  Latest Revision - 25 Mar, 2016
+/----------------------------------*/
+
+using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneFader : MonoBehaviour {
-
-	public float fadeInSpeed = 0.75f;
-	public float fadeOutSpeed = 2f;
-	public float pauseDuration = 2f;
 	
-	private bool sceneStarting = true;
-	private Image fadeImage;
-	private GameMaster gameMaster;
+	#region Variables
+	
+	[System.Serializable] private class FaderDetails{
+		public float fadeInSpeed = 0.75f;
+		public float fadeOutSpeed = 2f;
+		public float pauseDuration = 2f;
+		public Image fadeImage = null;
+		public bool fadeInInstantly = false;
+	}
+
+	[SerializeField] private FaderDetails faderDetails = null;
+	
+	private bool fadingIn;
 	private float pauseStart = 0f;
 	
+	#endregion
+	#region MonoDevelop Functions
+	
 	void Awake(){
-		fadeImage = GetComponent<Image>();
-		gameMaster = FindObjectOfType<GameMaster>();
+		fadingIn = faderDetails.fadeInInstantly;
+		faderDetails.fadeImage.color = Color.clear;
 	}
-	
+
 	void Update(){
-		if(sceneStarting)
-			StartScene();
+		if(fadingIn)
+			FadeIn();
 		
-		if(Time.timeSinceLevelLoad - pauseStart >= pauseDuration)
-			EndScene();
+		if(Time.timeSinceLevelLoad - pauseStart >= faderDetails.pauseDuration && pauseStart != 0f)
+			FadeOut();
 	}
 	
-	void StartScene(){
+	#endregion
+	#region Fade Utility Functions
+	
+	private void FadeIn(){
 		FadeToWhite();
 		
-		if(fadeImage.color.r >= 0.95f){
-			fadeImage.color = Color.white;
-			sceneStarting = false;
+		if(faderDetails.fadeImage.color.a >= 0.95f){
+			faderDetails.fadeImage.color = Color.white;
+			fadingIn = false;
 			pauseStart = Time.timeSinceLevelLoad;
 		}
 	}
 	
-	public void EndScene(){
-		FadeToBlack();
+	public void FadeOut(){
+		FadeToClear();
 		
-		if(fadeImage.color.r <= 0.05f){
-			fadeImage.color = Color.black;
-			gameMaster.ChangeToLevel("Next");
+		if(faderDetails.fadeImage.color.a <= 0.05f){
+			faderDetails.fadeImage.color = Color.clear;
+			GameMaster.instance.ChangeToLevel("Next");
 		}
 	}
 	
-	void FadeToWhite(){
-		fadeImage.color = Color.Lerp(fadeImage.color, Color.white, fadeInSpeed * Time.deltaTime);
+	private void FadeToWhite(){
+		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, Color.white, faderDetails.fadeInSpeed * Time.deltaTime);
 	}
 	
-	void FadeToBlack(){
-		fadeImage.color = Color.Lerp(fadeImage.color, Color.black, fadeOutSpeed * Time.deltaTime);
+	private void FadeToClear(){
+		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, Color.clear, faderDetails.fadeOutSpeed * Time.deltaTime);
 	}
+	
+	#endregion
 }

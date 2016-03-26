@@ -21,14 +21,14 @@ public class LoseCollider : MonoBehaviour {
 	
 	//Reset Level or Go To Lose Screen if Applicable
 	//Destroy Ball if more than one Ball on screen (Multiball Case)
-	void OnTriggerEnter2D(Collider2D collider){
+	void OnTriggerEnter(Collider collider){
 		Ball[] ballArray = FindObjectsOfType<Ball>();
 		
 		if(collider.tag == "Ball"){
 			audioSouce.Play();
 			if(ballArray.Length == 1){
-				if(GameMaster.instance.playerLives > 0){
-					GameMaster.instance.playerLives--;
+				if(GameMaster.instance.gameValues.playerLives > 0){
+					GameMaster.instance.gameValues.playerLives--;
 					GameMaster.instance.ResetCurrentLevel();
 				} else
 					GameMaster.instance.ChangeToLevel("Lose");

@@ -1,34 +1,39 @@
 ﻿/*------------------------------/
-  LevelManager Class - Blockade
+  LevelManager Class - Universal
   Manages Level loading and
   saving functions
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 25 Mar, 2016
+  Compatible with Unity 5.3.3
 /-----------------------------*/
 
 using UnityEngine;
-using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LevelManager {
 	
 	public static void LoadLevel(string name){
-		Application.LoadLevel(name);
+		SceneManager.LoadScene(name);
+	}
+
+	public static AsyncOperation LoadLevelAsync(string name){
+		return SceneManager.LoadSceneAsync(name);
 	}
 	
 	public static void LoadNextLevel(){
-		Application.LoadLevel(Application.loadedLevel+1);
+		SceneManager.LoadScene(GetLevelNum()+1);
 	}
 	
 	public static void ReloadLevel(){
-		Application.LoadLevel(GetCurrentLevel());
+		SceneManager.LoadScene(GetCurrentLevel());
 	}
 	
 	public static string GetCurrentLevel(){
-		return Application.loadedLevelName;
+		return SceneManager.GetActiveScene().name;
 	}
 	
 	public static int GetLevelNum(){
-		return Application.loadedLevel;
+		return SceneManager.GetActiveScene().buildIndex;
 	}
 	
 	public static void QuitApplication(){

@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: 7e8b8e2055aa3d548948bb0c6850f5c4
+timeCreated: 1456432426
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: expand_geo
+    100002: explosiveBall_geo
+    100004: featherBall_geo
+    100006: interiors_grp
+    100008: ironBall_geo
+    100010: laser_geo
+    100012: mirror_geo
+    100014: multiball_geo
+    100016: //RootNode
+    100018: powerupOuter_geo
+    100020: safetyNet_geo
+    100022: shrink_geo
+    100024: slowDown_geo
+    100026: speedUp_geo
+    100028: stickyBall_geo
+    400000: expand_geo
+    400002: explosiveBall_geo
+    400004: featherBall_geo
+    400006: interiors_grp
+    400008: ironBall_geo
+    400010: laser_geo
+    400012: mirror_geo
+    400014: multiball_geo
+    400016: //RootNode
+    400018: powerupOuter_geo
+    400020: safetyNet_geo
+    400022: shrink_geo
+    400024: slowDown_geo
+    400026: speedUp_geo
+    400028: stickyBall_geo
+    2300000: expand_geo
+    2300002: explosiveBall_geo
+    2300004: featherBall_geo
+    2300006: ironBall_geo
+    2300008: laser_geo
+    2300010: mirror_geo
+    2300012: multiball_geo
+    2300014: powerupOuter_geo
+    2300016: safetyNet_geo
+    2300018: shrink_geo
+    2300020: slowDown_geo
+    2300022: speedUp_geo
+    2300024: stickyBall_geo
+    3300000: expand_geo
+    3300002: explosiveBall_geo
+    3300004: featherBall_geo
+    3300006: ironBall_geo
+    3300008: laser_geo
+    3300010: mirror_geo
+    3300012: multiball_geo
+    3300014: powerupOuter_geo
+    3300016: safetyNet_geo
+    3300018: shrink_geo
+    3300020: slowDown_geo
+    3300022: speedUp_geo
+    3300024: stickyBall_geo
+    4300000: powerupOuter_geo
+    4300002: speedUp_geo
+    4300004: slowDown_geo
+    4300006: multiball_geo
+    4300008: stickyBall_geo
+    4300010: laser_geo
+    4300012: mirror_geo
+    4300014: expand_geo
+    4300016: shrink_geo
+    4300018: explosiveBall_geo
+    4300020: ironBall_geo
+    4300022: featherBall_geo
+    4300024: safetyNet_geo
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
