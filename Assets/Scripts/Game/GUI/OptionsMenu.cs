@@ -32,6 +32,7 @@ public class OptionsMenu : MonoBehaviour {
 	[SerializeField] private Buttons buttons = null;
 	[SerializeField] private Sliders sliders = null;
 	[SerializeField] private Images images = null;
+	[Tooltip("Is this an in-game menu?")]
 	[SerializeField] private bool inGameMenu = false;
 
 	void Awake(){

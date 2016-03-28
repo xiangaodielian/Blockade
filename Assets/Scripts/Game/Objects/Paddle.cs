@@ -3,7 +3,7 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 5 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -14,14 +14,18 @@ using System.Collections;
 public class Paddle : MonoBehaviour {
 	
 	#region Variables
-	
+
+	//Singleton instance for Paddle
 	public static Paddle instance {get; private set;}
+
 	[HideInInspector] public bool hasStarted = false;
 	public bool hasLasers = false;
-	public bool mirrored = false;									//FALSE - normal motion TRUE - reversed motion
+	public bool mirroredMovement = false;									//FALSE - normal motion TRUE - reversed motion
 
 	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
+	[Tooltip("Transform for Left Laser parent group.")]
 	[SerializeField] private Transform leftLaserPos = null;			//Position of Left LaserTurret
+	[Tooltip("Transform for Right Laser parent group.")]
 	[SerializeField] private Transform rightLaserPos = null;		//Position of Right LaserTurret
 
 	private Vector3 targetScale = new Vector3();
@@ -55,7 +59,7 @@ public class Paddle : MonoBehaviour {
 
 	//Move Paddle based on inputPos from MousePos or TouchPos
 	public void MovePaddle(Vector3 inputPos){
-		if(mirrored)
+		if(mirroredMovement)
 			inputPos.x = 16f-inputPos.x;
 		
 		Collider collider = GetComponent<Collider>();
@@ -66,7 +70,7 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	public void ResetBall(){
-		mirrored = false;
+		mirroredMovement = false;
 		//Retract Lasers
 		if(hasLasers){
 			animator.SetTrigger("laserStateTrigger");
@@ -95,7 +99,7 @@ public class Paddle : MonoBehaviour {
 				break;
 				
 			case Powerup.PowerupType.Mirror:
-				mirrored = !mirrored;
+				mirroredMovement = !mirroredMovement;
 				break;
 				
 			case Powerup.PowerupType.SpeedUp:

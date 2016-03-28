@@ -16,7 +16,8 @@ using System.Collections;
 public class Shield : MonoBehaviour {
 	
 	#region Variables
-	
+
+	[Tooltip("Angle of Constraint for rotation of Shield when allowed.")]
 	[SerializeField] private float rotateConstraintAngle = 30f;
 	
 	private BoxCollider boxCollider;

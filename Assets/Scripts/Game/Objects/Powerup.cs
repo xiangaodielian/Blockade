@@ -19,7 +19,9 @@ public class Powerup : MonoBehaviour {
 							 		 Multiball, IronBall, StickyBall, FeatherBall, Mirror};
 	public PowerupType powerupType;
 	
+	[Tooltip("Array of Interior meshes.")]
 	[SerializeField] private GameObject[] meshArray = new GameObject[11];
+	[Tooltip("Array of Audio Clips corresponding to Powerup Interiors.")]
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[10];
 	
 	private GameObject curMesh = null;

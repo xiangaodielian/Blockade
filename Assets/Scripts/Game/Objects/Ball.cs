@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 24 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -16,10 +16,14 @@ public class Ball : MonoBehaviour {
 	
 	[HideInInspector] public Rigidbody rigidBody;
 	public enum BallState {Normal, Sticky, Iron, Feather, Explosive};
+	[Tooltip("Current State that the ball is in (i.e. Normal, Iron, Explosive, etc).")]
 	public BallState ballState = BallState.Normal;
 	
+	[Tooltip("Reference to own Prefab to handle Multiball splitting.")]
 	[SerializeField] private GameObject ballPrefab = null;
+	[Tooltip("Array of materials for each Ball State.")]
 	[SerializeField] private Material[] materialArray = new Material[5];
+	[Tooltip("Array of Audio for each Ball State.")]
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
 
 	private Color ballColor;

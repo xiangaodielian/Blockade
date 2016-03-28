@@ -18,7 +18,9 @@ public class PlaySpace : MonoBehaviour {
 	//Singleton instance of Playspace
 	public static PlaySpace instance {get; private set;}
 	
+	[Tooltip("Reference to the Shields childed to the Playspace.")]
 	[SerializeField] private GameObject[] shields = new GameObject[25];				//Array of all Shields (children of Playspace)
+	[Tooltip("The Long Colliders that are active when Shields aren't rotating.")]
 	[SerializeField] private GameObject[] longColliders = new GameObject[3];		//Array of Long Box Colliders
 	
 	private float timer = 0;

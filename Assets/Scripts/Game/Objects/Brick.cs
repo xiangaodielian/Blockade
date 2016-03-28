@@ -36,6 +36,7 @@ public class Brick : MonoBehaviour {
 	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
 	[SerializeField] private MaterialArrays materialArrays = null;
 	[SerializeField] private PowerupDetails powerupDetails = null;
+	[Tooltip("Number of hits it takes to destroy the Brick.")]
 	[SerializeField] private BrickType brickType = BrickType.ONE;
 
 	private Powerup powerup = null;

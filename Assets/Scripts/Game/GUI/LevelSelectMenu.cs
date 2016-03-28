@@ -13,15 +13,19 @@ public class LevelSelectMenu : MonoBehaviour {
 
 	#region Variables
 
+	[System.Serializable] private class Buttons{
+		public Button nextButton = null;
+		public Button previousButton = null;
+		public Button resumeButton = null;
+		public Button backButton = null;
+		public Button[] levelButtons = new Button[20];
+	}
+
 	[SerializeField] private GameObject levelLoadScreen = null;
 	[SerializeField] private GameObject levels01To10 = null;
 	[SerializeField] private GameObject levels11To20 = null;
-	[SerializeField] private Button[] levelButtons = new Button[20];
+	[SerializeField] private Buttons buttons = null;
 	[SerializeField] private Sprite[] levelImages = new Sprite[21];
-	[SerializeField] private Button nextButton = null;
-	[SerializeField] private Button previousButton = null;
-	[SerializeField] private Button resumeButton = null;
-	[SerializeField] private Button backButton = null;
 
 	private int highestUnlocked = 0;
 	private Vector3 screenOneNewPos;
@@ -37,8 +41,8 @@ public class LevelSelectMenu : MonoBehaviour {
 		levelLoadScreen.transform.localScale = Vector3.one;
 		levelLoadScreen.SetActive(false);
 		highestUnlocked = PrefsManager.GetLevelUnlocked();
-		nextButton.GetComponentInChildren<Text>().text = "11-20";
-		previousButton.gameObject.SetActive(false);
+		buttons.nextButton.GetComponentInChildren<Text>().text = "11-20";
+		buttons.previousButton.gameObject.SetActive(false);
 
 		SetLevelImages();
 		SetOnClick();
@@ -69,13 +73,13 @@ public class LevelSelectMenu : MonoBehaviour {
 	
 	//Set Level Images to LevelImage if unlocked or ? if locked
 	private void SetLevelImages(){
-		for(int i=0;i<levelButtons.Length;i++){
+		for(int i=0;i<buttons.levelButtons.Length;i++){
 			if(i<highestUnlocked){
-				levelButtons[i].GetComponent<Image>().sprite = levelImages[i];
-				levelButtons[i].enabled = true;
+				buttons.levelButtons[i].GetComponent<Image>().sprite = levelImages[i];
+				buttons.levelButtons[i].enabled = true;
 			} else{
-				levelButtons[i].GetComponent<Image>().sprite = levelImages[levelImages.Length-1];
-				levelButtons[i].enabled = false;
+				buttons.levelButtons[i].GetComponent<Image>().sprite = levelImages[levelImages.Length-1];
+				buttons.levelButtons[i].enabled = false;
 			}
 		}
 	}
@@ -84,7 +88,7 @@ public class LevelSelectMenu : MonoBehaviour {
 		int index = 1;
 		string levelNameBase = "Level_";
 
-		foreach(Button button in levelButtons){
+		foreach(Button button in buttons.levelButtons){
 			string levelToLoad = levelNameBase;
 			if(index < 10)
 				levelToLoad += "0" + index.ToString();
@@ -96,8 +100,8 @@ public class LevelSelectMenu : MonoBehaviour {
 			index++;
 		}
 
-		resumeButton.onClick.AddListener(() => UIManager.instance.ProceedToLevel("LatestCheckpoint", true));
-		backButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
+		buttons.resumeButton.onClick.AddListener(() => UIManager.instance.ProceedToLevel("LatestCheckpoint", true));
+		buttons.backButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 	
 	public void NextLevelScreen(){
@@ -107,9 +111,9 @@ public class LevelSelectMenu : MonoBehaviour {
 		if(levels01To10.activeSelf){
 			screenOneNewPos -= posOffset;
 			screenTwoNewPos -= posOffset;
-			nextButton.gameObject.SetActive(false);
-			previousButton.gameObject.SetActive(true);
-			previousButton.GetComponentInChildren<Text>().text = "01-10";
+			buttons.nextButton.gameObject.SetActive(false);
+			buttons.previousButton.gameObject.SetActive(true);
+			buttons.previousButton.GetComponentInChildren<Text>().text = "01-10";
 		}
 	}
 	
@@ -120,9 +124,9 @@ public class LevelSelectMenu : MonoBehaviour {
 		if(levels11To20.activeSelf){
 			screenOneNewPos += posOffset;
 			screenTwoNewPos += posOffset;
-			previousButton.gameObject.SetActive(false);
-			nextButton.gameObject.SetActive(true);
-			nextButton.GetComponentInChildren<Text>().text = "11-20";
+			buttons.previousButton.gameObject.SetActive(false);
+			buttons.nextButton.gameObject.SetActive(true);
+			buttons.nextButton.GetComponentInChildren<Text>().text = "11-20";
 		}
 	}
 

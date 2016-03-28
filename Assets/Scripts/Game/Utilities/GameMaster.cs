@@ -30,6 +30,7 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	[System.Serializable] public class GameValues{
+		[Tooltip("Number of Breakable Bricks in the level.")]
 		public int breakableCount = 0;		//Number of Breakable Bricks in level
 		public int playerLives = 3;			//Remaining Player Lives
 		public int totalScore = 0;			//Accumulated Score
