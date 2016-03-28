@@ -2,7 +2,7 @@
   MainMenu Class - Blockade
   Controls GUI for Main Menu
   Writen by Joe Arthur
-  Latest Revision - 20 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -22,9 +22,9 @@ public class MainMenu : MonoBehaviour {
 
 	void Start(){
 		if(UIManager.instance){
-			buttons.startButton.onClick.AddListener(() => UIManager.instance.OpenLevelSelectMenu());
-			buttons.highScoresButton.onClick.AddListener(() => UIManager.instance.OpenHighScoreMenu());
-			buttons.optionsButton.onClick.AddListener(() => UIManager.instance.OpenOptionsMenu());
+			buttons.startButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("LevelSelectMenu"));
+			buttons.highScoresButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("HighScoresMenu"));
+			buttons.optionsButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("OptionsMenu"));
 			buttons.quitButton.onClick.AddListener(() => UIManager.instance.QuitRequest());
 		}
 	}

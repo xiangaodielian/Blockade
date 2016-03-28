@@ -3,7 +3,7 @@
   Manages High Score page and
   updates High Score data
   Writen by Joe Arthur
-  Latest Revision - 22 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -34,7 +34,7 @@ public class HighScoresUI : MonoBehaviour {
 	#region MonoDevelop Functions
 	
 	void Awake(){
-		buttons.continueButton.onClick.AddListener(() => UIManager.instance.OpenMainMenu());
+		buttons.continueButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 
 	void Start(){

@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 25 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour {
 		public GameObject loseMenu = null;
 		public GameObject inGameUI = null;
 		public GameObject debugUI = null;
+		public GameObject menuTransitionPanel = null;
 	}
 
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
@@ -36,6 +37,7 @@ public class UIManager : MonoBehaviour {
 	private GameObject highScoresMenu = null;
 	private GameObject winMenu = null;
 	private GameObject loseMenu = null;
+	private SceneFader menuTransitionPanel = null;
 	private DebugUI debugUI = null;
 	
 	#endregion
@@ -57,31 +59,53 @@ public class UIManager : MonoBehaviour {
 	#region Utility Functions
 
 	void InstantiatePrefabs(){
+
 		mainMenu = Instantiate(menuPrefabs.mainMenu);
 		mainMenu.transform.SetParent(this.transform);
+		mainMenu.transform.localScale = Vector3.one;
+		mainMenu.transform.localPosition = Vector3.zero;
 
 		levelSelectMenu = Instantiate(menuPrefabs.levelSelectMenu);
 		levelSelectMenu.transform.SetParent(this.transform);
+		levelSelectMenu.transform.localScale = Vector3.one;
+		levelSelectMenu.transform.localPosition = Vector3.zero;
 
 		optionsMenu = Instantiate(menuPrefabs.optionsMenu);
 		optionsMenu.transform.SetParent(this.transform);
+		optionsMenu.transform.localScale = Vector3.one;
+		optionsMenu.transform.localPosition = Vector3.zero;
 
 		highScoresMenu = Instantiate(menuPrefabs.highScoresMenu);
 		highScoresMenu.transform.SetParent(this.transform);
+		highScoresMenu.transform.localScale = Vector3.one;
+		highScoresMenu.transform.localPosition = Vector3.zero;
 
 		winMenu = Instantiate(menuPrefabs.winMenu);
 		winMenu.transform.SetParent(this.transform);
+		winMenu.transform.localScale = Vector3.one;
+		winMenu.transform.localPosition = Vector3.zero;
 
 		loseMenu = Instantiate(menuPrefabs.loseMenu);
 		loseMenu.transform.SetParent(this.transform);
+		loseMenu.transform.localScale = Vector3.one;
+		loseMenu.transform.localPosition = Vector3.zero;
 
 		if(!InGameUI.instance){
 			Instantiate(menuPrefabs.inGameUI);
 			InGameUI.instance.transform.SetParent(this.transform);
+			InGameUI.instance.transform.localScale = Vector3.one;
+			InGameUI.instance.transform.localPosition = Vector3.zero;
 		}
 
 		debugUI = Instantiate(menuPrefabs.debugUI).GetComponent<DebugUI>();
 		debugUI.transform.SetParent(this.transform);
+		debugUI.transform.localScale = Vector3.one;
+		debugUI.transform.localPosition = Vector3.zero;
+
+		menuTransitionPanel = Instantiate(menuPrefabs.menuTransitionPanel).GetComponent<SceneFader>();
+		menuTransitionPanel.transform.SetParent(this.transform);
+		menuTransitionPanel.transform.localScale = Vector3.one;
+		menuTransitionPanel.transform.localPosition = Vector3.zero;
 	}
 
 	public void ProceedToLevel(string level, bool async){
@@ -108,6 +132,10 @@ public class UIManager : MonoBehaviour {
 	#endregion
 	#region GUI Management
 	
+	public void MenuFadeTransition(string screenToLoad){
+		menuTransitionPanel.StartFade(screenToLoad);
+	}
+
 	public void OpenMainMenu(){
 		CloseAll();
 		mainMenu.SetActive(true);

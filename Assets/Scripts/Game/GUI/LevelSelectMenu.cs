@@ -2,7 +2,7 @@
   LevelSelectMenu Class - Blockade
   Manages Level Selection Menu
   Writen by Joe Arthur
-  Latest Revision - 25 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /--------------------------------*/
 
 using UnityEngine;
@@ -20,8 +20,12 @@ public class LevelSelectMenu : MonoBehaviour {
 	[SerializeField] private Sprite[] levelImages = new Sprite[21];
 	[SerializeField] private Button nextButton = null;
 	[SerializeField] private Button previousButton = null;
+	[SerializeField] private Button resumeButton = null;
+	[SerializeField] private Button backButton = null;
 
 	private int highestUnlocked = 0;
+	private Vector3 screenOneNewPos;
+	private Vector3 screenTwoNewPos;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -32,20 +36,31 @@ public class LevelSelectMenu : MonoBehaviour {
 		levelLoadScreen.transform.localPosition = Vector3.zero;
 		levelLoadScreen.transform.localScale = Vector3.one;
 		levelLoadScreen.SetActive(false);
-		levels01To10.SetActive(true);
-		levels11To20.SetActive(false);
 		highestUnlocked = PrefsManager.GetLevelUnlocked();
 		nextButton.GetComponentInChildren<Text>().text = "11-20";
 		previousButton.gameObject.SetActive(false);
-		
+
 		SetLevelImages();
 		SetOnClick();
+	}
+
+	void Start(){
+		screenOneNewPos = levels01To10.transform.position;
+		screenTwoNewPos = levels11To20.transform.position;
 	}
 	
 	void Update(){
 		if(highestUnlocked != PrefsManager.GetLevelUnlocked()){
 			highestUnlocked = PrefsManager.GetLevelUnlocked();
 			SetLevelImages();
+		}
+
+		if(levels01To10.transform.position != screenOneNewPos){
+			float screenOneX = Mathf.Lerp(levels01To10.transform.position.x, screenOneNewPos.x, Time.deltaTime * 3f);
+			levels01To10.transform.position = new Vector3(screenOneX, levels01To10.transform.position.y, levels01To10.transform.position.z);
+
+			float screenTwoX = Mathf.Lerp(levels11To20.transform.position.x, screenTwoNewPos.x, Time.deltaTime * 3f);
+			levels11To20.transform.position = new Vector3(screenTwoX, levels11To20.transform.position.y, levels11To20.transform.position.z);
 		}
 	}
 	
@@ -80,12 +95,18 @@ public class LevelSelectMenu : MonoBehaviour {
 											   ShowLoadScreen(); });
 			index++;
 		}
+
+		resumeButton.onClick.AddListener(() => UIManager.instance.ProceedToLevel("LatestCheckpoint", true));
+		backButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 	
 	public void NextLevelScreen(){
+		Vector3 posOffset = new Vector3();
+		posOffset.x = levels11To20.transform.position.x - levels01To10.transform.position.x;
+
 		if(levels01To10.activeSelf){
-			levels01To10.SetActive(false);
-			levels11To20.SetActive(true);
+			screenOneNewPos -= posOffset;
+			screenTwoNewPos -= posOffset;
 			nextButton.gameObject.SetActive(false);
 			previousButton.gameObject.SetActive(true);
 			previousButton.GetComponentInChildren<Text>().text = "01-10";
@@ -93,9 +114,12 @@ public class LevelSelectMenu : MonoBehaviour {
 	}
 	
 	public void PreviousLevelScreen(){
+		Vector3 posOffset = new Vector3();
+		posOffset.x = levels11To20.transform.position.x - levels01To10.transform.position.x;
+
 		if(levels11To20.activeSelf){
-			levels11To20.SetActive(false);
-			levels01To10.SetActive(true);
+			screenOneNewPos += posOffset;
+			screenTwoNewPos += posOffset;
 			previousButton.gameObject.SetActive(false);
 			nextButton.gameObject.SetActive(true);
 			nextButton.GetComponentInChildren<Text>().text = "11-20";

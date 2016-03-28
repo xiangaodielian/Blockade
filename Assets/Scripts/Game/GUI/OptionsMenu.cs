@@ -3,7 +3,7 @@
   Controls all GUI visible in
   Options Menus (including in-game)
   Writen by Joe Arthur
-  Latest Revision - 22 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -57,7 +57,7 @@ public class OptionsMenu : MonoBehaviour {
 				ResetDefaultValues();
 			});
 			buttons.backButton.onClick.AddListener(() => {
-				UIManager.instance.OpenMainMenu();
+				UIManager.instance.MenuFadeTransition("MainMenu");
 				OptionsController.instance.SaveOptions();
 			});
 			sliders.ballColorRedSlider.onValueChanged.AddListener(value => {

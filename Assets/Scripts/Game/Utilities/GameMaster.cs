@@ -71,7 +71,7 @@ public class GameMaster : MonoBehaviour {
 			LevelCheck(curLevel);
 		}
 
-		if(gameValues.totalScore-lifeGrantedAt > 5000){
+		if(gameValues.totalScore-lifeGrantedAt > 10000){
 			if(gameValues.playerLives < 99)
 				gameValues.playerLives++;
 

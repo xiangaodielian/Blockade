@@ -1,9 +1,9 @@
 ﻿/*-----------------------------------/
   SceneFader Class - Blockade
   Controls Fade Transitions between
-  scenes
+  scenes and Menu Screens
   Writen by Joe Arthur
-  Latest Revision - 25 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -14,10 +14,18 @@ public class SceneFader : MonoBehaviour {
 	#region Variables
 	
 	[System.Serializable] private class FaderDetails{
-		public float fadeInSpeed = 0.75f;
-		public float fadeOutSpeed = 2f;
-		public float pauseDuration = 2f;
+		public enum TransitionType {SceneChange, MenuChange};
+		[Tooltip("Dictates behavior after fade. Scene Change loads a new Scene, Menu Change loads a new Menu.")]
+		public TransitionType transitionType = TransitionType.SceneChange;
+
+		[Tooltip("Color to fade Image to.")]
+		public Color fadeInColor = Color.white;
+		public float fadeInSpeed = 1f;
+		public float fadeOutSpeed = 1f;
+		public float pauseDuration = 1f;
+		[Tooltip("Image to fade.")]
 		public Image fadeImage = null;
+		[Tooltip("Start image fade instantly on Scene Load.")]
 		public bool fadeInInstantly = false;
 	}
 
@@ -25,6 +33,8 @@ public class SceneFader : MonoBehaviour {
 	
 	private bool fadingIn;
 	private float pauseStart = 0f;
+	private string screenToLoad = "";
+	private bool screenLoaded = false;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -45,27 +55,60 @@ public class SceneFader : MonoBehaviour {
 	#endregion
 	#region Fade Utility Functions
 	
+	public void StartFade(string screen){
+		fadingIn = true;
+		screenToLoad = screen;
+		screenLoaded = false;
+	}
+
 	private void FadeIn(){
-		FadeToWhite();
+		FadeToColor(faderDetails.fadeInColor);
 		
 		if(faderDetails.fadeImage.color.a >= 0.95f){
-			faderDetails.fadeImage.color = Color.white;
+			faderDetails.fadeImage.color = faderDetails.fadeInColor;
 			fadingIn = false;
 			pauseStart = Time.timeSinceLevelLoad;
 		}
 	}
 	
-	public void FadeOut(){
+	private void FadeOut(){
+		if(!screenLoaded){
+			switch(screenToLoad){
+				case "MainMenu":
+					UIManager.instance.OpenMainMenu();
+					break;
+
+				case "OptionsMenu":
+					UIManager.instance.OpenOptionsMenu();
+					break;
+
+				case "LevelSelectMenu":
+					UIManager.instance.OpenLevelSelectMenu();
+					break;
+
+				case "HighScoresMenu":
+					UIManager.instance.OpenHighScoreMenu();
+					break;
+
+				default:
+					break;
+			}
+
+			screenLoaded = true;
+		}
+
 		FadeToClear();
 		
 		if(faderDetails.fadeImage.color.a <= 0.05f){
+			pauseStart = 0f;
 			faderDetails.fadeImage.color = Color.clear;
-			GameMaster.instance.ChangeToLevel("Next");
+			if(faderDetails.transitionType == FaderDetails.TransitionType.SceneChange)
+				GameMaster.instance.ChangeToLevel("MainMenu");
 		}
 	}
 	
-	private void FadeToWhite(){
-		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, Color.white, faderDetails.fadeInSpeed * Time.deltaTime);
+	private void FadeToColor(Color fadeColor){
+		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, fadeColor, faderDetails.fadeInSpeed * Time.deltaTime);
 	}
 	
 	private void FadeToClear(){

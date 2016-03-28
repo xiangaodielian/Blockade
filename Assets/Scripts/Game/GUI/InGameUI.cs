@@ -3,7 +3,7 @@
   Controls all GUI visible in-game
   and their functions
   Writen by Joe Arthur
-  Latest Revision - 22 Mar, 2016
+  Latest Revision - 26 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -137,6 +137,10 @@ public class InGameUI : MonoBehaviour {
 	//Toggle In Game Menu
 	public void ToggleMenu(){
 		GameMaster.instance.GamePause();
+
+		optionsPanel.SetActive(false);
+		inGameMainMenuPanel.SetActive(!inGameMainMenuPanel.activeSelf);
+
 		if(promptActive){
 			displayedGUI.launchPromptText.gameObject.SetActive(true);
 			promptActive = false;
@@ -146,9 +150,6 @@ public class InGameUI : MonoBehaviour {
 			displayedGUI.launchPromptText.gameObject.SetActive(false);
 			promptActive = true;
 		}
-		
-		optionsPanel.SetActive(false);
-		inGameMainMenuPanel.SetActive(!inGameMainMenuPanel.activeSelf);
 	}
 	
 	public void InGameOptions(){
