@@ -3,7 +3,7 @@
   Manages High Score page and
   updates High Score data
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -94,7 +94,7 @@ public class HighScoresUI : MonoBehaviour {
 				if(!keyboard.active && keyboardOpen){
 					keyboard = null;
 					PrefsManager.SetHighScoreName(replaceScore+1,inputName);
-					PrefsManager.SetHighScore(replaceScore+1,gameMaster.totalScore);
+					PrefsManager.SetHighScore(replaceScore+1,GameMaster.instance.gameValues.totalScore);
 					keyboardOpen = false;
 					enterHighScore = false;
 					finishedEntering = true;

@@ -110,7 +110,7 @@ public class Ball : MonoBehaviour {
 			if(Input.GetMouseButtonDown(0)){
 				velMultiplier = 1f;
 				rigidBody.velocity = new Vector3(0f, 10f, 0f);
-				UIManager.instance.ToggleLaunchPrompt (false);
+				UIManager.instance.ToggleLaunchPrompt(false);
 				if(sticky){
 					stickOnPaddle = false;
 					audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
@@ -121,8 +121,14 @@ public class Ball : MonoBehaviour {
 			rigidBody.velocity = new Vector2 (0f,8f);
 			if(Input.touchCount > 0){
 				if(Input.GetTouch(0).phase == TouchPhase.Ended){
-					GameMaster.instance.GameStart();
-					paddle.hasStarted = true;
+					velMultiplier = 1f;
+					rigidBody.velocity = new Vector3(0f, 8f, 0f);
+					UIManager.instance.ToggleLaunchPrompt(false);
+					if(sticky){
+						stickOnPaddle = false;
+						audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+					} else
+						Paddle.instance.hasStarted = true;
 				}
 			}
 		#endif
