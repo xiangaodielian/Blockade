@@ -3,7 +3,7 @@
   Controlling class for Laser
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 4 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -17,6 +17,7 @@ public class Laser : MonoBehaviour {
 	void Start(){
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.velocity = new Vector3(0f,10f,0f);
+		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
 	
 	void OnCollisionEnter(Collision col){

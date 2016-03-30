@@ -3,7 +3,7 @@
   Controlling class for Brick
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 24 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -33,7 +33,7 @@ public class Brick : MonoBehaviour {
 
 	public enum BrickType {ONE, TWO, THREE, FOUR, FIVE, UNBREAKABLE};
 	
-	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
+	[SerializeField] private string[] audioClips = new string[5];
 	[SerializeField] private MaterialArrays materialArrays = null;
 	[SerializeField] private PowerupDetails powerupDetails = null;
 	[Tooltip("Number of hits it takes to destroy the Brick.")]
@@ -65,6 +65,7 @@ public class Brick : MonoBehaviour {
 		
 		timesHit = 0f;
 		SetBrick();
+		ResourceManager.SetMaterialTextures(this.gameObject);
 		
 		if(isBreakable)
 			GameMaster.instance.gameValues.breakableCount++;
@@ -88,35 +89,35 @@ public class Brick : MonoBehaviour {
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[0];
 				curIntensity = materialArrays.glowIntensities[0];
-				curAudioClip = audioClips[0];
+				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 				hitPoints = 1;
 				break;
 			case BrickType.TWO:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[1];
 				curIntensity = materialArrays.glowIntensities[1];
-				curAudioClip = audioClips[1];
+				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[1]);
 				hitPoints = 2;
 				break;
 			case BrickType.THREE:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[2];
 				curIntensity = materialArrays.glowIntensities[2];
-				curAudioClip = audioClips[2];
+				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[2]);
 				hitPoints = 3;
 				break;
 			case BrickType.FOUR:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[3];
 				curIntensity = materialArrays.glowIntensities[3];
-				curAudioClip = audioClips[3];
+				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[3]);
 				hitPoints = 4;
 				break;
 			case BrickType.FIVE:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[4];
 				curIntensity = materialArrays.glowIntensities[4];
-				curAudioClip = audioClips[4];
+				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[4]);
 				hitPoints = 5;
 				break;
 			case BrickType.UNBREAKABLE:
@@ -148,7 +149,7 @@ public class Brick : MonoBehaviour {
 		curIntensity = materialArrays.glowIntensities[colorIndex];
 			
 		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
-		curAudioClip = audioClips[colorIndex];
+		curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[colorIndex]);
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -216,6 +217,7 @@ public class Brick : MonoBehaviour {
 		if(chanceForPowerup > 750){
 			powerupDetails.hasPowerup = true;
 			powerupDetails.randomPowerup = true;
+			powerupDetails.powerupType = (Powerup.PowerupType)UnityEngine.Random.Range(0,System.Enum.GetNames(typeof(Powerup.PowerupType)).Length);
 		}
 	}
 

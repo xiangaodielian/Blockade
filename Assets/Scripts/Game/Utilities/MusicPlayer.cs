@@ -3,7 +3,7 @@
   Manages MusicPlayer object
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 22 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -31,6 +31,7 @@ public class MusicPlayer : MonoBehaviour {
 		
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterMusicVolume();
+		audioSource.clip = ResourceManager.LoadAudioClip(true, "bg_music");
 	}
 	
 	#endregion

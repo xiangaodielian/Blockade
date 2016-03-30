@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 24 Mar, 2016
+  Latest Revision - 27 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -25,6 +25,7 @@ public class GameMaster : MonoBehaviour {
 		public GameObject cameraPrefab = null;
 		public GameObject playSpacePrefab = null;
 		public GameObject paddlePrefab = null;
+		public GameObject ballPrefab = null;
 		public GameObject guiManagerPrefab = null;
 		public GameObject starsPSPrefab = null;
 	}
@@ -117,6 +118,8 @@ public class GameMaster : MonoBehaviour {
 
 	// Check the Level and load appropriate UI
 	private void LevelCheck(string level){
+		Ball[] ballsInScene = null;
+
 		switch(level){
 			case "Splash":
 				Instantiate(prefabs.splashPrefab);
@@ -129,10 +132,22 @@ public class GameMaster : MonoBehaviour {
 				stars.SetActive(true);
 				if(PlaySpace.instance)
 					Destroy(PlaySpace.instance.gameObject);
+
+				ballsInScene = FindObjectsOfType<Ball>();
+				if(ballsInScene.Length > 0){
+					foreach(Ball ball in ballsInScene)
+						Destroy(ball.gameObject);
+				}
+
+				if(Paddle.instance)
+					Destroy(Paddle.instance.gameObject);
+
 				if(!MusicPlayer.instance.isPlaying)
 					MusicPlayer.instance.StartMusic();
+
 				if(allowStart)
 					UIManager.instance.EndGame();
+
 				inGame = false;
 				gameValues.totalScore = 0;
 				gameValues.playerLives = 3;
@@ -141,6 +156,16 @@ public class GameMaster : MonoBehaviour {
 			case "Win":
 				if(PlaySpace.instance)
 					Destroy(PlaySpace.instance.gameObject);
+
+				ballsInScene = FindObjectsOfType<Ball>();
+				if(ballsInScene.Length > 0){
+					foreach(Ball ball in ballsInScene)
+						Destroy(ball.gameObject);
+				}
+
+				if(Paddle.instance)
+						Destroy(Paddle.instance.gameObject);
+
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
@@ -150,6 +175,16 @@ public class GameMaster : MonoBehaviour {
 				gameValues.playerLives = 3;
 				if(PlaySpace.instance)
 					Destroy(PlaySpace.instance.gameObject);
+
+				ballsInScene = FindObjectsOfType<Ball>();
+				if(ballsInScene.Length > 0){
+					foreach(Ball ball in ballsInScene)
+						Destroy(ball.gameObject);
+				}
+
+				if(Paddle.instance)
+						Destroy(Paddle.instance.gameObject);
+
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
@@ -165,16 +200,29 @@ public class GameMaster : MonoBehaviour {
 					PlaySpace.instance.StartTimer();
 				} else
 					UIManager.instance.BeginGame();
+
 				if(!Paddle.instance)
 					Instantiate(prefabs.paddlePrefab);
+
+				ballsInScene = FindObjectsOfType<Ball>();
+				if(ballsInScene.Length > 0){
+					foreach(Ball ball in ballsInScene)
+						Destroy(ball.gameObject);
+				}
+
+				Instantiate(prefabs.ballPrefab);
+
 				inGame = true;
 				PrefsManager.SetCurrentLevel(PrefsManager.GetLevelNumber());
+
 				if(PrefsManager.GetLevelNumber() > PrefsManager.GetLatestCheckpoint()){
 					PrefsManager.SetLatestCheckpoint(PrefsManager.GetLevelNumber());
 					PrefsManager.SetLevelUnlocked(PrefsManager.GetLevelNumber());
 				}
+
 				if(PrefsManager.GetLevelNumber() > 10)
 					PopulatePowerups();
+
 				break;
 		}
 	}
@@ -194,6 +242,7 @@ public class GameMaster : MonoBehaviour {
 		gameValues.totalScore += pointValue;
 		gameValues.breakableCount--;
 		if(gameValues.breakableCount <= 0){
+			Paddle.instance.hasStarted = false;
 			GamePause();
 			UIManager.instance.EndLevelMenu();
 		}

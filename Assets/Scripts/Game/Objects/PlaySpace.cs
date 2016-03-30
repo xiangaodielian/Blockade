@@ -4,7 +4,7 @@
   object (Walls, Background, etc)
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 4 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -40,6 +40,8 @@ public class PlaySpace : MonoBehaviour {
 		
 		foreach(GameObject shield in shields)
 			shield.AddComponent<Shield>();
+
+		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
 	
 	void Update(){

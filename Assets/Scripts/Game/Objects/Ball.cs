@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour {
 	[Tooltip("Array of materials for each Ball State.")]
 	[SerializeField] private Material[] materialArray = new Material[5];
 	[Tooltip("Array of Audio for each Ball State.")]
-	[SerializeField] private AudioClip[] audioClips = new AudioClip[5];
+	[SerializeField] private string[] audioClips = new string[5];
 
 	private Color ballColor;
 	private AudioSource audioSource;
@@ -41,6 +41,7 @@ public class Ball : MonoBehaviour {
 		rigidBody = GetComponent<Rigidbody>();
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
+		audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 		curMat = GetComponentInChildren<MeshRenderer>().material;
 		curMat.SetColor("_Color", ballColor);
 		GetComponentInChildren<MeshRenderer>().material = curMat;
@@ -60,6 +61,8 @@ public class Ball : MonoBehaviour {
 			
 			rigidBody.velocity = new Vector2(Random.Range(0f,1f),Random.Range(0f,1f)).normalized*otherVel.magnitude;
 		}
+
+		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
 	
 	void Update(){
@@ -110,7 +113,7 @@ public class Ball : MonoBehaviour {
 				UIManager.instance.ToggleLaunchPrompt (false);
 				if(sticky){
 					stickOnPaddle = false;
-					audioSource.clip = audioClips[0];
+					audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 				} else
 					Paddle.instance.hasStarted = true;
 			}
@@ -141,7 +144,7 @@ public class Ball : MonoBehaviour {
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
 			if(rigidBody.velocity != Vector3.zero){
-				audioSource.clip = audioClips[3];
+				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[3]);
 				audioSource.Play();
 				stickOnPaddle = true;
 			}
@@ -164,8 +167,7 @@ public class Ball : MonoBehaviour {
 				curMat = materialArray[0];
 				curMat.SetColor("_Color", ballColor);
 				curMat.SetColor("_EmissionColor", Color.black);
-				GetComponentInChildren<MeshRenderer>().material = curMat;
-				audioSource.clip = audioClips[0];
+				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 				break;
 			
 			case BallState.Sticky:
@@ -173,28 +175,31 @@ public class Ball : MonoBehaviour {
 				break;
 				
 			case BallState.Iron:
+				isSticky = false;
 				curMat = materialArray[2];
 				curMat.SetColor("_Color", Color.white);
-				GetComponentInChildren<MeshRenderer>().material = curMat;
-				audioSource.clip = audioClips[1];
+				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[1]);
 				break;
 				
 			case BallState.Feather:
+				isSticky = false;
 				curMat = materialArray[3];
 				curMat.SetColor("_Color", Color.white);
-				GetComponentInChildren<MeshRenderer>().material = curMat;
-				audioSource.clip = audioClips[2];
+				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[2]);
 				break;
 				
 			case BallState.Explosive:
+				isSticky = false;
 				curMat = materialArray[4];
-				GetComponentInChildren<MeshRenderer>().material = curMat;
 				break;
 				
 			default:
 				Debug.LogError("Ball Type Invalid!");
 				break;
 		}
+
+		GetComponentInChildren<MeshRenderer>().material = curMat;
+		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
 	
 	#endregion
@@ -254,7 +259,8 @@ public class Ball : MonoBehaviour {
 	
 	//Explosive Ball hit Brick
 	public void BallExploded(){
-		AudioSource.PlayClipAtPoint(audioClips[4],transform.position,PrefsManager.GetMasterSFXVolume());
+		AudioClip clip = ResourceManager.LoadAudioClip(false, audioClips[4]);
+		AudioSource.PlayClipAtPoint(clip, transform.position, PrefsManager.GetMasterSFXVolume());
 		ballState = BallState.Normal;
 		ChangeMaterial();
 	}

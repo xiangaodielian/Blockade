@@ -3,11 +3,12 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 29 Mar, 2016
 /--------------------------------------*/
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
@@ -39,13 +40,17 @@ public class Paddle : MonoBehaviour {
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
+
+		DontDestroyOnLoad(gameObject);
 	}
 
 	void Start(){
 		targetScale = transform.localScale;
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
+		audioSource.clip = ResourceManager.LoadAudioClip(false, "Laser");
 		animator = GetComponent<Animator>();
+		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
 	
 	void Update(){

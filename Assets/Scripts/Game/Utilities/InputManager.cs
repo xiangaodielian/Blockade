@@ -29,10 +29,8 @@ public class InputManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Escape) && GameMaster.instance.inGame)
 			UIManager.instance.ToggleInGameMenu();
 
-		if(Input.GetKey(KeyCode.LeftControl)){
-			if(Input.GetKeyDown(KeyCode.BackQuote))
-				UIManager.instance.ToggleDebugConsole();
-		}
+		if(Input.GetKeyDown(KeyCode.F12))
+			UIManager.instance.ToggleDebugConsole();
 
 		if(!GameMaster.instance.gamePaused && GameMaster.instance.allowStart){
 			if(Paddle.instance){

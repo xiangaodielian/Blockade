@@ -3,13 +3,14 @@
   Controlling class for setting and
   loading game preferences
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 27 Mar, 2016
 /----------------------------------*/
 
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(AudioSource))]
 public class OptionsController : MonoBehaviour {
 	
 	#region Variables
@@ -19,8 +20,9 @@ public class OptionsController : MonoBehaviour {
 	
 	private float musicVolume;
 	private float sfxVolume;
-	private Color ballColor;
 	private float sfxVolumeOld;
+	private Color ballColor;
+	private AudioSource audioSource;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -34,7 +36,16 @@ public class OptionsController : MonoBehaviour {
 	void Start(){
 		musicVolume = PrefsManager.GetMasterMusicVolume();
 		sfxVolume = PrefsManager.GetMasterSFXVolume();
+		sfxVolumeOld = sfxVolume;
 		ballColor = PrefsManager.GetBallColor();
+		audioSource = GetComponent<AudioSource>();
+	}
+
+	void Update(){
+		if(sfxVolume != sfxVolumeOld && Input.GetMouseButtonUp(0)){
+			audioSource.Play();
+			sfxVolumeOld = sfxVolume;
+		}
 	}
 	
 	#endregion
@@ -42,6 +53,7 @@ public class OptionsController : MonoBehaviour {
 	
 	public void SetSFXVolume(float value){
 		sfxVolume = value;
+		audioSource.volume = sfxVolume;
 	}
 	
 	public void SetMusicVolume(float value){
