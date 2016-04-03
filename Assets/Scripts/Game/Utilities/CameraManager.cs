@@ -3,11 +3,12 @@
   Controlling class for all Camera related
   functions and animations
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 31 Mar, 2016
 /-----------------------------------------*/
 
 using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.ImageEffects;
 
 [RequireComponent(typeof(Camera))]
 public class CameraManager : MonoBehaviour {
@@ -23,6 +24,8 @@ public class CameraManager : MonoBehaviour {
 	[SerializeField] private Vector3 sixteenTenPos = new Vector3();
 	[Tooltip("Field of View if Camera has a 16:10 aspect.")]
 	[SerializeField] private float sixteenTenFOV = 70f;
+
+	private Bloom bloom;
 
 	void Awake(){
 		if(instance != null && instance != this)
@@ -40,5 +43,15 @@ public class CameraManager : MonoBehaviour {
 			this.transform.position = sixteenTenPos;
 			cam.fieldOfView = sixteenTenFOV;
 		}
+
+		bloom = GetComponent<Bloom>();
+
+		#if UNITY_WEBGL
+		bloom.bloomThreshold = 1.75f;
+		bloom.bloomIntensity = 0.5f;
+		#else
+		bloom.bloomThreshold = 1.75f;
+		bloom.bloomIntensity = 1.03f;
+		#endif
 	}
 }

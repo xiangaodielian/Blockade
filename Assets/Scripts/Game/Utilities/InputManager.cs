@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 18 Mar, 2016
+  Latest Revision - 31 Mar, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -34,16 +34,10 @@ public class InputManager : MonoBehaviour {
 
 		if(!GameMaster.instance.gamePaused && GameMaster.instance.allowStart){
 			if(Paddle.instance){
-			#if UNITY_STANDALONE
-				MoveWithMouse();
-			#elif UNITY_IOS || UNITY_ANDROID
-				MoveWithTouch();
-			#elif UNITY_WSA  || UNITY_WEBGL
-			if(Input.mousePresent)
-				MoveWithMouse();
-			else
-				MoveWithTouch();
-			#endif
+				if(Input.mousePresent)
+					MoveWithMouse();
+				else
+					MoveWithTouch();
 			}
 
 			// Control Laser Firing
@@ -70,7 +64,7 @@ public class InputManager : MonoBehaviour {
 	void MoveWithTouch(){
 		if(Input.touchCount > 0){
 			Vector3 touchPos = Input.GetTouch(0).position;
-			touchPos.z = 0f;
+			touchPos.z = 10f;
 			touchPos = Camera.main.ScreenToWorldPoint(touchPos);
 
 			Paddle.instance.MovePaddle(touchPos);

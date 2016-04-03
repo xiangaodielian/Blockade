@@ -3,7 +3,7 @@
   Controlling class for LoseCollider
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 2 Feb, 2016
+  Latest Revision - 2 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -17,6 +17,7 @@ public class LoseCollider : MonoBehaviour {
 	void Start(){
 		audioSouce = GetComponent<AudioSource>();
 		audioSouce.volume = PrefsManager.GetMasterSFXVolume();
+		audioSouce.clip = ResourceManager.LoadAudioClip(false, "LostBall");
 	}
 	
 	//Reset Level or Go To Lose Screen if Applicable

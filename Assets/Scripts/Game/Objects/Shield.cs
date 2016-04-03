@@ -4,7 +4,7 @@
   object acting as the Playspace
   border and its functions
   Writen by Joe Arthur
-  Latest Revision - 5 Mar, 2016
+  Latest Revision - 31 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -87,14 +87,24 @@ public class Shield : MonoBehaviour {
 	
 	//Light Shield segment when hit by Ball
 	void OnTriggerEnter(Collider col){
-		if(col.tag != "Wall")
+		if(col.tag != "Wall"){
+			#if UNITY_WEBGL
+			shieldLight.intensity = 10f;
+			#else
 			shieldLight.intensity = 7f;
+			#endif
+		}
 	}
 
 	//Light Shield segment when hit by Ball
 	void OnCollisionEnter(Collision col){
-		if(col.collider.tag != "Wall")
+		if(col.collider.tag != "Wall"){
+			#if UNITY_WEBGL
+			shieldLight.intensity = 10f;
+			#else
 			shieldLight.intensity = 7f;
+			#endif
+		}
 	}
 	
 	//Toggles ability for Shield to rotate when hit
@@ -107,16 +117,30 @@ public class Shield : MonoBehaviour {
 		float minRange = 1.4f;
 		float maxRange = 1.5f;
 		float pulseSpeed = 0.1f;
+
+		#if UNITY_WEBGL
+		maxRange = 1.7f;
+		pulseSpeed = 0.3f;
+		#endif
 		
 		shieldLight.range = minRange + Mathf.PingPong(Time.time * pulseSpeed, maxRange-minRange);
 		
-		//Drop Intensity to 3 if above (i.e. after segment is hit)
+		//Drop Intensity to 3 (5 on WebGL) if above (i.e. after segment is hit)
+		#if UNITY_ANDROID || UNITY_WEBGL
+		if(lightIntensity == 10f)
+			lightIntensity = 5f;
+		else{
+			if(shieldLight.intensity > lightIntensity)
+				shieldLight.intensity -= 0.25f;
+		}
+		#else
 		if(lightIntensity == 7f)
 			lightIntensity = 3f;
 		else{
 			if(shieldLight.intensity > lightIntensity)
 				shieldLight.intensity -= 0.25f;
 		}
+		#endif
 	}
 	
 	public void DissolveIn(){

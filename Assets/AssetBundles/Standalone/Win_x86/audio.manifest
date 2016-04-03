@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 4012157232
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 850c9c50c53b5f2abaa2a5de18abc20a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c516f2a3b2b6b67ef759f6410a790acd
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+Assets:
+- Assets/Audio/SFX/LostBall.ogg
+- Assets/Audio/SFX/FIVE.ogg
+- Assets/Audio/SFX/AddNormal.ogg
+- Assets/Audio/SFX/AddMirror.ogg
+- Assets/Audio/SFX/Laser.ogg
+- Assets/Audio/SFX/AddLasers.ogg
+- Assets/Audio/SFX/IronBounce.ogg
+- Assets/Audio/SFX/ONE.ogg
+- Assets/Audio/SFX/AddExplosive.ogg
+- Assets/Audio/SFX/Bounce.ogg
+- Assets/Audio/Music/bg_music.ogg
+- Assets/Audio/SFX/FeatherBounce.ogg
+- Assets/Audio/SFX/FOUR.ogg
+- Assets/Audio/SFX/MultiballSplit.ogg
+- Assets/Audio/SFX/Explosion.ogg
+- Assets/Audio/SFX/AddSticky.ogg
+- Assets/Audio/SFX/TWO.ogg
+- Assets/Audio/SFX/THREE.ogg
+- Assets/Audio/SFX/SlowDown.ogg
+- Assets/Audio/SFX/AddIron.ogg
+- Assets/Audio/SFX/AddFeather.ogg
+- Assets/Audio/SFX/Expand.ogg
+- Assets/Audio/SFX/StickToPaddle.ogg
+- Assets/Audio/SFX/SpeedUp.ogg
+Dependencies: []

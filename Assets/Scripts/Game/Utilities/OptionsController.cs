@@ -3,7 +3,7 @@
   Controlling class for setting and
   loading game preferences
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 2 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -51,6 +51,10 @@ public class OptionsController : MonoBehaviour {
 	#endregion
 	#region Set Option Functions and Checks
 	
+	public void SetAudioClip(){
+		audioSource.clip = ResourceManager.LoadAudioClip(false, "Bounce");
+	}
+
 	public void SetSFXVolume(float value){
 		sfxVolume = value;
 		audioSource.volume = sfxVolume;

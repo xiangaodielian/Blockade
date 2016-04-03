@@ -4,7 +4,7 @@
   object (Walls, Background, etc)
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
+  Latest Revision - 31 Mar, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -22,6 +22,7 @@ public class PlaySpace : MonoBehaviour {
 	[SerializeField] private GameObject[] shields = new GameObject[25];				//Array of all Shields (children of Playspace)
 	[Tooltip("The Long Colliders that are active when Shields aren't rotating.")]
 	[SerializeField] private GameObject[] longColliders = new GameObject[3];		//Array of Long Box Colliders
+	[SerializeField] private Light directionalLight = null;
 	
 	private float timer = 0;
 	private Animator animator;
@@ -40,6 +41,12 @@ public class PlaySpace : MonoBehaviour {
 		
 		foreach(GameObject shield in shields)
 			shield.AddComponent<Shield>();
+
+		#if UNITY_WEBGL
+		directionalLight.intensity = 0.85f;
+		#else
+		directionalLight.intensity = 0.7f;
+		#endif
 
 		ResourceManager.SetMaterialTextures(this.gameObject);
 	}

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(InputManager))]
 [RequireComponent(typeof(OptionsController))]
+[RequireComponent(typeof(AssetBundleManager))]
 public class GameMaster : MonoBehaviour {
 	
 	#region variables
@@ -42,6 +43,7 @@ public class GameMaster : MonoBehaviour {
 	[HideInInspector] public bool inGame = false;				//FALSE = in Menu Screens TRUE = in Game
 	[HideInInspector] public bool gamePaused = false;
 	[HideInInspector] public AsyncOperation async = null;
+	[HideInInspector] public AssetBundleManifest manifest;
 
 	[SerializeField] private Prefabs prefabs = null;
 
@@ -73,7 +75,7 @@ public class GameMaster : MonoBehaviour {
 			LevelCheck(curLevel);
 		}
 
-		if(gameValues.totalScore-lifeGrantedAt > 10000){
+		if(gameValues.totalScore-lifeGrantedAt > 5000){
 			if(gameValues.playerLives < 99)
 				gameValues.playerLives++;
 
@@ -119,10 +121,24 @@ public class GameMaster : MonoBehaviour {
 	// Check the Level and load appropriate UI
 	private void LevelCheck(string level){
 		Ball[] ballsInScene = null;
+		string manifestPathPrefix = "";
+		string manifestPathSuffix = "";
+
+		if(AssetBundleManager.instance.useLocalBundles)
+			manifestPathPrefix = "file://" + Application.dataPath + "/AssetBundles/";
+		else
+			manifestPathPrefix = AssetBundleManager.instance.mainAssetBundleURL;
+
+		#if UNITY_STANDALONE || UNITY_EDITOR
+		manifestPathSuffix = "Standalone/Win_x86/Win_x86";
+		#elif UNITY_WEBGL
+		manifestPath = "WebGL/WebGL";
+		#endif
 
 		switch(level){
 			case "Splash":
 				Instantiate(prefabs.splashPrefab);
+				StartCoroutine(AssetBundleManager.instance.LoadBundleManifest(manifestPathPrefix + manifestPathSuffix));
 				UIManager.instance.CloseAll();
 				inGame = false;
 				break;
@@ -142,8 +158,10 @@ public class GameMaster : MonoBehaviour {
 				if(Paddle.instance)
 					Destroy(Paddle.instance.gameObject);
 
-				if(!MusicPlayer.instance.isPlaying)
+				if(!MusicPlayer.instance.isPlaying){
+					MusicPlayer.instance.SetAudioClip();
 					MusicPlayer.instance.StartMusic();
+				}
 
 				if(allowStart)
 					UIManager.instance.EndGame();
@@ -151,6 +169,8 @@ public class GameMaster : MonoBehaviour {
 				inGame = false;
 				gameValues.totalScore = 0;
 				gameValues.playerLives = 3;
+				OptionsController.instance.SetAudioClip();
+				StartCoroutine(ResourceManager.UnloadAll());
 				break;
 				
 			case "Win":
@@ -169,6 +189,7 @@ public class GameMaster : MonoBehaviour {
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
+				StartCoroutine(ResourceManager.UnloadAll());
 				break;
 				
 			case "Lose":
@@ -188,6 +209,7 @@ public class GameMaster : MonoBehaviour {
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
+				StartCoroutine(ResourceManager.UnloadAll());
 				break;
 				
 			//In Game
