@@ -87,7 +87,7 @@ public class PrefsManager{
 	}
 	
 	public static int GetLevelNumber(){
-		return LevelManager.GetLevelNum()-1;
+		return LevelManager.GetLevelNum();
 	}
 	
 	#endregion

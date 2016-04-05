@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 31 Mar, 2016
+  Latest Revision - 4 Apr, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -29,7 +29,7 @@ public class InputManager : MonoBehaviour {
 		if(Input.GetKeyDown(KeyCode.Escape) && GameMaster.instance.inGame)
 			UIManager.instance.ToggleInGameMenu();
 
-		if(Input.GetKeyDown(KeyCode.F12))
+		if(Input.GetKeyDown(KeyCode.F10))
 			UIManager.instance.ToggleDebugConsole();
 
 		if(!GameMaster.instance.gamePaused && GameMaster.instance.allowStart){

@@ -62,7 +62,7 @@ public class Brick : MonoBehaviour {
 		#else
 		bodyMaterial = GetComponent<MeshRenderer>().materials[1];
 		#endif
-		
+
 		timesHit = 0f;
 		SetBrick();
 		ResourceManager.SetMaterialTextures(this.gameObject);

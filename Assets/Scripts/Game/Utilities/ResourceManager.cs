@@ -4,7 +4,7 @@
   including setting Textures, Audio,
   Meshes, etc.
   Writen by Joe Arthur
-  Latest Revision - 2 Apr, 2016
+  Latest Revision - 4 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -15,6 +15,15 @@ using UnityEngine.SceneManagement;
 public class ResourceManager{
 
 	#region Materials & Textures
+
+	public static Sprite SetGUITexture(string objectName){
+		if(objectName.Contains("Button"))
+			objectName = objectName.Replace("Button", "");
+
+		Texture2D guiTex = AssetBundleManager.instance.LoadGUIAsset<Texture2D>(objectName);
+
+		return Sprite.Create(guiTex, new Rect(0f, 0f, guiTex.width, guiTex.height), new Vector2(0.5f, 0.5f));
+	}
 
 	public static void SetMaterialTextures(GameObject obj){
 		List<Material> usedMats = GetMaterialList(obj);

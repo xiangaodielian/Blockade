@@ -17,11 +17,28 @@ public class LevelManager {
 	}
 
 	public static AsyncOperation LoadLevelAsync(string name){
-		return SceneManager.LoadSceneAsync(name);
+		bool scenePathExists = AssetBundleManager.instance.GetScenePath(name);
+
+		if(scenePathExists)
+			return SceneManager.LoadSceneAsync(name);
+		else
+			return null;
 	}
 	
 	public static void LoadNextLevel(){
-		SceneManager.LoadScene(GetLevelNum()+1);
+		string nextLevel = "Level_";
+		int curLevelNum = GetLevelNum();
+		curLevelNum++;
+
+		if(curLevelNum < 10)
+			nextLevel += "0";
+
+		nextLevel += curLevelNum.ToString();
+
+		bool scenePathExists = AssetBundleManager.instance.GetScenePath(nextLevel);
+
+		if(scenePathExists)
+			SceneManager.LoadSceneAsync(nextLevel);
 	}
 	
 	public static void ReloadLevel(){
@@ -33,7 +50,14 @@ public class LevelManager {
 	}
 	
 	public static int GetLevelNum(){
-		return SceneManager.GetActiveScene().buildIndex;
+		string curLevel = GetCurrentLevel();
+
+		if(curLevel.Contains("Level_0"))
+			curLevel = curLevel.Replace("Level_0", "");
+		else
+			curLevel = curLevel.Replace("Level_", "");
+
+		return int.Parse(curLevel);
 	}
 	
 	public static void QuitApplication(){

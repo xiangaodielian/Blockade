@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 4 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	void Start(){
-		CloseAll();
+		OpenMainMenu();
 	}
 	
 	#endregion
@@ -138,6 +138,7 @@ public class UIManager : MonoBehaviour {
 
 	public void OpenMainMenu(){
 		CloseAll();
+		GameMaster.instance.gameValues.totalScore = 0;
 		mainMenu.SetActive(true);
 	}
 	

@@ -3,7 +3,7 @@
   Manages High Score page and
   updates High Score data
   Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
+  Latest Revision - 3 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -25,10 +25,6 @@ public class HighScoresUI : MonoBehaviour {
 	private bool enterHighScore = false;
 	private bool finishedEntering = false;
 	private string inputName = "";
-	#if UNITY_IOS || UNITY_ANDROID || UNITY_WSA
-	private TouchScreenKeyboard keyboard = null;
-	private bool keyboardOpen = false;
-	#endif
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -60,7 +56,6 @@ public class HighScoresUI : MonoBehaviour {
 				HighScoreCheck();
 			else{
 				highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.gameValues.totalScore.ToString();
-				#if UNITY_STANDALONE || UNITY_WEBGL
 				foreach(char c in Input.inputString){
 					if(c >= 'a' && c <= 'z' && inputName.Length < 3){
 						inputName += c;
@@ -74,33 +69,10 @@ public class HighScoresUI : MonoBehaviour {
 						PrefsManager.SetHighScore(replaceScore+1,GameMaster.instance.gameValues.totalScore);
 						enterHighScore = false;
 						finishedEntering = true;
+						GameMaster.instance.gameValues.totalScore = 0;
 						inputName = "";
 					}
 				}
-				#elif UNITY_IOS || UNITY_ANDROID || UNITY_WSA
-				if(keyboard == null && !keyboardOpen){
-					keyboard = TouchScreenKeyboard.Open(inputName,TouchScreenKeyboardType.Default,false,false,false,false,"");
-					keyboardOpen = true;
-				}
-				if(keyboard.active){
-					inputName = keyboard.text;
-					if(inputName.Length > 3)
-						inputName = inputName.Substring(0,3);
-					if(keyboard.done){
-						inputName = keyboard.text;
-						keyboard.active = false;
-					}
-				}
-				if(!keyboard.active && keyboardOpen){
-					keyboard = null;
-					PrefsManager.SetHighScoreName(replaceScore+1,inputName);
-					PrefsManager.SetHighScore(replaceScore+1,GameMaster.instance.gameValues.totalScore);
-					keyboardOpen = false;
-					enterHighScore = false;
-					finishedEntering = true;
-					inputName = "";
-				}
-				#endif
 			}
 		}
 	}

@@ -2,7 +2,7 @@
   InGameMainMenu Class - Blockade
   Controls GUI for the In Game Main Menu
   Writen by Joe Arthur
-  Latest Revision - 20 Mar, 2016
+  Latest Revision - 3 Apr, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -24,7 +24,8 @@ public class InGameMainMenu : MonoBehaviour {
 			buttons.resumeButton.onClick.AddListener(() => InGameUI.instance.ToggleMenu());
 			buttons.optionsButton.onClick.AddListener(() => InGameUI.instance.InGameOptions());
 			buttons.exitButton.onClick.AddListener(() => { InGameUI.instance.ToggleMenu(); 
-														   UIManager.instance.ProceedToLevel("MainMenu", false); });
+														   UIManager.instance.ProceedToLevel("MainMenu", false);
+														   UIManager.instance.OpenMainMenu(); });
 		}
 	}
 }

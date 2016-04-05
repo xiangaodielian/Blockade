@@ -2,7 +2,7 @@
   LevelSelectMenu Class - Blockade
   Manages Level Selection Menu
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 4 Apr, 2016
 /--------------------------------*/
 
 using UnityEngine;
@@ -25,7 +25,6 @@ public class LevelSelectMenu : MonoBehaviour {
 	[SerializeField] private GameObject levels01To10 = null;
 	[SerializeField] private GameObject levels11To20 = null;
 	[SerializeField] private Buttons buttons = null;
-	[SerializeField] private Sprite[] levelImages = new Sprite[21];
 
 	private int highestUnlocked = 0;
 	private Vector3 screenOneNewPos;
@@ -44,11 +43,11 @@ public class LevelSelectMenu : MonoBehaviour {
 		buttons.nextButton.GetComponentInChildren<Text>().text = "11-20";
 		buttons.previousButton.gameObject.SetActive(false);
 
-		SetLevelImages();
 		SetOnClick();
 	}
 
 	void Start(){
+		SetLevelImages();
 		screenOneNewPos = levels01To10.transform.position;
 		screenTwoNewPos = levels11To20.transform.position;
 	}
@@ -75,10 +74,10 @@ public class LevelSelectMenu : MonoBehaviour {
 	private void SetLevelImages(){
 		for(int i=0;i<buttons.levelButtons.Length;i++){
 			if(i<highestUnlocked){
-				buttons.levelButtons[i].GetComponent<Image>().sprite = levelImages[i];
+				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGUITexture(buttons.levelButtons[i].name);
 				buttons.levelButtons[i].enabled = true;
 			} else{
-				buttons.levelButtons[i].GetComponent<Image>().sprite = levelImages[levelImages.Length-1];
+				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGUITexture("LevelLocked");
 				buttons.levelButtons[i].enabled = false;
 			}
 		}

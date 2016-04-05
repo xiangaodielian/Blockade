@@ -3,7 +3,7 @@
   Controls Fade Transitions between
   scenes and Menu Screens
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 3 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -13,13 +13,14 @@ public class SceneFader : MonoBehaviour {
 	
 	#region Variables
 	
-	[System.Serializable] private class FaderDetails{
+	[System.Serializable] public class FaderDetails{
 		public enum TransitionType {SceneChange, MenuChange};
 		[Tooltip("Dictates behavior after fade. Scene Change loads a new Scene, Menu Change loads a new Menu.")]
 		public TransitionType transitionType = TransitionType.SceneChange;
 
 		[Tooltip("Color to fade Image to.")]
 		public Color fadeInColor = Color.white;
+		public Color fadeOutColor = Color.white;
 		public float fadeInSpeed = 1f;
 		public float fadeOutSpeed = 1f;
 		public float pauseDuration = 1f;
@@ -27,10 +28,12 @@ public class SceneFader : MonoBehaviour {
 		public Image fadeImage = null;
 		[Tooltip("Start image fade instantly on Scene Load.")]
 		public bool fadeInInstantly = false;
+		public bool instantFadeAfterPause = true;
 	}
 
-	[SerializeField] private FaderDetails faderDetails = null;
-	
+	public FaderDetails faderDetails = null;
+
+	private bool fadingOut = false;
 	private bool fadingIn;
 	private float pauseStart = 0f;
 	private string screenToLoad = "";
@@ -41,14 +44,19 @@ public class SceneFader : MonoBehaviour {
 	
 	void Awake(){
 		fadingIn = faderDetails.fadeInInstantly;
-		faderDetails.fadeImage.color = Color.clear;
+		faderDetails.fadeImage.color = faderDetails.fadeOutColor;
 	}
 
 	void Update(){
 		if(fadingIn)
 			FadeIn();
 		
-		if(Time.timeSinceLevelLoad - pauseStart >= faderDetails.pauseDuration && pauseStart != 0f)
+		if(faderDetails.instantFadeAfterPause){
+			if(Time.timeSinceLevelLoad - pauseStart >= faderDetails.pauseDuration && pauseStart != 0f)
+				fadingOut = true;
+		}
+
+		if(fadingOut)
 			FadeOut();
 	}
 	
@@ -59,12 +67,13 @@ public class SceneFader : MonoBehaviour {
 		fadingIn = true;
 		screenToLoad = screen;
 		screenLoaded = false;
+		fadingOut = false;
 	}
 
 	private void FadeIn(){
-		FadeToColor(faderDetails.fadeInColor);
+		FadeToInColor(faderDetails.fadeInColor);
 		
-		if(faderDetails.fadeImage.color.a >= 0.95f){
+		if(Mathf.Abs(faderDetails.fadeImage.color.a - faderDetails.fadeInColor.a) <= 0.01f){
 			faderDetails.fadeImage.color = faderDetails.fadeInColor;
 			fadingIn = false;
 			pauseStart = Time.timeSinceLevelLoad;
@@ -97,22 +106,22 @@ public class SceneFader : MonoBehaviour {
 			screenLoaded = true;
 		}
 
-		FadeToClear();
+		FadeToOutColor();
 		
-		if(faderDetails.fadeImage.color.a <= 0.05f){
+		if(Mathf.Abs(faderDetails.fadeImage.color.a - faderDetails.fadeOutColor.a) <= 0.01f){
 			pauseStart = 0f;
-			faderDetails.fadeImage.color = Color.clear;
+			faderDetails.fadeImage.color = faderDetails.fadeOutColor;
 			if(faderDetails.transitionType == FaderDetails.TransitionType.SceneChange)
 				GameMaster.instance.ChangeToLevel("MainMenu");
 		}
 	}
 	
-	private void FadeToColor(Color fadeColor){
+	private void FadeToInColor(Color fadeColor){
 		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, fadeColor, faderDetails.fadeInSpeed * Time.deltaTime);
 	}
 	
-	private void FadeToClear(){
-		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, Color.clear, faderDetails.fadeOutSpeed * Time.deltaTime);
+	private void FadeToOutColor(){
+		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, faderDetails.fadeOutColor, faderDetails.fadeOutSpeed * Time.deltaTime);
 	}
 	
 	#endregion

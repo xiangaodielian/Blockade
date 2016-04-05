@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 3 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -132,19 +132,17 @@ public class GameMaster : MonoBehaviour {
 		#if UNITY_STANDALONE || UNITY_EDITOR
 		manifestPathSuffix = "Standalone/Win_x86/Win_x86";
 		#elif UNITY_WEBGL
-		manifestPath = "WebGL/WebGL";
+		manifestPathSuffix = "WebGL/WebGL";
 		#endif
 
 		switch(level){
 			case "Splash":
 				Instantiate(prefabs.splashPrefab);
 				StartCoroutine(AssetBundleManager.instance.LoadBundleManifest(manifestPathPrefix + manifestPathSuffix));
-				UIManager.instance.CloseAll();
 				inGame = false;
 				break;
 			
 			case "MainMenu":
-				UIManager.instance.OpenMainMenu();
 				stars.SetActive(true);
 				if(PlaySpace.instance)
 					Destroy(PlaySpace.instance.gameObject);
@@ -167,7 +165,6 @@ public class GameMaster : MonoBehaviour {
 					UIManager.instance.EndGame();
 
 				inGame = false;
-				gameValues.totalScore = 0;
 				gameValues.playerLives = 3;
 				OptionsController.instance.SetAudioClip();
 				StartCoroutine(ResourceManager.UnloadAll());

@@ -7,3 +7,9 @@ AssetBundleManifest:
     Info_1:
       Name: textures
       Dependencies: {}
+    Info_2:
+      Name: levels
+      Dependencies: {}
+    Info_3:
+      Name: gui
+      Dependencies: {}
