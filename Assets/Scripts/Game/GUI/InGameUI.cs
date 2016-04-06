@@ -3,7 +3,7 @@
   Controls all GUI visible in-game
   and their functions
   Writen by Joe Arthur
-  Latest Revision - 26 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -58,9 +58,7 @@ public class InGameUI : MonoBehaviour {
 		
 		#if UNITY_STANDALONE
 		displayedGUI.launchPromptText.text = "CLICK TO LAUNCH!";
-		#elif UNITY_ANDROID || UNITY_IOS
-		displayedGUI.launchPromptText.text = "TAP TO LAUNCH!";
-		#elif UNITY_WSA || UNITY_WEBGL
+		#elif UNITY_WEBGL
 		if(Input.mousePresent)
 			displayedGUI.launchPromptText.text = "CLICK TO LAUNCH!";
 		else
@@ -136,7 +134,8 @@ public class InGameUI : MonoBehaviour {
 	
 	//Toggle In Game Menu
 	public void ToggleMenu(){
-		GameMaster.instance.GamePause();
+		if(!endLevelPanel.activeSelf)
+			GameMaster.instance.GamePause();
 
 		optionsPanel.SetActive(false);
 		inGameMainMenuPanel.SetActive(!inGameMainMenuPanel.activeSelf);
@@ -163,6 +162,9 @@ public class InGameUI : MonoBehaviour {
 	}
 	
 	public void ToggleEndLevelPanel(bool isOn){
+		if(!inGameMainMenuPanel.activeSelf && !optionsPanel.activeSelf && isOn)
+			GameMaster.instance.GamePause();
+
 		endLevelPanel.SetActive(isOn);
 	}
 	
@@ -173,7 +175,6 @@ public class InGameUI : MonoBehaviour {
 	public void SetTimeDifference(int dif){
 		timeDifference = dif;
 		runTimer = true;
-		GameMaster.instance.allowStart = true;
 	}
 
 	public void StopTimer(){

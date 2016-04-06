@@ -4,7 +4,7 @@
   object acting as the Playspace
   border and its functions
   Writen by Joe Arthur
-  Latest Revision - 31 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -28,6 +28,7 @@ public class Shield : MonoBehaviour {
 	private bool dissolve = false;
 	private Light shieldLight;
 	private float lightIntensity = 3f;		//Intensity of shieldLight
+	private Vector3 shieldAnchorPos = Vector3.zero;
 	
 	#endregion
 	#region Mono Functions
@@ -37,6 +38,7 @@ public class Shield : MonoBehaviour {
 	}
 	
 	//Deals with Rotation of Shield when allowed (constrains rotation to +/- rotateContrainAngle)
+	//and locking Shield to it's position
 	void FixedUpdate(){
 		float curRot = transform.localEulerAngles.y;
 		if(curRot > rotateConstraintAngle && curRot < 180f)
@@ -44,6 +46,9 @@ public class Shield : MonoBehaviour {
 		if(curRot > 180f && curRot < 360f-rotateConstraintAngle)
 			curRot = 360f - rotateConstraintAngle;
 		transform.localEulerAngles = new Vector3(0f,curRot,0f);
+
+		if(transform.localPosition != shieldAnchorPos && shieldAnchorPos != Vector3.zero)
+			transform.localPosition = shieldAnchorPos;
 	}
 	
 	void Update(){
@@ -55,6 +60,7 @@ public class Shield : MonoBehaviour {
 				blendAmount = 1f;
 				shieldMat.SetFloat("_BlendAmount", blendAmount);
 				shieldMat.SetFloat("_EdgeWidth", 0f);
+				shieldAnchorPos = transform.localPosition;
 				UIManager.instance.BeginGame();
 			}
 		}
@@ -126,7 +132,7 @@ public class Shield : MonoBehaviour {
 		shieldLight.range = minRange + Mathf.PingPong(Time.time * pulseSpeed, maxRange-minRange);
 		
 		//Drop Intensity to 3 (5 on WebGL) if above (i.e. after segment is hit)
-		#if UNITY_ANDROID || UNITY_WEBGL
+		#if UNITY_WEBGL
 		if(lightIntensity == 10f)
 			lightIntensity = 5f;
 		else{

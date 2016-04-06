@@ -3,7 +3,7 @@
   Controlling class for Brick
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -46,7 +46,7 @@ public class Brick : MonoBehaviour {
 	private int hitPoints = 0;
 	private int pointValue = 0;
 	private float timesHit = 0;
-	private bool isBreakable = true;
+	private bool isBreakable = false;
 	private Ball collidingBall = null;
 	private Material bodyMaterial = null;
 	
@@ -68,7 +68,7 @@ public class Brick : MonoBehaviour {
 		ResourceManager.SetMaterialTextures(this.gameObject);
 		
 		if(isBreakable)
-			GameMaster.instance.gameValues.breakableCount++;
+			GameMaster.instance.AddBrickToList(this.gameObject);
 	}
 	
 	void Update(){
@@ -124,12 +124,14 @@ public class Brick : MonoBehaviour {
 				curColor = materialArrays.brickGlowColors[5];
 				curIntensity = materialArrays.glowIntensities[5];
 				hitPoints = -1;
-				isBreakable = false;
 				break;
 			default:
 				Debug.LogError ("No Brick Type Set For " + gameObject);
 				break;
 		}
+
+		if(gameObject.tag == "Breakable")
+			isBreakable = true;
 		
 		pointValue = 50*hitPoints;
 		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
@@ -196,7 +198,7 @@ public class Brick : MonoBehaviour {
 			if(powerupDetails.hasPowerup)
 				DropPowerup();
 				
-			GameMaster.instance.BrickDestroyed(pointValue);
+			GameMaster.instance.BrickDestroyed(pointValue, this.gameObject);
 			Destroy(gameObject);
 		} else {
 			ChangeBrickColor();

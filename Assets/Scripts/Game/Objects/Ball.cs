@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -87,7 +87,13 @@ public class Ball : MonoBehaviour {
 		if(rigidBody.velocity.magnitude < 10f*velMultiplier-1f || rigidBody.velocity.magnitude > 10f*velMultiplier+1f){
 			Vector3 newVel = rigidBody.velocity.normalized;
 			newVel *= 10f*velMultiplier;
-			rigidBody.velocity = newVel;
+
+			Vector3 returnVel = new Vector3();
+			returnVel.x = Mathf.Lerp(rigidBody.velocity.x, newVel.x, 7f * Time.fixedDeltaTime);
+			returnVel.y = Mathf.Lerp(rigidBody.velocity.y, newVel.y, 7f * Time.fixedDeltaTime);
+			returnVel.z = Mathf.Lerp(rigidBody.velocity.z, newVel.z, 7f * Time.fixedDeltaTime);
+
+			rigidBody.velocity = returnVel;
 		}
 	}
 	
@@ -106,32 +112,21 @@ public class Ball : MonoBehaviour {
 		//Lock Ball to Paddle until LMB Pressed (or Touch Released)
 		rigidBody.velocity = Vector3.zero;
 		transform.position = Paddle.instance.transform.position + new Vector3(0f,0.35f,0f);
-		#if UNITY_STANDALONE || UNITY_WSA || UNITY_WEBGL
-			if(Input.GetMouseButtonDown(0)){
-				velMultiplier = 1f;
-				rigidBody.velocity = new Vector3(0f, 10f, 0f);
-				UIManager.instance.ToggleLaunchPrompt(false);
-				if(sticky){
-					stickOnPaddle = false;
-					audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
-				} else
-					Paddle.instance.hasStarted = true;
+		if(Input.GetMouseButtonDown(0)){
+			velMultiplier = 1f;
+			rigidBody.velocity = new Vector3(0f, 1f, 0f);
+			UIManager.instance.ToggleLaunchPrompt(false);
+			if(Paddle.instance.firstBall){
+				Paddle.instance.firstBall = false;
+				InGameUI.instance.SetTimeDifference((int)Time.timeSinceLevelLoad);
 			}
-		#elif UNITY_IOS || UNITY_ANDROID
-			rigidBody.velocity = new Vector2 (0f,8f);
-			if(Input.touchCount > 0){
-				if(Input.GetTouch(0).phase == TouchPhase.Ended){
-					velMultiplier = 1f;
-					rigidBody.velocity = new Vector3(0f, 8f, 0f);
-					UIManager.instance.ToggleLaunchPrompt(false);
-					if(sticky){
-						stickOnPaddle = false;
-						audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
-					} else
-						Paddle.instance.hasStarted = true;
-				}
-			}
-		#endif
+
+			if(sticky){
+				stickOnPaddle = false;
+				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+			} else
+				Paddle.instance.hasStarted = true;
+		}
 	}
 
 	//Pulse Emissive Glow when Explosive

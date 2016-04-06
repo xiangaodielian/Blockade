@@ -3,7 +3,7 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -20,6 +20,7 @@ public class Paddle : MonoBehaviour {
 	public static Paddle instance {get; private set;}
 
 	[HideInInspector] public bool hasStarted = false;
+	[HideInInspector] public bool firstBall = true;
 	public bool hasLasers = false;
 	public bool mirroredMovement = false;									//FALSE - normal motion TRUE - reversed motion
 

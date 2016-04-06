@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -116,6 +116,7 @@ public class UIManager : MonoBehaviour {
 	}
 	
 	public void ProceedToNextLevel(){
+		InGameUI.instance.StopTimer();
 		InGameUI.instance.ToggleEndLevelPanel(false);
 		GameMaster.instance.GamePause();
 		GameMaster.instance.ChangeToLevel("Next");
@@ -186,7 +187,7 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void BeginGame(){
-		InGameUI.instance.SetTimeDifference((int)Time.timeSinceLevelLoad);
+		GameMaster.instance.allowStart = true;
 		ToggleLaunchPrompt(true);
 	}
 

@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 3 Apr, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -32,10 +32,9 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	[System.Serializable] public class GameValues{
-		[Tooltip("Number of Breakable Bricks in the level.")]
-		public int breakableCount = 0;		//Number of Breakable Bricks in level
 		public int playerLives = 3;			//Remaining Player Lives
 		public int totalScore = 0;			//Accumulated Score
+		public List<GameObject> breakableBricks = new List<GameObject>();
 	}
 
 	public GameValues gameValues = null;
@@ -232,14 +231,14 @@ public class GameMaster : MonoBehaviour {
 				Instantiate(prefabs.ballPrefab);
 
 				inGame = true;
-				PrefsManager.SetCurrentLevel(PrefsManager.GetLevelNumber());
+				PrefsManager.SetCurrentLevel(LevelManager.GetLevelNum());
 
-				if(PrefsManager.GetLevelNumber() > PrefsManager.GetLatestCheckpoint()){
-					PrefsManager.SetLatestCheckpoint(PrefsManager.GetLevelNumber());
-					PrefsManager.SetLevelUnlocked(PrefsManager.GetLevelNumber());
+				if(LevelManager.GetLevelNum() > PrefsManager.GetLatestCheckpoint()){
+					PrefsManager.SetLatestCheckpoint(LevelManager.GetLevelNum());
+					PrefsManager.SetLevelUnlocked(LevelManager.GetLevelNum());
 				}
 
-				if(PrefsManager.GetLevelNumber() > 10)
+				if(LevelManager.GetLevelNum() > 10)
 					PopulatePowerups();
 
 				break;
@@ -255,14 +254,21 @@ public class GameMaster : MonoBehaviour {
 		gamePaused = !gamePaused;
 	}
 	
+	public void AddBrickToList(GameObject brick){
+		if(!gameValues.breakableBricks.Contains(brick))
+			gameValues.breakableBricks.Add(brick);
+	}
+
 	//Add value of Destroyed Brick to Score and decrement breakableCount
 	//If breakableCount hits 0, end Level
-	public void BrickDestroyed(int pointValue){
-		gameValues.totalScore += pointValue;
-		gameValues.breakableCount--;
-		if(gameValues.breakableCount <= 0){
+	public void BrickDestroyed(int pointValue, GameObject brick){
+		if(gameValues.breakableBricks.Contains(brick)){
+			gameValues.breakableBricks.Remove(brick);
+			gameValues.totalScore += pointValue;
+		}
+
+		if(gameValues.breakableBricks.Count == 0){
 			Paddle.instance.hasStarted = false;
-			GamePause();
 			UIManager.instance.EndLevelMenu();
 		}
 	}
@@ -282,10 +288,16 @@ public class GameMaster : MonoBehaviour {
 	
 	//Reset breakableCount and load Level "level"
 	public void ChangeToLevel(string level){
-		gameValues.breakableCount = 0;
-		if(level == "Next")
-			LevelManager.LoadNextLevel();
-		else{
+		gameValues.breakableBricks = new List<GameObject>();
+		if(Paddle.instance)
+			Paddle.instance.firstBall = true;
+
+		if(level == "Next"){
+			if(LevelManager.GetLevelNum() == 20)
+				LevelManager.LoadLevel("Win");
+			else
+				LevelManager.LoadNextLevel();
+		} else{
 			if(level == "LatestCheckpoint"){
 				int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
 				if(latestCheckpoint < 10)
@@ -298,7 +310,10 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	public IEnumerator ChangeToLevelAsync(string level){
-		gameValues.breakableCount = 0;
+		gameValues.breakableBricks = new List<GameObject>();
+		if(Paddle.instance)
+			Paddle.instance.firstBall = true;
+
 		if(level == "LatestCheckpoint"){
 			int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
 			if(latestCheckpoint < 10)

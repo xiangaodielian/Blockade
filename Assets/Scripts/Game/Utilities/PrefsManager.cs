@@ -86,10 +86,6 @@ public class PrefsManager{
 		return PlayerPrefs.GetInt(CURRENT_LEVEL,1);
 	}
 	
-	public static int GetLevelNumber(){
-		return LevelManager.GetLevelNum();
-	}
-	
 	#endregion
 	#region Other Pref Functions
 	

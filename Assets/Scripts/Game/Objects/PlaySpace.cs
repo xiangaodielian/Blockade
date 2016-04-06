@@ -4,7 +4,7 @@
   object (Walls, Background, etc)
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 31 Mar, 2016
+  Latest Revision - 6 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -66,7 +66,7 @@ public class PlaySpace : MonoBehaviour {
 		foreach(GameObject shield in shields)
 			shield.GetComponent<Shield>().DissolveIn();
 			
-		if(PrefsManager.GetLevelNumber() >= 15)
+		if(LevelManager.GetLevelNum() >= 5)
 			SetMovingShields(true);
 		else
 			SetMovingShields(false);
@@ -74,8 +74,8 @@ public class PlaySpace : MonoBehaviour {
 	
 	//Set Shields as capable of rotation on hit
 	void SetMovingShields(bool b){
-		foreach(GameObject longShield in longColliders)
-			longShield.SetActive(!b);
+		foreach(GameObject longCollider in longColliders)
+			longCollider.SetActive(!b);
 			
 		foreach(GameObject shield in shields)
 			shield.GetComponent<Shield>().ToggleMovingShields(b);
