@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour {
 
 	//Singleton Instance of InputManager
 	public static InputManager instance {get; private set;}
+	[HideInInspector] public bool useCursorMovement = true;
 
 	#endregion
 	#region Mono Functions
@@ -34,10 +35,13 @@ public class InputManager : MonoBehaviour {
 
 		if(!GameMaster.instance.gamePaused && GameMaster.instance.allowStart){
 			if(Paddle.instance){
-				if(Input.mousePresent)
-					MoveWithMouse();
-				else
-					MoveWithTouch();
+				if(useCursorMovement){
+					if(Input.mousePresent)
+						MoveWithMouse();
+					else
+						MoveWithTouch();
+				} else
+					MoveWithKeyboard();
 			}
 
 			// Control Laser Firing
@@ -58,6 +62,9 @@ public class InputManager : MonoBehaviour {
 		mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 		
 		Paddle.instance.MovePaddle(mousePos);
+
+		if(Input.GetMouseButtonDown(0))
+			Paddle.instance.LaunchBall();
 	}
 
 	//Control Paddle motion using finger on a touch device
@@ -69,6 +76,25 @@ public class InputManager : MonoBehaviour {
 
 			Paddle.instance.MovePaddle(touchPos);
 		}
+	}
+
+	void MoveWithKeyboard(){
+		Vector3 newPos = Paddle.instance.transform.position;
+		float movementMultiplier = 1f;
+
+		if(Input.GetKey(KeyCode.LeftShift))
+			movementMultiplier = 3f;
+
+		if(Input.GetKey(KeyCode.A))
+			newPos.x -= 0.15f * movementMultiplier;
+
+		if(Input.GetKey(KeyCode.D))
+			newPos.x += 0.15f * movementMultiplier;
+
+		Paddle.instance.MovePaddle(newPos);
+
+		if(Input.GetKeyDown(KeyCode.Space))
+			Paddle.instance.LaunchBall();
 	}
 
 	public void ProcessInputString(string input){

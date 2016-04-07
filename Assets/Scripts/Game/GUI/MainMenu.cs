@@ -1,9 +1,9 @@
-﻿/*--------------------------------------/
+﻿/*--------------------------------/
   MainMenu Class - Blockade
   Controls GUI for Main Menu
   Writen by Joe Arthur
   Latest Revision - 27 Mar, 2016
-/--------------------------------------*/
+/--------------------------------*/
 
 using UnityEngine;
 using System.Collections;

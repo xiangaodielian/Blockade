@@ -3,7 +3,7 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -24,6 +24,7 @@ public class Paddle : MonoBehaviour {
 	public bool hasLasers = false;
 	public bool mirroredMovement = false;									//FALSE - normal motion TRUE - reversed motion
 
+	[SerializeField] private GameObject ballPrefab = null;
 	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
 	[Tooltip("Transform for Left Laser parent group.")]
 	[SerializeField] private Transform leftLaserPos = null;			//Position of Left LaserTurret
@@ -33,6 +34,7 @@ public class Paddle : MonoBehaviour {
 	private Vector3 targetScale = new Vector3();
 	private AudioSource audioSource;
 	private Animator animator;
+	private Ball[] ballArray = null;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -55,6 +57,17 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	void Update(){
+		if(GameMaster.instance.allowStart){
+			if(ballArray == null)
+				SpawnBall();
+
+			if(ballArray.Length != FindObjectsOfType<Ball>().Length){
+				ballArray = FindObjectsOfType<Ball>();
+				if(ballArray.Length == 0)
+					SpawnBall();
+			}
+		}
+
 		// Expand/Shrink scale over time
 		if(targetScale != transform.localScale)
 			transform.localScale = Vector3.Lerp(transform.localScale,targetScale,3f*Time.deltaTime);
@@ -74,8 +87,23 @@ public class Paddle : MonoBehaviour {
 			
 		this.transform.position = paddlePos;
 	}
+
+	public void LaunchBall(){
+		foreach(Ball ball in ballArray){
+			if(ball.lockToPaddle){
+				ball.LaunchBall();
+				if(firstBall){
+					firstBall = false;
+					InGameUI.instance.SetTimeDifference((int)Time.timeSinceLevelLoad);
+				}
+
+				if(!hasStarted)
+					hasStarted = true;
+			}
+		}
+	}
 	
-	public void ResetBall(){
+	public void SpawnBall(){
 		mirroredMovement = false;
 		//Retract Lasers
 		if(hasLasers){
@@ -84,11 +112,11 @@ public class Paddle : MonoBehaviour {
 		}
 		targetScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
 		hasStarted = false;
+		ballArray = new Ball[1];
+		ballArray[0] = Instantiate(ballPrefab).GetComponent<Ball>();
 	}
 	
 	public void CollectPowerup(Powerup.PowerupType powerupType){
-	
-		Ball[] ballArray = FindObjectsOfType<Ball>();
 		
 		switch(powerupType){
 			case Powerup.PowerupType.Expand:

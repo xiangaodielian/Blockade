@@ -1,0 +1,28 @@
+Blockade Changelog
+Updated 7 April, 2016
+
+v1.9.0: Initial Debug Release
+  DEBUG COMMANDS (F10 to open Console):
+  -thisisgonbebig => Unlock All Levels
+  -luftballoons => 99 Lives
+  -bigbrother => Toggle Debug Info Display
+  -fishandloaves => All Bricks Contain Multiball
+
+v1.9.1:
+  PHYSICS:
+  -Eased Ball Launch speed
+  -Anchored Shield position when rotating
+
+  GAMEPLAY:
+  -Changed Timer to start once the first Ball is launched
+  -Made the rotating shileds start at Level 5 instead of 15
+  -Movement now possible using A and D keys (Hold Shift for dashing)
+
+  GUI:
+  -Added a Quit Confirmation menu  
+
+  BUGS:
+  -Fixed issues with levels ending prematurly
+  -Fixed issue where having multiple menus open would break the game
+  -Fixed issue where beating the game wouldn't take the player to the Win Screen
+  -Fixed issue where Ball could get stuck against the side walls

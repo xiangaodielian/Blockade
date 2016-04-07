@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -14,10 +14,12 @@ public class Ball : MonoBehaviour {
 	
 	#region Variables
 	
-	[HideInInspector] public Rigidbody rigidBody;
+
 	public enum BallState {Normal, Sticky, Iron, Feather, Explosive};
 	[Tooltip("Current State that the ball is in (i.e. Normal, Iron, Explosive, etc).")]
 	public BallState ballState = BallState.Normal;
+	[HideInInspector] public Rigidbody rigidBody;
+	[HideInInspector] public bool lockToPaddle = false;
 	
 	[Tooltip("Reference to own Prefab to handle Multiball splitting.")]
 	[SerializeField] private GameObject ballPrefab = null;
@@ -29,7 +31,6 @@ public class Ball : MonoBehaviour {
 	private Color ballColor;
 	private AudioSource audioSource;
 	private bool isSticky = false;
-	private bool stickOnPaddle = false;
 	private float velMultiplier = 1f;
 	private Material curMat = null;
 	
@@ -72,61 +73,45 @@ public class Ball : MonoBehaviour {
 		
 		//Pre-Launch
 		if(!Paddle.instance.hasStarted && !GameMaster.instance.gamePaused && GameMaster.instance.allowStart)
-			LaunchBall(false);
+			lockToPaddle = true;
 		
 		//Explosive Ball Pulse
 		if(ballState == BallState.Explosive)
 			ExplosiveGlowPulse();
-		
-		//Stick to Paddle when StickyBall active
-		if(stickOnPaddle)
-			LaunchBall(true);
+
+		if(lockToPaddle){
+			transform.position = Paddle.instance.transform.position + new Vector3(0f,0.35f,0f);
+			rigidBody.velocity = Vector3.zero;
+		}
 	}
 
 	void FixedUpdate(){
-		if(rigidBody.velocity.magnitude < 10f*velMultiplier-1f || rigidBody.velocity.magnitude > 10f*velMultiplier+1f){
-			Vector3 newVel = rigidBody.velocity.normalized;
-			newVel *= 10f*velMultiplier;
+		if(!lockToPaddle){
+			if(rigidBody.velocity.magnitude < 10f*velMultiplier-1f || rigidBody.velocity.magnitude > 10f*velMultiplier+1f){
+				Vector3 newVel = rigidBody.velocity.normalized;
+				newVel *= 10f*velMultiplier;
 
-			Vector3 returnVel = new Vector3();
-			returnVel.x = Mathf.Lerp(rigidBody.velocity.x, newVel.x, 7f * Time.fixedDeltaTime);
-			returnVel.y = Mathf.Lerp(rigidBody.velocity.y, newVel.y, 7f * Time.fixedDeltaTime);
-			returnVel.z = Mathf.Lerp(rigidBody.velocity.z, newVel.z, 7f * Time.fixedDeltaTime);
+				Vector3 returnVel = new Vector3();
+				returnVel.x = Mathf.Lerp(rigidBody.velocity.x, newVel.x, 7f * Time.fixedDeltaTime);
+				returnVel.y = Mathf.Lerp(rigidBody.velocity.y, newVel.y, 7f * Time.fixedDeltaTime);
+				returnVel.z = Mathf.Lerp(rigidBody.velocity.z, newVel.z, 7f * Time.fixedDeltaTime);
 
-			rigidBody.velocity = returnVel;
+				rigidBody.velocity = returnVel;
+			}
 		}
 	}
 	
 	#endregion
 	#region Utility Functions
 
-	void LaunchBall(bool sticky){
-		//Set Ball to Normal if at Game Start or NOT Sticky
-		if(!sticky){
-			if (ballState != BallState.Normal) {
-				ballState = BallState.Normal;
-				ChangeMaterial();
-			}
-		}
-		
-		//Lock Ball to Paddle until LMB Pressed (or Touch Released)
-		rigidBody.velocity = Vector3.zero;
-		transform.position = Paddle.instance.transform.position + new Vector3(0f,0.35f,0f);
-		if(Input.GetMouseButtonDown(0)){
-			velMultiplier = 1f;
-			rigidBody.velocity = new Vector3(0f, 1f, 0f);
-			UIManager.instance.ToggleLaunchPrompt(false);
-			if(Paddle.instance.firstBall){
-				Paddle.instance.firstBall = false;
-				InGameUI.instance.SetTimeDifference((int)Time.timeSinceLevelLoad);
-			}
+	public void LaunchBall(){
+		lockToPaddle = false;
+		velMultiplier = 1f;
+		rigidBody.velocity = new Vector3(0f, 1f, 0f);
+		UIManager.instance.ToggleLaunchPrompt(false);
 
-			if(sticky){
-				stickOnPaddle = false;
-				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
-			} else
-				Paddle.instance.hasStarted = true;
-		}
+		if(ballState == BallState.Sticky)
+			audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 	}
 
 	//Pulse Emissive Glow when Explosive
@@ -147,7 +132,7 @@ public class Ball : MonoBehaviour {
 			if(rigidBody.velocity != Vector3.zero){
 				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[3]);
 				audioSource.Play();
-				stickOnPaddle = true;
+				lockToPaddle = true;
 			}
 		}
 		

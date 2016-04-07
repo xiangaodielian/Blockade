@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour {
 		public GameObject inGameUI = null;
 		public GameObject debugUI = null;
 		public GameObject menuTransitionPanel = null;
+		public GameObject quitConfirmPanel = null;
 	}
 
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour {
 	private GameObject loseMenu = null;
 	private SceneFader menuTransitionPanel = null;
 	private DebugUI debugUI = null;
+	private GameObject quitConfirm = null;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -106,6 +108,11 @@ public class UIManager : MonoBehaviour {
 		menuTransitionPanel.transform.SetParent(this.transform);
 		menuTransitionPanel.transform.localScale = Vector3.one;
 		menuTransitionPanel.transform.localPosition = Vector3.zero;
+
+		quitConfirm = Instantiate(menuPrefabs.quitConfirmPanel);
+		quitConfirm.transform.SetParent(this.transform);
+		quitConfirm.transform.localScale = Vector3.one;
+		quitConfirm.transform.localPosition = new Vector3(0f, -45f, 0f);
 	}
 
 	public void ProceedToLevel(string level, bool async){
@@ -127,12 +134,16 @@ public class UIManager : MonoBehaviour {
 	}
 
 	public void QuitRequest(){
-		LevelManager.QuitApplication();
+		ToggleQuitConfirm(true);
 	}
 
 	#endregion
 	#region GUI Management
 	
+	public void ToggleQuitConfirm(bool visible){
+		quitConfirm.SetActive(visible);
+	}
+
 	public void MenuFadeTransition(string screenToLoad){
 		menuTransitionPanel.StartFade(screenToLoad);
 	}
@@ -203,6 +214,7 @@ public class UIManager : MonoBehaviour {
 		InGameUI.instance.gameObject.SetActive(false);
 		winMenu.SetActive(false);
 		loseMenu.SetActive(false);
+		quitConfirm.SetActive(false);
 	}
 	
 	public void ToggleLaunchPrompt(bool visible){

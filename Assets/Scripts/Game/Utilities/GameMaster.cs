@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -26,7 +26,6 @@ public class GameMaster : MonoBehaviour {
 		public GameObject cameraPrefab = null;
 		public GameObject playSpacePrefab = null;
 		public GameObject paddlePrefab = null;
-		public GameObject ballPrefab = null;
 		public GameObject guiManagerPrefab = null;
 		public GameObject starsPSPrefab = null;
 	}
@@ -228,8 +227,6 @@ public class GameMaster : MonoBehaviour {
 						Destroy(ball.gameObject);
 				}
 
-				Instantiate(prefabs.ballPrefab);
-
 				inGame = true;
 				PrefsManager.SetCurrentLevel(LevelManager.GetLevelNum());
 
@@ -332,7 +329,7 @@ public class GameMaster : MonoBehaviour {
 	
 	//Reset Ball after Player Death
 	public void ResetCurrentLevel(){
-		Paddle.instance.ResetBall();
+		Paddle.instance.SpawnBall();
 		UIManager.instance.ToggleLaunchPrompt(true);
 	}
 	
@@ -348,11 +345,6 @@ public class GameMaster : MonoBehaviour {
 			levelName = "Level_"+currentLevel;
 			
 		ChangeToLevel(levelName);
-	}
-	
-	//Quit Application
-	public void QuitRequest(){
-		LevelManager.QuitApplication();
 	}
 	
 	#endregion

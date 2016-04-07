@@ -3,7 +3,7 @@
   Controls all GUI visible in
   Options Menus (including in-game)
   Writen by Joe Arthur
-  Latest Revision - 27 Mar, 2016
+  Latest Revision - 7 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -25,12 +25,17 @@ public class OptionsMenu : MonoBehaviour {
 		public Slider ballColorBlueSlider = null;
 	}
 
+	[System.Serializable] private class Toggles{
+		public Toggle useCursorToggle = null;
+	}
+
 	[System.Serializable] private class Images{
 		public Image ballColorImage = null;
 	}
 
 	[SerializeField] private Buttons buttons = null;
 	[SerializeField] private Sliders sliders = null;
+	[SerializeField] private Toggles toggles = null;
 	[SerializeField] private Images images = null;
 	[Tooltip("Is this an in-game menu?")]
 	[SerializeField] private bool inGameMenu = false;
@@ -49,6 +54,9 @@ public class OptionsMenu : MonoBehaviour {
 	void Update(){
 		if(!OptionsController.instance.SliderCheck(sliders.musicVolumeSlider.value, sliders.sfxVolumeSlider.value))
 			SetSliderValues();
+
+		if(toggles.useCursorToggle.isOn != InputManager.instance.useCursorMovement)
+			SetToggleValues();
 	}
 
 	void SetListeners(){
@@ -78,8 +86,10 @@ public class OptionsMenu : MonoBehaviour {
 				InGameUI.instance.InGameMain();
 				OptionsController.instance.SaveOptions();
 			});
+
 		sliders.musicVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetMusicVolume(value));
 		sliders.sfxVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetSFXVolume(value));
+		toggles.useCursorToggle.onValueChanged.AddListener(value => OptionsController.instance.SetUseCursor(value)); 
 	}
 
 	void SetSliderValues(){
@@ -91,6 +101,10 @@ public class OptionsMenu : MonoBehaviour {
 			sliders.ballColorGreenSlider.value = PrefsManager.GetBallColor().g;
 			sliders.ballColorBlueSlider.value = PrefsManager.GetBallColor().b;
 		}
+	}
+
+	void SetToggleValues(){
+		toggles.useCursorToggle.isOn = InputManager.instance.useCursorMovement;
 	}
 
 	void SetBallColorImage(){

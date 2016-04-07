@@ -3,7 +3,7 @@
   Controlling class for LoseCollider
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 2 Apr, 2016
+  Latest Revision - 7 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -33,8 +33,9 @@ public class LoseCollider : MonoBehaviour {
 					GameMaster.instance.ResetCurrentLevel();
 				} else
 					GameMaster.instance.ChangeToLevel("Lose");
-			} else
-				Destroy(collider.gameObject);
+			}
+
+			Destroy(collider.gameObject);
 		}
 	}
 }
