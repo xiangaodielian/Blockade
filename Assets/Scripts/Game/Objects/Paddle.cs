@@ -3,7 +3,7 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 8 Apr, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -21,8 +21,8 @@ public class Paddle : MonoBehaviour {
 
 	[HideInInspector] public bool hasStarted = false;
 	[HideInInspector] public bool firstBall = true;
-	public bool hasLasers = false;
-	public bool mirroredMovement = false;									//FALSE - normal motion TRUE - reversed motion
+	[HideInInspector] public bool hasLasers = false;
+	[HideInInspector] public bool mirroredMovement = false;			//FALSE - normal motion TRUE - reversed motion
 
 	[SerializeField] private GameObject ballPrefab = null;
 	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
@@ -77,10 +77,7 @@ public class Paddle : MonoBehaviour {
 	#region Utility
 
 	//Move Paddle based on inputPos from MousePos or TouchPos
-	public void MovePaddle(Vector3 inputPos){
-		if(mirroredMovement)
-			inputPos.x = 16f-inputPos.x;
-		
+	public void MovePaddle(Vector3 inputPos){		
 		Collider collider = GetComponent<Collider>();
 		Vector3 paddlePos = this.transform.position;
 		paddlePos.x = Mathf.Clamp(inputPos.x,0.5f+collider.bounds.extents.x,15.5f-collider.bounds.extents.x);

@@ -2,14 +2,14 @@ ManifestFileVersion: 0
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: audio
+      Name: levels
       Dependencies: {}
     Info_1:
       Name: textures
       Dependencies: {}
     Info_2:
-      Name: levels
+      Name: gui
       Dependencies: {}
     Info_3:
-      Name: gui
+      Name: audio
       Dependencies: {}

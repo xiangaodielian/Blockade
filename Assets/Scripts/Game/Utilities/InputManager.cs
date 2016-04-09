@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 8 Apr, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -57,11 +57,17 @@ public class InputManager : MonoBehaviour {
 
 	//Control Paddle motion using mouse
 	void MoveWithMouse(){
+		Vector3 newPos = Paddle.instance.transform.position;
 		Vector3 mousePos = Input.mousePosition;
 		mousePos.z = 10f;
 		mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+
+		if(Paddle.instance.mirroredMovement)
+			newPos.x += 16f - mousePos.x - newPos.x;
+		else
+			newPos.x += mousePos.x - newPos.x;
 		
-		Paddle.instance.MovePaddle(mousePos);
+		Paddle.instance.MovePaddle(newPos);
 
 		if(Input.GetMouseButtonDown(0))
 			Paddle.instance.LaunchBall();
@@ -78,18 +84,27 @@ public class InputManager : MonoBehaviour {
 		}
 	}
 
+	//Control Paddle motion using Keyboard (A,D,<-,-> for motion, hold Shift for dash)
 	void MoveWithKeyboard(){
 		Vector3 newPos = Paddle.instance.transform.position;
 		float movementMultiplier = 1f;
 
-		if(Input.GetKey(KeyCode.LeftShift))
+		if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
 			movementMultiplier = 3f;
 
-		if(Input.GetKey(KeyCode.A))
-			newPos.x -= 0.15f * movementMultiplier;
+		if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
+			if(Paddle.instance.mirroredMovement)
+				newPos.x += 0.15f * movementMultiplier;
+			else
+				newPos.x -= 0.15f * movementMultiplier;
+		}
 
-		if(Input.GetKey(KeyCode.D))
-			newPos.x += 0.15f * movementMultiplier;
+		if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)){
+			if(Paddle.instance.mirroredMovement)
+				newPos.x -= 0.15f * movementMultiplier;
+			else
+				newPos.x += 0.15f * movementMultiplier;
+		}
 
 		Paddle.instance.MovePaddle(newPos);
 

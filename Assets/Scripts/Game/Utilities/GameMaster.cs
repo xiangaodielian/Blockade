@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 8 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -165,7 +165,7 @@ public class GameMaster : MonoBehaviour {
 				inGame = false;
 				gameValues.playerLives = 3;
 				OptionsController.instance.SetAudioClip();
-				StartCoroutine(ResourceManager.UnloadAll());
+				StartCoroutine(ResourceManager.UnloadUnusedResources());
 				break;
 				
 			case "Win":
@@ -184,7 +184,7 @@ public class GameMaster : MonoBehaviour {
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
-				StartCoroutine(ResourceManager.UnloadAll());
+				StartCoroutine(ResourceManager.UnloadUnusedResources());
 				break;
 				
 			case "Lose":
@@ -204,7 +204,7 @@ public class GameMaster : MonoBehaviour {
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
-				StartCoroutine(ResourceManager.UnloadAll());
+				StartCoroutine(ResourceManager.UnloadUnusedResources());
 				break;
 				
 			//In Game
@@ -237,6 +237,8 @@ public class GameMaster : MonoBehaviour {
 
 				if(LevelManager.GetLevelNum() > 10)
 					PopulatePowerups();
+
+				StartCoroutine(ResourceManager.UnloadUnusedResources());
 
 				break;
 		}

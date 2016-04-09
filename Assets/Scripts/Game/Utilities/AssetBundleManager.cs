@@ -4,7 +4,7 @@
   AssetBundles from remote and local
   storage
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 8 Apr, 2016
 /-------------------------------------*/
 
 using UnityEngine;
@@ -25,11 +25,11 @@ public class AssetBundleManager : MonoBehaviour{
 	public bool useLocalBundles = false;
 	[HideInInspector] public float totalDownloadProgress = 0f;
 
-	private AssetBundleManifest manifest;
-	private Dictionary<string, AssetBundle> assetBundleDict;
+	private AssetBundleManifest manifest;						//Main bundle manifest
+	private Dictionary<string, AssetBundle> assetBundleDict;	//Currently loaded bundles
+	private string[] scenePaths = null;							//Paths to all Scenes in "levels" bundle
 	private float totalBundles = 0f;
 	private float[] downloadProgressArray = null;
-	private string[] scenePaths = null;
 
 	#endregion
 	#region Mono Functions
@@ -106,6 +106,8 @@ public class AssetBundleManager : MonoBehaviour{
 	#endregion
 	#region Bundle Management
 
+	//Loads the main bundle manifest and uses it to download and cache any updated
+	//or non-cached bundles (queues and loads any dependencies first)
 	public IEnumerator LoadBundleManifest(string url){
 		using(WWW www = new WWW(url)){
 			yield return www;
@@ -121,6 +123,8 @@ public class AssetBundleManager : MonoBehaviour{
 			string[] bundleNames = manifest.GetAllAssetBundles();
 			Queue<string> bundleQueue = new Queue<string>();
 
+			//Iterate through bundles and get all dependencies
+			//Add them to the Queue first if not already there
 			foreach(string name in bundleNames){
 				string[] dependencies = manifest.GetAllDependencies(name);
 				if(dependencies.Length > 0){
@@ -133,30 +137,24 @@ public class AssetBundleManager : MonoBehaviour{
 				bundleQueue.Enqueue(name);
 			}
 
-			string pathPrefix = "";
-			if(useLocalBundles)
-				pathPrefix = "file://" + Application.dataPath + "/AssetBundles/";
-			else
-				pathPrefix = mainAssetBundleURL;
-
-			string pathSuffix = "";
-			#if UNITY_STANDALONE || UNITY_EDITOR
-			pathSuffix = "Standalone/Win_x86/";
-			#elif UNITY_WEBGL
-			pathSuffix = "WebGL/";
-			#endif
+			string bundlePath = GetBundlePath();
 
 			totalBundles = (float)bundleQueue.Count;
 			downloadProgressArray = new float[(int)totalBundles];
 			int bundleIndex = 0;
 
+			//Download and cache all bundles in Queue and immediately unload them from memory
+			//except for "gui" and "levels" bundles
 			while(bundleQueue.Count > 0){
-				StartCoroutine(LoadAssetBundle(pathPrefix + pathSuffix, bundleQueue.Dequeue(), bundleIndex));
+				yield return StartCoroutine(LoadAssetBundle(bundlePath, bundleQueue.Dequeue(), bundleIndex));
 				bundleIndex++;
 			}
 		}
 	}
 
+	//This version is solely used on initial startup to load updated/non-cached bundles
+	//Download the bundle or load from cache
+	//Uses bundleIndex during Splash Screen for the loading bar
 	IEnumerator LoadAssetBundle(string path, string bundleName, int bundleIndex){
 		while(!Caching.ready)
 			yield return null;
@@ -172,22 +170,72 @@ public class AssetBundleManager : MonoBehaviour{
 					Debug.LogError("AssetBundle Error: " + www.error);
 					yield break;
 				}
-			} else
-				downloadProgressArray[bundleIndex] = 1f/totalBundles;
+			} else{
+				if(downloadProgressArray != null)
+					downloadProgressArray[bundleIndex] = 1f/totalBundles;
+			}
 
-			assetBundleDict.Add(bundleName, www.assetBundle);
 			if(bundleName == "levels")
 				scenePaths = www.assetBundle.GetAllScenePaths();
+
+			assetBundleDict.Add(bundleName, www.assetBundle);
+		}
+
+		yield break;
+	}
+
+	//Same as LoadAssetBundle except with no bundleIndex
+	IEnumerator LoadAssetBundle(string path, string bundleName){
+		while(!Caching.ready)
+			yield return null;
+
+		using(WWW www = WWW.LoadFromCacheOrDownload(path + bundleName, manifest.GetAssetBundleHash(bundleName))){
+			if(!Caching.IsVersionCached(path + bundleName, manifest.GetAssetBundleHash(bundleName))){
+				while(!www.isDone)
+					yield return null;
+
+				if(www.error != null){
+					Debug.LogError("AssetBundle Error: " + www.error);
+					yield break;
+				}
+			}
+
+			if(bundleName == "levels")
+				scenePaths = www.assetBundle.GetAllScenePaths();
+
+			assetBundleDict.Add(bundleName, www.assetBundle);
+		}
+
+		yield break;
+	}
+
+	//Unloads unused bundles
+	public void UnloadUnusedBundles(){
+		AssetBundle curBundle;
+
+		List<string> keys = new List<string>(assetBundleDict.Keys);
+
+		foreach(string key in keys){
+			assetBundleDict.TryGetValue(key, out curBundle);
+			curBundle.Unload(false);
+			assetBundleDict.Remove(key);
 		}
 	}
 
 	#endregion
 	#region Asset Management
 
+	//Loads GUI assets
 	public T LoadGUIAsset<T>(string assetName) where T : Object{
 		assetName = assetName.ToLower();
 		Object asset = default(T);
 		string bundleName = "gui";
+
+		if(!assetBundleDict.ContainsKey(bundleName)){
+			string bundlePath = GetBundlePath();
+			StartCoroutine(LoadAssetBundle(bundlePath, bundleName));
+			while(!assetBundleDict.ContainsKey(bundleName)){}
+		}
 
 		AssetBundle curBundle;
 		assetBundleDict.TryGetValue(bundleName, out curBundle);
@@ -196,6 +244,7 @@ public class AssetBundleManager : MonoBehaviour{
 		return (T)asset;
 	}
 
+	//Loads non-GUI assets
 	public T LoadAsset<T>(string assetName) where T : Object{
 		assetName = assetName.ToLower();
 		Object asset = default(T);
@@ -207,8 +256,9 @@ public class AssetBundleManager : MonoBehaviour{
 			bundleName = "audio";
 
 		if(!assetBundleDict.ContainsKey(bundleName)){
-			Debug.LogError("Asset Loading Error: " + assetName + " cannot be found!");
-			return default(T);
+			string bundlePath = GetBundlePath();
+			StartCoroutine(LoadAssetBundle(bundlePath, bundleName));
+			while(!assetBundleDict.ContainsKey(bundleName)){}
 		}
 
 		AssetBundle curBundle;
@@ -218,14 +268,43 @@ public class AssetBundleManager : MonoBehaviour{
 		return (T)asset;
 	}
 
+	//Returns true if the given Scene has an existing path
 	public bool GetScenePath(string requestedScene){
 		foreach(string path in scenePaths){
-			if(path.Contains(requestedScene))
+			if(path.Contains(requestedScene)){
+				if(!assetBundleDict.ContainsKey("levels")){
+					string bundlePath = GetBundlePath();
+					StartCoroutine(LoadAssetBundle(bundlePath, "levels"));
+					while(!assetBundleDict.ContainsKey("levels")){}
+				}
+
 				return true;
+			}
 		}
 
 		Debug.LogError("Requested Scene (" + requestedScene + ") Not Found!");
 		return false;
+	}
+
+	#endregion
+	#region Utility
+
+	//Returns the path for bundles based on platform
+	string GetBundlePath(){
+		string pathPrefix = "";
+		if(useLocalBundles)
+			pathPrefix = "file://" + Application.dataPath + "/AssetBundles/";
+		else
+			pathPrefix = mainAssetBundleURL;
+
+		string pathSuffix = "";
+		#if UNITY_STANDALONE || UNITY_EDITOR
+		pathSuffix = "Standalone/Win_x86/";
+		#elif UNITY_WEBGL
+		pathSuffix = "WebGL/";
+		#endif
+
+		return pathPrefix + pathSuffix;
 	}
 
 	#endregion

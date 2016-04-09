@@ -3,7 +3,7 @@
   Controlling class for all Camera related
   functions and animations
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 8 Apr, 2016
 /-----------------------------------------*/
 
 using UnityEngine;
@@ -47,8 +47,8 @@ public class CameraManager : MonoBehaviour {
 		bloom = GetComponent<Bloom>();
 
 		#if UNITY_WEBGL
-		bloom.bloomThreshold = 0.5f;
-		bloom.bloomIntensity = 1.5f;
+		bloom.bloomThreshold = 0.75f;
+		bloom.bloomIntensity = 0.75f;
 		#else
 		bloom.bloomThreshold = 1.75f;
 		bloom.bloomIntensity = 1.03f;
