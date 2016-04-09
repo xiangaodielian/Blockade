@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 8 Apr, 2016
+  Latest Revision - 9 Apr, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour {
 
 	//Singleton Instance of InputManager
 	public static InputManager instance {get; private set;}
-	[HideInInspector] public bool useCursorMovement = true;
+	public bool useCursorMovement = false;		//Defaults to movement using Keyboard
 
 	#endregion
 	#region Mono Functions

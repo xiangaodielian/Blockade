@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour {
 
 	void Start(){
 		if(UIManager.instance){
-			buttons.startButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("LevelSelectMenu"));
+			buttons.startButton.onClick.AddListener(() => UIManager.instance.ToggleInterviewConfirm(true));
 			buttons.highScoresButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("HighScoresMenu"));
 			buttons.optionsButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("OptionsMenu"));
 			buttons.quitButton.onClick.AddListener(() => UIManager.instance.QuitRequest());

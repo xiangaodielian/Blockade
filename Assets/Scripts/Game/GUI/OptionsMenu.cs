@@ -3,7 +3,7 @@
   Controls all GUI visible in
   Options Menus (including in-game)
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 9 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -27,6 +27,7 @@ public class OptionsMenu : MonoBehaviour {
 
 	[System.Serializable] private class Toggles{
 		public Toggle useCursorToggle = null;
+		public Text descriptiveText = null;
 	}
 
 	[System.Serializable] private class Images{
@@ -46,6 +47,7 @@ public class OptionsMenu : MonoBehaviour {
 
 	void Start(){
 		SetSliderValues();
+		SetToggleValues();
 
 		if(!inGameMenu)
 			SetBallColorImage();
@@ -89,7 +91,8 @@ public class OptionsMenu : MonoBehaviour {
 
 		sliders.musicVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetMusicVolume(value));
 		sliders.sfxVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetSFXVolume(value));
-		toggles.useCursorToggle.onValueChanged.AddListener(value => OptionsController.instance.SetUseCursor(value)); 
+		toggles.useCursorToggle.onValueChanged.AddListener(value => { OptionsController.instance.SetUseCursor(value);
+																	  SetDescriptiveText(value);}); 
 	}
 
 	void SetSliderValues(){
@@ -125,5 +128,12 @@ public class OptionsMenu : MonoBehaviour {
 		sliders.ballColorBlueSlider.value = sliders.ballColorBlueSlider.minValue;
 
 		SetBallColorImage();
+	}
+
+	void SetDescriptiveText(bool useCursor){
+		if(useCursor)
+			toggles.descriptiveText.text = "USE MOUSE CURSOR TO MOVE";
+		else
+			toggles.descriptiveText.text = "USE ARROWS OR 'A' AND 'D' KEYS TO MOVE";
 	}
 }

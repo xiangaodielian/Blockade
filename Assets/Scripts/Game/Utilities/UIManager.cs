@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 9 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour {
 		public GameObject debugUI = null;
 		public GameObject menuTransitionPanel = null;
 		public GameObject quitConfirmPanel = null;
+		public GameObject interviewConfirmPanel = null;
 	}
 
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour {
 	private SceneFader menuTransitionPanel = null;
 	private DebugUI debugUI = null;
 	private GameObject quitConfirm = null;
+	private GameObject interviewConfirm = null;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -113,6 +115,11 @@ public class UIManager : MonoBehaviour {
 		quitConfirm.transform.SetParent(this.transform);
 		quitConfirm.transform.localScale = Vector3.one;
 		quitConfirm.transform.localPosition = new Vector3(0f, -45f, 0f);
+
+		interviewConfirm = Instantiate(menuPrefabs.interviewConfirmPanel);
+		interviewConfirm.transform.SetParent(this.transform);
+		interviewConfirm.transform.localScale = Vector3.one;
+		interviewConfirm.transform.localPosition = new Vector3(0f, -45f, 0f);
 	}
 
 	public void ProceedToLevel(string level, bool async){
@@ -142,6 +149,10 @@ public class UIManager : MonoBehaviour {
 	
 	public void ToggleQuitConfirm(bool visible){
 		quitConfirm.SetActive(visible);
+	}
+
+	public void ToggleInterviewConfirm(bool visible){
+		interviewConfirm.SetActive(visible);	
 	}
 
 	public void MenuFadeTransition(string screenToLoad){
@@ -215,6 +226,7 @@ public class UIManager : MonoBehaviour {
 		winMenu.SetActive(false);
 		loseMenu.SetActive(false);
 		quitConfirm.SetActive(false);
+		interviewConfirm.SetActive(false);
 	}
 	
 	public void ToggleLaunchPrompt(bool visible){
