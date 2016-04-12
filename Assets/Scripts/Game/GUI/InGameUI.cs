@@ -29,6 +29,7 @@ public class InGameUI : MonoBehaviour {
 		public GameObject inGameMainMenuPanel = null;
 		public GameObject inGameOptionsPanel = null;
 		public GameObject endLevelPanel = null;
+		public GameObject inGameTutorials = null;
 	}
 
 	[SerializeField] private DisplayedGUI displayedGUI = null;
@@ -37,10 +38,12 @@ public class InGameUI : MonoBehaviour {
 	private GameObject inGameMainMenuPanel;
 	private GameObject optionsPanel;
 	private GameObject endLevelPanel;
+	private GameObject inGameTutorials;
 	private int elapsedTime = 0;
 	private int timeDifference = 0;
 	private bool runTimer = false;
 	private bool promptActive = false;
+	private bool displayTutorial = true;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -54,33 +57,29 @@ public class InGameUI : MonoBehaviour {
 		displayedGUI.timeText.text = "00:00";
 		UpdateLivesText();
 		displayedGUI.livesImage.color = PrefsManager.GetBallColor();
+
+		InstantiatePrefabs();
+
 		TogglePrompt(false);
-		
-		#if UNITY_STANDALONE
-		displayedGUI.launchPromptText.text = "CLICK TO LAUNCH!";
-		#elif UNITY_WEBGL
-		if(Input.mousePresent)
-			displayedGUI.launchPromptText.text = "CLICK TO LAUNCH!";
-		else
-			displayedGUI.launchPromptText.text = "TAP TO LAUNCH!";
-		#endif
-
-		inGameMainMenuPanel = Instantiate(menuPanelPrefabs.inGameMainMenuPanel);
-		inGameMainMenuPanel.transform.SetParent(this.transform);
-		inGameMainMenuPanel.transform.localPosition = Vector3.zero;
-		optionsPanel = Instantiate(menuPanelPrefabs.inGameOptionsPanel);
-		optionsPanel.transform.SetParent(this.transform);
-		optionsPanel.transform.localPosition = Vector3.zero;
-		endLevelPanel = Instantiate(menuPanelPrefabs.endLevelPanel);
-		endLevelPanel.transform.SetParent(this.transform);
-		endLevelPanel.transform.localPosition = Vector3.zero;
-
 		endLevelPanel.SetActive(false);
 		inGameMainMenuPanel.SetActive(false);
 		optionsPanel.SetActive(false);
+		inGameTutorials.SetActive(false);
 	}
 	
 	void Update(){
+		if(!PrefsManager.GetMouseControl()){
+			displayedGUI.launchPromptText.text = "PRESS SPACE TO LAUNCH!";
+			displayedGUI.launchPromptText.fontSize = 45;
+		} else{
+			if(Input.mousePresent)
+				displayedGUI.launchPromptText.text = "CLICK TO LAUNCH!";
+			else
+				displayedGUI.launchPromptText.text = "TAP TO LAUNCH!";
+
+			displayedGUI.launchPromptText.fontSize = 60;
+		}
+
 		if(runTimer)
 			UpdateTimeText();
 		
@@ -92,6 +91,19 @@ public class InGameUI : MonoBehaviour {
 			
 		if(displayedGUI.livesImage.color != PrefsManager.GetBallColor())
 			displayedGUI.livesImage.color = PrefsManager.GetBallColor();
+
+		if(PrefsManager.GetCurrentLevel() == 1 && displayTutorial && PrefsManager.GetLevelUnlocked() <= PrefsManager.GetCurrentLevel()){
+			ToggleInGameTutorials(true, 0);
+			displayTutorial = false;
+		}
+
+		if(PrefsManager.GetCurrentLevel() == 2 && !displayTutorial)
+			displayTutorial = true;
+
+		if(PrefsManager.GetCurrentLevel() == 5 && displayTutorial && PrefsManager.GetLevelUnlocked() <= PrefsManager.GetCurrentLevel()){
+			ToggleInGameTutorials(true, 3);
+			displayTutorial = false;
+		}
 	}
 	
 	#endregion
@@ -134,7 +146,7 @@ public class InGameUI : MonoBehaviour {
 	
 	//Toggle In Game Menu
 	public void ToggleMenu(){
-		if(!endLevelPanel.activeSelf)
+		if(!endLevelPanel.activeSelf && !inGameTutorials.activeSelf)
 			GameMaster.instance.GamePause();
 
 		if(optionsPanel.activeSelf)
@@ -169,9 +181,36 @@ public class InGameUI : MonoBehaviour {
 
 		endLevelPanel.SetActive(isOn);
 	}
+
+	public void ToggleInGameTutorials(bool visible, int tutNum){
+		GameMaster.instance.GamePause();
+		inGameTutorials.SetActive(visible);
+
+		if(visible)
+			inGameTutorials.GetComponent<TutorialGUI>().SetTutorial(tutNum);
+			
+	}
 	
 	#endregion
 	#region Utility Functions
+
+	void InstantiatePrefabs(){
+		inGameMainMenuPanel = Instantiate(menuPanelPrefabs.inGameMainMenuPanel);
+		inGameMainMenuPanel.transform.SetParent(this.transform);
+		inGameMainMenuPanel.transform.localPosition = Vector3.zero;
+
+		optionsPanel = Instantiate(menuPanelPrefabs.inGameOptionsPanel);
+		optionsPanel.transform.SetParent(this.transform);
+		optionsPanel.transform.localPosition = Vector3.zero;
+
+		endLevelPanel = Instantiate(menuPanelPrefabs.endLevelPanel);
+		endLevelPanel.transform.SetParent(this.transform);
+		endLevelPanel.transform.localPosition = Vector3.zero;
+
+		inGameTutorials = Instantiate(menuPanelPrefabs.inGameTutorials);
+		inGameTutorials.transform.SetParent(this.transform);
+		inGameTutorials.transform.localPosition = Vector3.zero;
+	}
 
 	//Sets the offset for Level Timer
 	public void SetTimeDifference(int dif){

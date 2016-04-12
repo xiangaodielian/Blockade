@@ -3,7 +3,7 @@
   Controls all GUI visible in
   Options Menus (including in-game)
   Writen by Joe Arthur
-  Latest Revision - 9 Apr, 2016
+  Latest Revision - 10 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -57,7 +57,7 @@ public class OptionsMenu : MonoBehaviour {
 		if(!OptionsController.instance.SliderCheck(sliders.musicVolumeSlider.value, sliders.sfxVolumeSlider.value))
 			SetSliderValues();
 
-		if(toggles.useCursorToggle.isOn != InputManager.instance.useCursorMovement)
+		if(toggles.useCursorToggle.isOn != PrefsManager.GetMouseControl())
 			SetToggleValues();
 	}
 
@@ -107,7 +107,7 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	void SetToggleValues(){
-		toggles.useCursorToggle.isOn = InputManager.instance.useCursorMovement;
+		toggles.useCursorToggle.isOn = PrefsManager.GetMouseControl();
 	}
 
 	void SetBallColorImage(){
@@ -126,6 +126,9 @@ public class OptionsMenu : MonoBehaviour {
 		sliders.ballColorRedSlider.value = sliders.ballColorRedSlider.maxValue;
 		sliders.ballColorGreenSlider.value = sliders.ballColorGreenSlider.minValue;
 		sliders.ballColorBlueSlider.value = sliders.ballColorBlueSlider.minValue;
+
+		toggles.useCursorToggle.isOn = false;
+		SetDescriptiveText(false);
 
 		SetBallColorImage();
 	}

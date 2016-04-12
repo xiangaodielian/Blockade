@@ -3,7 +3,7 @@
   Manages Level loading and
   saving functions
   Writen by Joe Arthur
-  Latest Revision - 25 Mar, 2016
+  Latest Revision - 9 Apr, 2016
   Compatible with Unity 5.3.3
 /-----------------------------*/
 
@@ -13,7 +13,13 @@ using UnityEngine.SceneManagement;
 public class LevelManager {
 	
 	public static void LoadLevel(string name){
-		SceneManager.LoadScene(name);
+		if(name.Contains("Level")){
+			bool scenePathExists = AssetBundleManager.instance.GetScenePath(name);
+
+			if(scenePathExists)
+				SceneManager.LoadScene(name);
+		} else
+			SceneManager.LoadScene(name);
 	}
 
 	public static AsyncOperation LoadLevelAsync(string name){

@@ -26,3 +26,23 @@ v1.9.1:
   -Fixed issue where having multiple menus open would break the game
   -Fixed issue where beating the game wouldn't take the player to the Win Screen
   -Fixed issue where Ball could get stuck against the side walls
+
+v1.9.2:
+  GAMEPLAY:
+  -Made Keyboard the default for movement
+  -Changed Mesh for Mirror Powerup
+  -Changed how movement is handled (Cursor is now closer to Paddle)
+  -Added Tutorial messages to explain movement, bricks, and powerups
+
+  GUI:
+  -Fixed Cursor hotspot
+  -Added Checkbox GUI
+  -Fixed issue with WebGL bloom
+
+  BUGS:
+  -Fixed issue where closing in-game menu from Options would break the game
+  -Fixed issue where lights on Shields wouldn't trigger when hit
+
+  OTHER:
+  -Added an Interviewer mode
+  -Optimized the AssetBundleManager and how it handles memory

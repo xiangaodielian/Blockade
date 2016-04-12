@@ -3,7 +3,7 @@
   Manages all Player Prefs calls
   and applies settings
   Writen by Joe Arthur
-  Latest Revision - 4 Mar, 2016
+  Latest Revision - 10 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -13,8 +13,9 @@ public class PrefsManager{
 	
 	#region Pref Keys
 	
-	const string MASTER_VOLUME_KEY = "master_volume";
-	const string MASTER_SFX_KEY = "master_sfx_volume";
+	const string MASTER_VOLUME = "master_volume";
+	const string MASTER_SFX_VOLUME = "master_sfx_volume";
+	const string CONTROL_WITH_MOUSE = "control_with_mouse";
 	const string LATEST_CHECKPOINT = "latest_checkpoint";
 	const string LEVEL_UNLOCKED = "level_unlocked";
 	const string CURRENT_LEVEL = "current_level";
@@ -37,26 +38,26 @@ public class PrefsManager{
 	
 	public static void SetMasterMusicVolume(float volume){
 		if(volume >= 0f && volume <= 1f){
-			PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, volume);
+			PlayerPrefs.SetFloat(MASTER_VOLUME, volume);
 		} else {
 			Debug.LogError("Master Volume Out of Range");
 		}
 	}
 	
 	public static float GetMasterMusicVolume(){
-		return PlayerPrefs.GetFloat(MASTER_VOLUME_KEY,1f);
+		return PlayerPrefs.GetFloat(MASTER_VOLUME,1f);
 	}
 	
 	public static void SetMasterSFXVolume(float volume){
 		if(volume >= 0f && volume <= 1f){
-			PlayerPrefs.SetFloat(MASTER_SFX_KEY, volume);
+			PlayerPrefs.SetFloat(MASTER_SFX_VOLUME, volume);
 		} else {
 			Debug.LogError("SFX Volume Out of Range");
 		}
 	}
 	
 	public static float GetMasterSFXVolume(){
-		return PlayerPrefs.GetFloat(MASTER_SFX_KEY,1f);
+		return PlayerPrefs.GetFloat(MASTER_SFX_VOLUME,1f);
 	}
 	
 	#endregion
@@ -89,6 +90,22 @@ public class PrefsManager{
 	#endregion
 	#region Other Pref Functions
 	
+	public static void SetMouseControl(bool useCursor){
+		if(useCursor)
+			PlayerPrefs.SetInt(CONTROL_WITH_MOUSE, 1);
+		else
+			PlayerPrefs.SetInt(CONTROL_WITH_MOUSE, 0);
+	}
+
+	public static bool GetMouseControl(){
+		int useCursor = PlayerPrefs.GetInt(CONTROL_WITH_MOUSE, 0);
+
+		if(useCursor != 0)
+			return true;
+
+		return false;
+	}
+
 	public static Color GetBallColor(){
 		float red = PlayerPrefs.GetFloat(BALL_COLOR_RED,1f);
 		float green = PlayerPrefs.GetFloat(BALL_COLOR_GREEN,0f);

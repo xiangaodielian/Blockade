@@ -3,7 +3,7 @@
   Controlling class for setting and
   loading game preferences
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 10 Apr, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -53,6 +53,7 @@ public class OptionsController : MonoBehaviour {
 	
 	public void SetUseCursor(bool useCursor){
 		InputManager.instance.useCursorMovement = useCursor;
+		PrefsManager.SetMouseControl(useCursor);
 	}
 
 	public void SetAudioClip(){
@@ -108,6 +109,8 @@ public class OptionsController : MonoBehaviour {
 		ballColor.g = 0f;
 		ballColor.b = 0f;
 		PrefsManager.SetBallColor(ballColor.r,ballColor.g,ballColor.b);
+
+		PrefsManager.SetMouseControl(false);
 	}
 	
 	#endregion

@@ -19,17 +19,8 @@ public class ConfirmationMenu : MonoBehaviour {
 	}
 
 	[SerializeField] private Buttons buttons = null;
-	[SerializeField] private GameObject levelLoadScreen = null;
 
 	void Awake(){
-		if(levelLoadScreen){
-			levelLoadScreen = Instantiate(levelLoadScreen);
-			levelLoadScreen.transform.SetParent(this.transform);
-			levelLoadScreen.transform.localPosition = new Vector3(0f, 45f, 0f);
-			levelLoadScreen.transform.localScale = Vector3.one;
-			levelLoadScreen.SetActive(false);
-		}
-
 		SetOnClick();
 	}
 
@@ -41,16 +32,10 @@ public class ConfirmationMenu : MonoBehaviour {
 			buttons.quitButton.onClick.AddListener(() => LevelManager.QuitApplication());
 
 		if(buttons.confirmButton)
-			buttons.confirmButton.onClick.AddListener(() => { ShowLoadScreen();
-															  UIManager.instance.ProceedToLevel("Level_15", true);
-															  GameMaster.instance.gameValues.playerLives = 99;});
+			buttons.confirmButton.onClick.AddListener(() => UIManager.instance.OpenInterviewerTutorial());
 
 		if(buttons.noButton)
 			buttons.noButton.onClick.AddListener(() => { UIManager.instance.ToggleInterviewConfirm(false);
 														 UIManager.instance.MenuFadeTransition("LevelSelectMenu");});
-	}
-
-	void ShowLoadScreen(){
-		levelLoadScreen.SetActive(true);
 	}
 }

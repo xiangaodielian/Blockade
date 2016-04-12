@@ -3,7 +3,7 @@
   Manages all Input including
   Player Movement and Button Presses
   Writen by Joe Arthur
-  Latest Revision - 9 Apr, 2016
+  Latest Revision - 11 Apr, 2016
 /-----------------------------------*/
 
 using UnityEngine;
@@ -24,6 +24,8 @@ public class InputManager : MonoBehaviour {
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
+
+		useCursorMovement = PrefsManager.GetMouseControl();
 	}
 
 	void Update(){

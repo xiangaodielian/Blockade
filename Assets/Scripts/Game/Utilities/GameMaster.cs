@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 8 Apr, 2016
+  Latest Revision - 11 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -87,30 +87,29 @@ public class GameMaster : MonoBehaviour {
 	//Instantiates Prefabs for MusicPlayer, Camera, and UIManager, and StarsPS
 	//Makes them children of GameMaster to keep them loaded between scenes
 	void InstantiatePrefabs(){
-		if(!MusicPlayer.instance){
-			Instantiate(prefabs.musicPlayerPrefab);
-			MusicPlayer.instance.transform.SetParent(this.transform);
-		} else{
-			if(MusicPlayer.instance.transform.parent != this.transform)
-				MusicPlayer.instance.transform.SetParent(this.transform);
-		}
 
-		if(!CameraManager.instance){
-			Instantiate(prefabs.cameraPrefab);
-			CameraManager.instance.transform.SetParent(this.transform);
-		} else{
-			if(CameraManager.instance.transform.parent != this.transform)
-				CameraManager.instance.transform.SetParent(this.transform);
-		}
+		//Music Player
+		if(MusicPlayer.instance)
+			DestroyImmediate(MusicPlayer.instance.gameObject);
 
-		if(!UIManager.instance){
-			Instantiate(prefabs.guiManagerPrefab);
-			UIManager.instance.transform.SetParent(this.transform);
-		} else{
-			if(UIManager.instance.transform.parent != this.transform)
-				UIManager.instance.transform.SetParent(this.transform);
-		}
+		Instantiate(prefabs.musicPlayerPrefab);
+		MusicPlayer.instance.transform.SetParent(this.transform);
 
+		//Camera
+		if(CameraManager.instance)
+			DestroyImmediate(CameraManager.instance.gameObject);
+
+		Instantiate(prefabs.cameraPrefab);
+		CameraManager.instance.transform.SetParent(this.transform);
+
+		//GUI
+		if(UIManager.instance)
+			DestroyImmediate(UIManager.instance.gameObject);
+
+		Instantiate(prefabs.guiManagerPrefab);
+		UIManager.instance.transform.SetParent(this.transform);
+
+		//Background Stars
 		stars = Instantiate(prefabs.starsPSPrefab);
 		stars.transform.SetParent(this.transform);
 		stars.SetActive(false);
@@ -304,6 +303,7 @@ public class GameMaster : MonoBehaviour {
 				else
 					level = "Level_"+latestCheckpoint;
 			}
+
 			LevelManager.LoadLevel(level);
 		}
 	}

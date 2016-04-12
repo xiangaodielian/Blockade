@@ -9,6 +9,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UIManager : MonoBehaviour {
 	
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour {
 		public GameObject menuTransitionPanel = null;
 		public GameObject quitConfirmPanel = null;
 		public GameObject interviewConfirmPanel = null;
+		public GameObject interviewerTutorialPanel = null;
 	}
 
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
@@ -43,6 +45,7 @@ public class UIManager : MonoBehaviour {
 	private DebugUI debugUI = null;
 	private GameObject quitConfirm = null;
 	private GameObject interviewConfirm = null;
+	private GameObject interviewerTutorialPanel = null;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -120,6 +123,11 @@ public class UIManager : MonoBehaviour {
 		interviewConfirm.transform.SetParent(this.transform);
 		interviewConfirm.transform.localScale = Vector3.one;
 		interviewConfirm.transform.localPosition = new Vector3(0f, -45f, 0f);
+
+		interviewerTutorialPanel = Instantiate(menuPrefabs.interviewerTutorialPanel);
+		interviewerTutorialPanel.transform.SetParent(this.transform);
+		interviewerTutorialPanel.transform.localScale = Vector3.one;
+		interviewerTutorialPanel.transform.localPosition = Vector3.zero;
 	}
 
 	public void ProceedToLevel(string level, bool async){
@@ -179,6 +187,11 @@ public class UIManager : MonoBehaviour {
 		CloseAll();
 		highScoresMenu.SetActive(true);
 	}
+
+	public void OpenInterviewerTutorial(){
+		CloseAll();
+		interviewerTutorialPanel.SetActive(true);
+	}
 	
 	public void OpenInGameUI(){
 		CloseAll();
@@ -227,6 +240,7 @@ public class UIManager : MonoBehaviour {
 		loseMenu.SetActive(false);
 		quitConfirm.SetActive(false);
 		interviewConfirm.SetActive(false);
+		interviewerTutorialPanel.SetActive(false);
 	}
 	
 	public void ToggleLaunchPrompt(bool visible){
