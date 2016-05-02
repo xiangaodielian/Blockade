@@ -3,7 +3,7 @@
   Controls all GUI visible in-game
   and their functions
   Writen by Joe Arthur
-  Latest Revision - 9 Apr, 2016
+  Latest Revision - 2 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -148,6 +148,11 @@ public class InGameUI : MonoBehaviour {
 	public void ToggleMenu(){
 		if(!endLevelPanel.activeSelf && !inGameTutorials.activeSelf)
 			GameMaster.instance.GamePause();
+
+		if(!inGameMainMenuPanel.activeSelf && !optionsPanel.activeSelf)
+			UIManager.instance.PlayMenuToggleSound(true);
+		else
+			UIManager.instance.PlayMenuToggleSound(false);
 
 		if(optionsPanel.activeSelf)
 			optionsPanel.SetActive(false);

@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*----------------------------------/
+  TutorialCollider Class - Blockade
+  Controls TutorialCollider and 
+  calls to display Tutorials
+  Writen by Joe Arthur
+  Latest Revision - 11 Apr, 2016
+/----------------------------------*/
+
+using UnityEngine;
 
 public class TutorialCollider : MonoBehaviour {
 

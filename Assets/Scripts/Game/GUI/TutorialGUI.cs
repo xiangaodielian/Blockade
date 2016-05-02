@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿/*------------------------------/
+  TutorialGUI Class - Blockade
+  Controls all GUI for Tutorials
+  Writen by Joe Arthur
+  Latest Revision - 11 Apr, 2016
+/------------------------------*/
+
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TutorialGUI : MonoBehaviour {

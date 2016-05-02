@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
+  Latest Revision - 2 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -27,6 +27,8 @@ public class Ball : MonoBehaviour {
 	[SerializeField] private Material[] materialArray = new Material[5];
 	[Tooltip("Array of Audio for each Ball State.")]
 	[SerializeField] private string[] audioClips = new string[5];
+	[Tooltip("Speed of the Ball with no Powerup modification.")]
+	[SerializeField] private float baseBallSpeed = 8f;
 
 	private Color ballColor;
 	private AudioSource audioSource;
@@ -39,10 +41,13 @@ public class Ball : MonoBehaviour {
 	
 	void Start(){
 		ballColor = PrefsManager.GetBallColor();
+
 		rigidBody = GetComponent<Rigidbody>();
+
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+
 		curMat = GetComponentInChildren<MeshRenderer>().material;
 		curMat.SetColor("_Color", ballColor);
 		GetComponentInChildren<MeshRenderer>().material = curMat;
@@ -87,9 +92,9 @@ public class Ball : MonoBehaviour {
 
 	void FixedUpdate(){
 		if(!lockToPaddle){
-			if(rigidBody.velocity.magnitude < 10f*velMultiplier-1f || rigidBody.velocity.magnitude > 10f*velMultiplier+1f){
+			if(rigidBody.velocity.magnitude < baseBallSpeed*velMultiplier-1f || rigidBody.velocity.magnitude > baseBallSpeed*velMultiplier+1f){
 				Vector3 newVel = rigidBody.velocity.normalized;
-				newVel *= 10f*velMultiplier;
+				newVel *= baseBallSpeed*velMultiplier;
 
 				Vector3 returnVel = new Vector3();
 				returnVel.x = Mathf.Lerp(rigidBody.velocity.x, newVel.x, 7f * Time.fixedDeltaTime);

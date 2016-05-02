@@ -46,3 +46,14 @@ v1.9.2:
   OTHER:
   -Added an Interviewer mode
   -Optimized the AssetBundleManager and how it handles memory
+
+v1.9.3:
+  GAMEPLAY:
+  -Lowered Ball Speed
+
+  SOUND:
+  -Added Button Click Sound
+  -Added Menu Open/Close Sounds
+  -Added Shield Deploy Sounds
+  -Added InGame Music
+  -Added Menu Music

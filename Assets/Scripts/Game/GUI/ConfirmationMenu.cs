@@ -2,7 +2,7 @@
   MainMenu Class - Blockade
   Controls GUI for Confirmation Menus
   Writen by Joe Arthur
-  Latest Revision - 9 Apr, 2016
+  Latest Revision - 2 May, 2016
 /------------------------------------*/
 
 using UnityEngine;
@@ -32,7 +32,8 @@ public class ConfirmationMenu : MonoBehaviour {
 			buttons.quitButton.onClick.AddListener(() => LevelManager.QuitApplication());
 
 		if(buttons.confirmButton)
-			buttons.confirmButton.onClick.AddListener(() => UIManager.instance.OpenInterviewerTutorial());
+			buttons.confirmButton.onClick.AddListener(() => { UIManager.instance.OpenInterviewerTutorial();
+															  MusicPlayer.instance.NextTrack(); });
 
 		if(buttons.noButton)
 			buttons.noButton.onClick.AddListener(() => { UIManager.instance.ToggleInterviewConfirm(false);

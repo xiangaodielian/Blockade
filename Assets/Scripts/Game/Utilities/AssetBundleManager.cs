@@ -4,7 +4,7 @@
   AssetBundles from remote and local
   storage
   Writen by Joe Arthur
-  Latest Revision - 8 Apr, 2016
+  Latest Revision - 2 May, 2016
 /-------------------------------------*/
 
 using UnityEngine;
@@ -80,6 +80,20 @@ public class AssetBundleManager : MonoBehaviour{
 			AssetDatabase.CreateFolder("Assets/AssetBundles/Standalone", "Win_x86");
 
 		BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Standalone/Win_x86", BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows);
+	}
+
+	[MenuItem("Assets/AssetBundles/Build Standalone/OSX")]
+	static void BuildOSXAssetBundles(){
+		if(!AssetDatabase.IsValidFolder("Assets/AssetBundles"))
+			AssetDatabase.CreateFolder("Assets", "AssetBundles");
+
+		if(!AssetDatabase.IsValidFolder("Assets/AssetBundles/Standalone"))
+			AssetDatabase.CreateFolder("Assets/AssetBundles","Standalone");
+
+		if(!AssetDatabase.IsValidFolder("Assets/AssetBundles/Standalone/OSX"))
+			AssetDatabase.CreateFolder("Assets/AssetBundles/Standalone", "OSX");
+
+		BuildPipeline.BuildAssetBundles("Assets/AssetBundles/Standalone/OSX", BuildAssetBundleOptions.None, BuildTarget.StandaloneOSXUniversal);
 	}
 
 	[MenuItem("Assets/AssetBundles/Get AssetBundle Names")]
@@ -298,8 +312,10 @@ public class AssetBundleManager : MonoBehaviour{
 			pathPrefix = mainAssetBundleURL;
 
 		string pathSuffix = "";
-		#if UNITY_STANDALONE || UNITY_EDITOR
+		#if UNITY_STANDALONE_WIN || UNITY_EDITOR
 		pathSuffix = "Standalone/Win_x86/";
+		#elif UNITY_STANDALONE_OSX
+		pathSuffix = "Standalone/OSX/";
 		#elif UNITY_WEBGL
 		pathSuffix = "WebGL/";
 		#endif

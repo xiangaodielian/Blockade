@@ -4,13 +4,14 @@
   object (Walls, Background, etc)
   and its functions
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 13 Apr, 2016
 /-----------------------------*/
 
 using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AudioSource))]
 public class PlaySpace : MonoBehaviour {
 	
 	#region Variables
@@ -25,6 +26,7 @@ public class PlaySpace : MonoBehaviour {
 	
 	private float timer = 0;
 	private Animator animator;
+	private AudioSource audioSource;
 	
 	#endregion
 	#region Mono Functionc
@@ -37,11 +39,15 @@ public class PlaySpace : MonoBehaviour {
 	
 	void Start(){
 		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = PrefsManager.GetMasterSFXVolume();
+		audioSource.clip = ResourceManager.LoadAudioClip(false, "ShieldDeploy");
 		
 		foreach(GameObject shield in shields)
 			shield.AddComponent<Shield>();
 
 		ResourceManager.SetMaterialTextures(this.gameObject);
+
 	}
 	
 	void Update(){
@@ -59,6 +65,10 @@ public class PlaySpace : MonoBehaviour {
 	
 	public void StartTimer(){	
 		timer = Time.time;
+	}
+
+	public void PlaySound(){
+		audioSource.Play();
 	}
 	
 	//Dissolve Shields into scene

@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 9 Apr, 2016
+  Latest Revision - 2 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -11,6 +11,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(AudioSource))]
 public class UIManager : MonoBehaviour {
 	
 	#region variables
@@ -33,7 +34,15 @@ public class UIManager : MonoBehaviour {
 		public GameObject interviewerTutorialPanel = null;
 	}
 
+	[System.Serializable] private class GUISounds{
+		public string buttonHighlight = "";
+		public string buttonClick = "";
+		public string inGameMenuOpen = "";
+		public string inGameMenuClose = "";
+	}
+
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
+	[SerializeField] private GUISounds guiSounds = null;
 
 	private GameObject mainMenu = null;
 	private GameObject levelSelectMenu = null;
@@ -41,11 +50,12 @@ public class UIManager : MonoBehaviour {
 	private GameObject highScoresMenu = null;
 	private GameObject winMenu = null;
 	private GameObject loseMenu = null;
-	private SceneFader menuTransitionPanel = null;
-	private DebugUI debugUI = null;
 	private GameObject quitConfirm = null;
 	private GameObject interviewConfirm = null;
 	private GameObject interviewerTutorialPanel = null;
+	private SceneFader menuTransitionPanel = null;
+	private DebugUI debugUI = null;
+	private AudioSource audioSource;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -54,6 +64,9 @@ public class UIManager : MonoBehaviour {
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
+
+		audioSource = GetComponent<AudioSource>();
+		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 
 		InstantiatePrefabs();
 	}
@@ -150,6 +163,20 @@ public class UIManager : MonoBehaviour {
 
 	public void QuitRequest(){
 		ToggleQuitConfirm(true);
+	}
+
+	public void PlayButtonSound(){
+		audioSource.clip = ResourceManager.LoadAudioClip(false, guiSounds.buttonClick);
+		audioSource.Play();
+	}
+
+	public void PlayMenuToggleSound(bool isOpen){
+		if(isOpen)
+			audioSource.clip = ResourceManager.LoadAudioClip(false, guiSounds.inGameMenuOpen);
+		else
+			audioSource.clip = ResourceManager.LoadAudioClip(false, guiSounds.inGameMenuClose);
+
+		audioSource.Play();
 	}
 
 	#endregion

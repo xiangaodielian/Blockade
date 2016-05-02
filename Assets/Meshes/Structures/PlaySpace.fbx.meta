@@ -953,7 +953,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     - serializedVersion: 16
       name: Deploy
       takeName: Take 001
@@ -982,6 +982,14 @@ ModelImporter:
         functionName: ShowShields
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 0beafc75df6218e40b97437327c9a8ad,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c7d5397f1cb17d640b5990fbadde13de,
           type: 3}
         floatParameter: 0
         intParameter: 0
@@ -1294,7 +1302,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []

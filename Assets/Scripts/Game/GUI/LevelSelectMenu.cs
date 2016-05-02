@@ -2,7 +2,7 @@
   LevelSelectMenu Class - Blockade
   Manages Level Selection Menu
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 2 May, 2016
 /--------------------------------*/
 
 using UnityEngine;
@@ -39,7 +39,9 @@ public class LevelSelectMenu : MonoBehaviour {
 		levelLoadScreen.transform.localPosition = Vector3.zero;
 		levelLoadScreen.transform.localScale = Vector3.one;
 		levelLoadScreen.SetActive(false);
+
 		highestUnlocked = PrefsManager.GetLevelUnlocked();
+
 		buttons.nextButton.GetComponentInChildren<Text>().text = "11-20";
 		buttons.previousButton.gameObject.SetActive(false);
 
@@ -95,11 +97,13 @@ public class LevelSelectMenu : MonoBehaviour {
 				levelToLoad += index.ToString();
 
 			button.onClick.AddListener(() => { UIManager.instance.ProceedToLevel(levelToLoad, true);
+											   MusicPlayer.instance.NextTrack();
 											   ShowLoadScreen(); });
 			index++;
 		}
 
-		buttons.resumeButton.onClick.AddListener(() => UIManager.instance.ProceedToLevel("LatestCheckpoint", true));
+		buttons.resumeButton.onClick.AddListener(() => { UIManager.instance.ProceedToLevel("LatestCheckpoint", true);
+														 MusicPlayer.instance.NextTrack(); });
 		buttons.backButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 	

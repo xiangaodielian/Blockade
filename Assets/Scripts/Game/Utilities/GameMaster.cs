@@ -153,10 +153,11 @@ public class GameMaster : MonoBehaviour {
 				if(Paddle.instance)
 					Destroy(Paddle.instance.gameObject);
 
-				if(!MusicPlayer.instance.isPlaying){
-					MusicPlayer.instance.SetAudioClip();
-					MusicPlayer.instance.StartMusic();
-				}
+				if(MusicPlayer.instance.isPlaying)
+					MusicPlayer.instance.StopMusic();
+
+				MusicPlayer.instance.MenuMusicSet();
+				MusicPlayer.instance.StartMusic();
 
 				if(allowStart)
 					UIManager.instance.EndGame();
