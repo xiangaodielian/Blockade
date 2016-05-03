@@ -5,11 +5,14 @@ AssetBundleManifest:
       Name: levels
       Dependencies: {}
     Info_1:
-      Name: textures
-      Dependencies: {}
-    Info_2:
       Name: gui
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: audio
+      Dependencies: {}
+    Info_3:
+      Name: textures.hd
+      Dependencies: {}
+    Info_4:
+      Name: textures.sd
       Dependencies: {}
