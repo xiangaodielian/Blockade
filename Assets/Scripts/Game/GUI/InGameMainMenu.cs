@@ -23,7 +23,8 @@ public class InGameMainMenu : MonoBehaviour {
 		if(InGameUI.instance){
 			buttons.resumeButton.onClick.AddListener(() => InGameUI.instance.ToggleMenu());
 			buttons.optionsButton.onClick.AddListener(() => InGameUI.instance.InGameOptions());
-			buttons.exitButton.onClick.AddListener(() => { InGameUI.instance.ToggleMenu(); 
+			buttons.exitButton.onClick.AddListener(() => { InGameUI.instance.ToggleMenu();
+														   GameMaster.instance.ClearGameObjects();
 														   UIManager.instance.ProceedToLevel("MainMenu", false);
 														   UIManager.instance.OpenMainMenu(); });
 		}

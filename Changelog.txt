@@ -57,3 +57,14 @@ v1.9.3:
   -Added Shield Deploy Sounds
   -Added InGame Music
   -Added Menu Music
+
+v1.9.4:
+  ART:
+  -Retexturing of Ship and Walls
+  -Added HD and SD Textures
+
+  GAMEPLAY:
+  -Changed Main Options Menu configuration to allow for more options
+
+  OTHER:
+  -Changed Interview Mode to Demo Mode

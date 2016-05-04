@@ -3,7 +3,7 @@
   Manages all Player Prefs calls
   and applies settings
   Writen by Joe Arthur
-  Latest Revision - 10 Apr, 2016
+  Latest Revision - 3 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -12,9 +12,7 @@ using System.Collections;
 public class PrefsManager{
 	
 	#region Pref Keys
-	
-	const string MASTER_VOLUME = "master_volume";
-	const string MASTER_SFX_VOLUME = "master_sfx_volume";
+
 	const string CONTROL_WITH_MOUSE = "control_with_mouse";
 	const string LATEST_CHECKPOINT = "latest_checkpoint";
 	const string LEVEL_UNLOCKED = "level_unlocked";
@@ -32,6 +30,9 @@ public class PrefsManager{
 	const string HIGH_SCORE_4 = "high_score_4";
 	const string HIGH_SCORE_NAME_5 = "high_score_name_5";
 	const string HIGH_SCORE_5 = "high_score_5";
+	const string TEXTURE_RESOLUTION = "texture_resolution";
+	const string MASTER_VOLUME = "master_volume";
+	const string MASTER_SFX_VOLUME = "master_sfx_volume";
 	
 	#endregion
 	#region Volume Functions
@@ -88,7 +89,7 @@ public class PrefsManager{
 	}
 	
 	#endregion
-	#region Other Pref Functions
+	#region Gameplay Pref Functions
 	
 	public static void SetMouseControl(bool useCursor){
 		if(useCursor)
@@ -120,6 +121,23 @@ public class PrefsManager{
 		PlayerPrefs.SetFloat(BALL_COLOR_BLUE,blue);
 	}
 	
+	#endregion
+	#region Video Pref Functions
+
+	public static void SetTextureRes(int res){
+		PlayerPrefs.SetInt(TEXTURE_RESOLUTION, res);
+	}
+
+	public static int GetTextureRes(){
+		#if UNITY_WEBGL
+		int res = PlayerPrefs.GetInt(TEXTURE_RESOLUTION, 0);
+		#else
+		int res = PlayerPrefs.GetInt(TEXTURE_RESOLUTION, 1);
+		#endif
+
+		return res;
+	}
+
 	#endregion
 	#region High Score Functions
 	

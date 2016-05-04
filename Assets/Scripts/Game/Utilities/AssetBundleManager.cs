@@ -4,7 +4,7 @@
   AssetBundles from remote and local
   storage
   Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
+  Latest Revision - 3 May, 2016
 /-------------------------------------*/
 
 using UnityEngine;
@@ -43,8 +43,8 @@ public class AssetBundleManager : MonoBehaviour{
 	}
 
 	void Update(){
-		totalDownloadProgress = 0f;
 		if(downloadProgressArray != null){
+			totalDownloadProgress = 0f;
 			foreach(float progress in downloadProgressArray)
 				totalDownloadProgress += progress;
 
@@ -192,7 +192,10 @@ public class AssetBundleManager : MonoBehaviour{
 			if(bundleName == "levels")
 				scenePaths = www.assetBundle.GetAllScenePaths();
 
-			assetBundleDict.Add(bundleName, www.assetBundle);
+			if(bundleName != "levels" && bundleName != "gui")
+				www.assetBundle.Unload(false);
+			else
+				assetBundleDict.Add(bundleName, www.assetBundle);
 		}
 
 		yield break;
@@ -217,7 +220,8 @@ public class AssetBundleManager : MonoBehaviour{
 			if(bundleName == "levels")
 				scenePaths = www.assetBundle.GetAllScenePaths();
 
-			assetBundleDict.Add(bundleName, www.assetBundle);
+			if(!assetBundleDict.ContainsValue(www.assetBundle))
+				assetBundleDict.Add(bundleName, www.assetBundle);
 		}
 
 		yield break;
@@ -264,9 +268,12 @@ public class AssetBundleManager : MonoBehaviour{
 		Object asset = default(T);
 		string bundleName = "";
 
-		if(typeof(T) == typeof(Texture2D))
-			bundleName = "textures";
-		else if(typeof(T) == typeof(AudioClip))
+		if(typeof(T) == typeof(Texture2D)){
+			if(PrefsManager.GetTextureRes() == 0)
+				bundleName = "textures.sd";
+			else
+				bundleName = "textures.hd";
+		} else if(typeof(T) == typeof(AudioClip))
 			bundleName = "audio";
 
 		if(!assetBundleDict.ContainsKey(bundleName)){

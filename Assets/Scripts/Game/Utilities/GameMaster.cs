@@ -141,17 +141,7 @@ public class GameMaster : MonoBehaviour {
 			
 			case "MainMenu":
 				stars.SetActive(true);
-				if(PlaySpace.instance)
-					Destroy(PlaySpace.instance.gameObject);
-
-				ballsInScene = FindObjectsOfType<Ball>();
-				if(ballsInScene.Length > 0){
-					foreach(Ball ball in ballsInScene)
-						Destroy(ball.gameObject);
-				}
-
-				if(Paddle.instance)
-					Destroy(Paddle.instance.gameObject);
+				ClearGameObjects();
 
 				if(MusicPlayer.instance.isPlaying)
 					MusicPlayer.instance.StopMusic();
@@ -169,17 +159,7 @@ public class GameMaster : MonoBehaviour {
 				break;
 				
 			case "Win":
-				if(PlaySpace.instance)
-					Destroy(PlaySpace.instance.gameObject);
-
-				ballsInScene = FindObjectsOfType<Ball>();
-				if(ballsInScene.Length > 0){
-					foreach(Ball ball in ballsInScene)
-						Destroy(ball.gameObject);
-				}
-
-				if(Paddle.instance)
-						Destroy(Paddle.instance.gameObject);
+				ClearGameObjects();
 
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
@@ -188,19 +168,9 @@ public class GameMaster : MonoBehaviour {
 				break;
 				
 			case "Lose":
+				ClearGameObjects();
+
 				gameValues.playerLives = 3;
-				if(PlaySpace.instance)
-					Destroy(PlaySpace.instance.gameObject);
-
-				ballsInScene = FindObjectsOfType<Ball>();
-				if(ballsInScene.Length > 0){
-					foreach(Ball ball in ballsInScene)
-						Destroy(ball.gameObject);
-				}
-
-				if(Paddle.instance)
-						Destroy(Paddle.instance.gameObject);
-
 				UIManager.instance.EndGame();
 				UIManager.instance.OpenEndGameMenu(level);
 				inGame = false;
@@ -348,6 +318,26 @@ public class GameMaster : MonoBehaviour {
 			levelName = "Level_"+currentLevel;
 			
 		ChangeToLevel(levelName);
+	}
+
+	public void ClearGameObjects(){
+		if(PlaySpace.instance)
+			Destroy(PlaySpace.instance.gameObject);
+
+		if(Paddle.instance)
+			Destroy(Paddle.instance.gameObject);
+
+		Ball[] ballsInScene = FindObjectsOfType<Ball>();
+		if(ballsInScene.Length > 0){
+			foreach(Ball ball in ballsInScene)
+				Destroy(ball.gameObject);
+		}
+
+		Brick[] bricksInScene = FindObjectsOfType<Brick>();
+		if(bricksInScene.Length > 0){
+			foreach(Brick brick in bricksInScene)
+				Destroy(brick.gameObject);
+		}
 	}
 	
 	#endregion
