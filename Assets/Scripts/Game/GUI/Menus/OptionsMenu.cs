@@ -75,8 +75,15 @@ public class OptionsMenu : MonoBehaviour {
 		SetSliderValues();
 		SetToggleValues();
 
-		if(!inGameMenu)
+		if(!inGameMenu){
+			#if UNITY_WEBGL
+			dropdowns.textureResDropdown.interactable = false;
+			dropdowns.textureResDropdown.value = 0;
+			OptionsController.instance.SetTextureRes(0);
+			#endif
+
 			SetBallColorImage();
+		}
 	}
 
 	void Update(){

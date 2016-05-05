@@ -3,7 +3,7 @@
   Controlling class for Ball
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
+  Latest Revision - 5 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -24,11 +24,13 @@ public class Ball : MonoBehaviour {
 	[Tooltip("Reference to own Prefab to handle Multiball splitting.")]
 	[SerializeField] private GameObject ballPrefab = null;
 	[Tooltip("Array of materials for each Ball State.")]
-	[SerializeField] private Material[] materialArray = new Material[5];
+	[SerializeField] private Material[] materialArray = new Material[4];
 	[Tooltip("Array of Audio for each Ball State.")]
 	[SerializeField] private string[] audioClips = new string[5];
 	[Tooltip("Speed of the Ball with no Powerup modification.")]
 	[SerializeField] private float baseBallSpeed = 8f;
+	[SerializeField] private ParticleSystem normalParticles = null;
+	[SerializeField] private ParticleSystem explosiveParticles = null;
 
 	private Color ballColor;
 	private AudioSource audioSource;
@@ -41,6 +43,11 @@ public class Ball : MonoBehaviour {
 	
 	void Start(){
 		ballColor = PrefsManager.GetBallColor();
+		normalParticles = GetComponentInChildren<ParticleSystem>();
+		normalParticles.startColor = ballColor;
+		curMat = GetComponentInChildren<MeshRenderer>().material;
+		curMat.SetColor("_FalloffColor", ballColor);
+		GetComponentInChildren<MeshRenderer>().material = curMat;
 
 		rigidBody = GetComponent<Rigidbody>();
 
@@ -48,9 +55,7 @@ public class Ball : MonoBehaviour {
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 
-		curMat = GetComponentInChildren<MeshRenderer>().material;
-		curMat.SetColor("_Color", ballColor);
-		GetComponentInChildren<MeshRenderer>().material = curMat;
+
 		
 		//Multiball Case
 		if(Paddle.instance.hasStarted){
@@ -130,7 +135,8 @@ public class Ball : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision collision){
-		Vector3 tweak = new Vector3(Random.Range(0.25f,0.5f)*(transform.position.x-Paddle.instance.transform.position.x),0f,0f);
+		float tweak = 10f*(transform.position.x-Paddle.instance.transform.position.x);
+		Vector3 tweakVector = new Vector3(tweak,0f,0f);
 		
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
@@ -146,7 +152,7 @@ public class Ball : MonoBehaviour {
 			if(collision.gameObject.tag != "Breakable")
 				audioSource.Play();
 			if(collision.gameObject.tag == "Player")
-				rigidBody.velocity += tweak;
+				rigidBody.velocity += tweakVector;
 		}
 	}
 	
@@ -155,18 +161,23 @@ public class Ball : MonoBehaviour {
 		switch(ballState){
 			case BallState.Normal:
 				isSticky = false;
+				explosiveParticles.Stop();
 				curMat = materialArray[0];
-				curMat.SetColor("_Color", ballColor);
-				curMat.SetColor("_EmissionColor", Color.black);
+				curMat.SetColor("_FalloffColor", ballColor);
+				normalParticles.Play();
 				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 				break;
 			
 			case BallState.Sticky:
+				normalParticles.Stop();
+				explosiveParticles.Stop();
 				curMat = materialArray[1];
 				break;
 				
 			case BallState.Iron:
 				isSticky = false;
+				normalParticles.Stop();
+				explosiveParticles.Stop();
 				curMat = materialArray[2];
 				curMat.SetColor("_Color", Color.white);
 				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[1]);
@@ -174,6 +185,8 @@ public class Ball : MonoBehaviour {
 				
 			case BallState.Feather:
 				isSticky = false;
+				normalParticles.Stop();
+				explosiveParticles.Stop();
 				curMat = materialArray[3];
 				curMat.SetColor("_Color", Color.white);
 				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[2]);
@@ -181,7 +194,9 @@ public class Ball : MonoBehaviour {
 				
 			case BallState.Explosive:
 				isSticky = false;
-				curMat = materialArray[4];
+				normalParticles.Stop();
+				explosiveParticles.Play();
+				curMat = materialArray[0];
 				break;
 				
 			default:

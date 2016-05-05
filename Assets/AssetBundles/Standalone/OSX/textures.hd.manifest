@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1521142643
+CRC: 1671924768
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8e5613daeef3949b54cb92f8d7600885
+    Hash: 21d4918279f9e6e375df3d23281945e6
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6759894fca659e2049f05064db45ce61
@@ -38,7 +38,6 @@ Assets:
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_TopWall_Body_AlbedoTransparency.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Shrink_Height.png
 - Assets/Materials/Props/Ball/Textures/HD/Ball_StickyBall_MetalRough.png
-- Assets/Materials/Props/Ball/Textures/HD/Ball_NormalBall_Height.png
 - Assets/Materials/Actors/Paddle/Textures/HD/Paddle_LaserTurret_Normal.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Exterior_Normal.png
 - Assets/Materials/Actors/Paddle/Textures/HD/Paddle_PaddleBase_Height.png

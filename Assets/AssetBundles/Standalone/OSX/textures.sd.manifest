@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1000112499
+CRC: 4066718781
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a3ce2faed38c826e0357c79dc30ef81a
+    Hash: 4348527b9cb6eab4f622addd4eca0483
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6759894fca659e2049f05064db45ce61
@@ -16,7 +16,6 @@ Assets:
 - Assets/Materials/Props/Powerup/Textures/SD/Powerup_SpeedUp_MetalRough.png
 - Assets/Materials/Props/Brick/Textures/SD/Brick_Border_Height.png
 - Assets/Materials/Structures/Playspace/Textures/SD/Playspace_ShieldProjector_Body_Height.png
-- Assets/Materials/Props/Ball/Textures/SD/Ball_NormalBall_Height.png
 - Assets/Materials/Structures/Playspace/Textures/SD/Playspace_Shield_Diffuse.png
 - Assets/Materials/Props/Brick/Textures/SD/Brick_Body_Normal.png
 - Assets/Materials/Structures/Playspace/Textures/SD/Playspace_Doors_Normal.png

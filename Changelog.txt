@@ -73,9 +73,12 @@ v1.9.5:
   GAMEPLAY:
   -Added Text Notification when Powerup is picked up
   -Smoothed Shield Lighting
+  -Altered Ball/Paddle collision reaction so Ball X Velocity is 
+   based off impact distance from center of Paddle
 
   ART:
   -Changed HD to UD, SD to HD, and added lower resolution for SD
+  -Changed Ball Materials to Glass with Particle System inside
   
   OTHER:
   -Added rotating image to Splash Screen
