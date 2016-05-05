@@ -73,6 +73,7 @@ public class GameMaster : MonoBehaviour {
 			LevelCheck(curLevel);
 		}
 
+		//1UP every 5000 points
 		if(gameValues.totalScore-lifeGrantedAt > 5000){
 			if(gameValues.playerLives < 99)
 				gameValues.playerLives++;
@@ -180,6 +181,8 @@ public class GameMaster : MonoBehaviour {
 			//In Game
 			default:
 				UIManager.instance.OpenInGameUI();
+
+				//Create Playspace
 				if(!PlaySpace.instance){
 					UIManager.instance.ToggleLaunchPrompt(false);
 					Instantiate(prefabs.playSpacePrefab);
@@ -188,9 +191,11 @@ public class GameMaster : MonoBehaviour {
 				} else
 					UIManager.instance.BeginGame();
 
+				//Create Paddle
 				if(!Paddle.instance)
 					Instantiate(prefabs.paddlePrefab);
 
+				//Remove Extra Balls
 				ballsInScene = FindObjectsOfType<Ball>();
 				if(ballsInScene.Length > 0){
 					foreach(Ball ball in ballsInScene)

@@ -3,7 +3,8 @@ AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: levels
-      Dependencies: {}
+      Dependencies:
+        Dependency_0: textures.ud
     Info_1:
       Name: gui
       Dependencies: {}
@@ -15,4 +16,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_4:
       Name: textures.sd
+      Dependencies: {}
+    Info_5:
+      Name: textures.ud
       Dependencies: {}

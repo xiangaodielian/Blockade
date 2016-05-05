@@ -137,12 +137,8 @@ public class Shield : MonoBehaviour {
 		
 		//Drop Intensity to restingLightIntensity (* 1.5 on WebGL) if above (i.e. after segment is hit)
 		#if UNITY_WEBGL
-		if(lightIntensity == maxLightIntensity * 1.3f)
-			lightIntensity = 5f;
-		else{
-			if(shieldLight.intensity > lightIntensity)
-				shieldLight.intensity -= 0.25f;
-		}
+		if(shieldLight.intensity != restingLightIntensity * 1.3f && dissolve)
+			shieldLight.intensity = Mathf.Lerp(shieldLight.intensity, restingLightIntensity * 1.3f, Time.deltaTime * 2f);
 		#else
 		if(shieldLight.intensity != restingLightIntensity && dissolve)
 			shieldLight.intensity = Mathf.Lerp(shieldLight.intensity, restingLightIntensity, Time.deltaTime * 2f);
