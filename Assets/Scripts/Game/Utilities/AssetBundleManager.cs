@@ -271,8 +271,10 @@ public class AssetBundleManager : MonoBehaviour{
 		if(typeof(T) == typeof(Texture2D)){
 			if(PrefsManager.GetTextureRes() == 0)
 				bundleName = "textures.sd";
-			else
+			else if(PrefsManager.GetTextureRes() == 1)
 				bundleName = "textures.hd";
+			else
+				bundleName = "textures.ud";
 		} else if(typeof(T) == typeof(AudioClip))
 			bundleName = "audio";
 

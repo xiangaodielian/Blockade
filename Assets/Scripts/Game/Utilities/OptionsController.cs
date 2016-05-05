@@ -115,6 +115,12 @@ public class OptionsController : MonoBehaviour {
 		PrefsManager.SetBallColor(ballColor.r,ballColor.g,ballColor.b);
 
 		PrefsManager.SetMouseControl(false);
+
+		#if UNITY_WEBGL
+		SetTextureRes(0);
+		#else
+		SetTextureRes(1);
+		#endif
 	}
 	
 	#endregion

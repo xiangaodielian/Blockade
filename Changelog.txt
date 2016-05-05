@@ -68,3 +68,14 @@ v1.9.4:
 
   OTHER:
   -Changed Interview Mode to Demo Mode
+
+v1.9.5:
+  GAMEPLAY:
+  -Added Text Notification when Powerup is picked up
+  -Smoothed Shield Lighting
+
+  ART:
+  -Changed HD to UD, SD to HD, and added lower resolution for SD
+  
+  OTHER:
+  -Added rotating image to Splash Screen

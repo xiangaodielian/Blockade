@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 11 Apr, 2016
+  Latest Revision - 3 May, 2016
 /-----------------------------*/
 
 using UnityEngine;

@@ -3,7 +3,7 @@
   Controlling class for Paddle (Player)
   object and its functions
   Writen by Joe Arthur
-  Latest Revision - 8 Apr, 2016
+  Latest Revision - 4 May, 2016
 /--------------------------------------*/
 
 using UnityEngine;
@@ -172,6 +172,8 @@ public class Paddle : MonoBehaviour {
 				Debug.LogError("Powerup Doesn't Have Type!");
 				break;
 		}
+
+		InGameUI.instance.DisplayPowerupNotification(powerupType);
 	}
 	
 	#endregion

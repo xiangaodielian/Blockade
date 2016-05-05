@@ -4,7 +4,7 @@
   object acting as the Playspace
   border and its functions
   Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
+  Latest Revision - 4 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -19,15 +19,16 @@ public class Shield : MonoBehaviour {
 
 	[Tooltip("Angle of Constraint for rotation of Shield when allowed.")]
 	[SerializeField] private float rotateConstraintAngle = 20f;
-	
+	[SerializeField] private float maxLightIntensity = 7f;
+	[SerializeField] private float restingLightIntensity = 3f;
+
 	private BoxCollider boxCollider;
 	private Rigidbody rigidBody;
 	private Material shieldMat;
-	private float blendAmount = 0f;			//Controls Dissolve amount for Shader
-	private float edgeWidth = 83f;			//Edge Width of Dissolve for Shader
+	private float blendAmount = 0f;					//Controls Dissolve amount for Shader
+	private float edgeWidth = 83f;					//Edge Width of Dissolve for Shader
 	private bool dissolve = false;
 	private Light shieldLight;
-	private float lightIntensity = 3f;		//Intensity of shieldLight
 	private Vector3 shieldAnchorPos = Vector3.zero;
 	
 	#endregion
@@ -76,13 +77,16 @@ public class Shield : MonoBehaviour {
 	{
 		boxCollider = GetComponent<BoxCollider> ();
 		boxCollider.isTrigger = true;
+
 		rigidBody = GetComponent<Rigidbody> ();
 		rigidBody.mass = 0.0001f;
 		rigidBody.useGravity = false;
 		rigidBody.constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+
 		shieldMat = GetComponent<MeshRenderer> ().material;
 		shieldMat.SetFloat ("_BlendAmount", blendAmount);
 		shieldMat.SetFloat ("_EdgeWidth", edgeWidth);
+
 		shieldLight = GetComponent<Light> ();
 		shieldLight.type = LightType.Point;
 		shieldLight.renderMode = LightRenderMode.ForcePixel;
@@ -95,9 +99,9 @@ public class Shield : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 		if(col.tag != "Wall"){
 			#if UNITY_WEBGL
-			shieldLight.intensity = 10f;
+			shieldLight.intensity = maxLightIntensity * 1.3f;
 			#else
-			shieldLight.intensity = 7f;
+			shieldLight.intensity = maxLightIntensity;
 			#endif
 		}
 	}
@@ -106,9 +110,9 @@ public class Shield : MonoBehaviour {
 	void OnCollisionEnter(Collision col){
 		if(col.collider.tag != "Wall"){
 			#if UNITY_WEBGL
-			shieldLight.intensity = 10f;
+			shieldLight.intensity = maxLightIntensity * 1.3f;
 			#else
-			shieldLight.intensity = 7f;
+			shieldLight.intensity = maxLightIntensity;
 			#endif
 		}
 	}
@@ -131,26 +135,21 @@ public class Shield : MonoBehaviour {
 		
 		shieldLight.range = minRange + Mathf.PingPong(Time.time * pulseSpeed, maxRange-minRange);
 		
-		//Drop Intensity to 3 (5 on WebGL) if above (i.e. after segment is hit)
+		//Drop Intensity to restingLightIntensity (* 1.5 on WebGL) if above (i.e. after segment is hit)
 		#if UNITY_WEBGL
-		if(lightIntensity == 10f)
+		if(lightIntensity == maxLightIntensity * 1.3f)
 			lightIntensity = 5f;
 		else{
 			if(shieldLight.intensity > lightIntensity)
 				shieldLight.intensity -= 0.25f;
 		}
 		#else
-		if(lightIntensity == 7f)
-			lightIntensity = 3f;
-		else{
-			if(shieldLight.intensity > lightIntensity)
-				shieldLight.intensity -= 0.25f;
-		}
+		if(shieldLight.intensity != restingLightIntensity && dissolve)
+			shieldLight.intensity = Mathf.Lerp(shieldLight.intensity, restingLightIntensity, Time.deltaTime * 2f);
 		#endif
 	}
 	
 	public void DissolveIn(){
-		shieldLight.intensity = lightIntensity;
 		dissolve = true;
 	}
 	

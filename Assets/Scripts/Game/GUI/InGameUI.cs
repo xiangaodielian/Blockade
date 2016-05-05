@@ -3,7 +3,7 @@
   Controls all GUI visible in-game
   and their functions
   Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
+  Latest Revision - 4 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -22,6 +22,7 @@ public class InGameUI : MonoBehaviour {
 		public Text timeText = null;
 		public Text livesText = null;
 		public Text launchPromptText = null;
+		public Text powerupNotificationText = null;
 		public Image livesImage = null;
 	}
 
@@ -39,6 +40,7 @@ public class InGameUI : MonoBehaviour {
 	private GameObject optionsPanel;
 	private GameObject endLevelPanel;
 	private GameObject inGameTutorials;
+	private int powerupTextTimer = 0;
 	private int elapsedTime = 0;
 	private int timeDifference = 0;
 	private bool runTimer = false;
@@ -60,6 +62,7 @@ public class InGameUI : MonoBehaviour {
 
 		InstantiatePrefabs();
 
+		displayedGUI.powerupNotificationText.text = "";
 		TogglePrompt(false);
 		endLevelPanel.SetActive(false);
 		inGameMainMenuPanel.SetActive(false);
@@ -103,6 +106,12 @@ public class InGameUI : MonoBehaviour {
 		if(PrefsManager.GetCurrentLevel() == 5 && displayTutorial && PrefsManager.GetLevelUnlocked() <= PrefsManager.GetCurrentLevel()){
 			ToggleInGameTutorials(true, 3);
 			displayTutorial = false;
+		}
+
+		//Clear Powerup Notification after 2 sec
+		if(powerupTextTimer != 0 && (int)Time.time - powerupTextTimer >= 2){
+			powerupTextTimer = 0;
+			displayedGUI.powerupNotificationText.text = "";
 		}
 	}
 	
@@ -194,6 +203,63 @@ public class InGameUI : MonoBehaviour {
 		if(visible)
 			inGameTutorials.GetComponent<TutorialGUI>().SetTutorial(tutNum);
 			
+	}
+
+	public void DisplayPowerupNotification(Powerup.PowerupType type){
+		switch(type){
+			case Powerup.PowerupType.Expand:
+				displayedGUI.powerupNotificationText.text = "OBTAINED EXPAND!";
+				break;
+
+			case Powerup.PowerupType.Explode:
+				displayedGUI.powerupNotificationText.text = "OBTAINED EXPLOSIVE BALL!";
+				break;
+
+			case Powerup.PowerupType.FeatherBall:
+				displayedGUI.powerupNotificationText.text = "FEATHER BALL: BALL DAMAGE HALVED!";
+				break;
+
+			case Powerup.PowerupType.IronBall:
+				displayedGUI.powerupNotificationText.text = "IRON BALL: BALL DAMAGE DOUBLED!";
+				break;
+
+			case Powerup.PowerupType.Lasers:
+				if(PrefsManager.GetMouseControl())
+					displayedGUI.powerupNotificationText.text = "CLICK TO FIRE LASERS!";
+				else
+					displayedGUI.powerupNotificationText.text = "PRESS SPACE TO FIRE LASERS!";
+				break;
+
+			case Powerup.PowerupType.Mirror:
+				displayedGUI.powerupNotificationText.text = "MOVEMENT MIRRORED!";
+				break;
+
+			case Powerup.PowerupType.Multiball:
+				displayedGUI.powerupNotificationText.text = "MULTIBALL!";
+				break;
+
+			case Powerup.PowerupType.Shrink:
+				displayedGUI.powerupNotificationText.text = "OBTAINED SHRINK!";
+				break;
+
+			case Powerup.PowerupType.SlowDown:
+				displayedGUI.powerupNotificationText.text = "BALL SPEED LOWERED!";
+				break;
+
+			case Powerup.PowerupType.SpeedUp:
+				displayedGUI.powerupNotificationText.text = "BALL SPEED RAISED!";
+				break;
+
+			case Powerup.PowerupType.StickyBall:
+				displayedGUI.powerupNotificationText.text = "OBTAINED STICKY BALL!";
+				break;
+
+			default:
+				Debug.LogError("Invalid Powerup Type!");
+				break;
+		}
+
+		powerupTextTimer = (int)Time.time;
 	}
 	
 	#endregion

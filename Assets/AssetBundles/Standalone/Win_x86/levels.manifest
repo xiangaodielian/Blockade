@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1210272276
+CRC: 864952956
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ce9943404e247a88146385859e521210
+    Hash: a3b0992d4ec441ff6e121f2e733f7b41
   TypeTreeHash:
     serializedVersion: 2
     Hash: dd332cd3a563c12939907be8c6aa32c5
@@ -72,4 +72,5 @@ Assets:
 - Assets/_Scenes/Levels/Level_17.unity
 - Assets/_Scenes/Levels/Level_13.unity
 - Assets/_Scenes/Levels/Level_10.unity
-Dependencies: []
+Dependencies:
+- Assets/AssetBundles/Standalone/Win_x86/textures.ud

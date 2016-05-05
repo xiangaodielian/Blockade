@@ -3,7 +3,7 @@
   Controls all GUI visible in
   Options Menus (including in-game)
   Writen by Joe Arthur
-  Latest Revision - 3 May, 2016
+  Latest Revision - 4 May, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -86,7 +86,7 @@ public class OptionsMenu : MonoBehaviour {
 		if(toggles.useCursorToggle.isOn != PrefsManager.GetMouseControl())
 			SetToggleValues();
 
-		if(dropdowns.textureResDropdown.value != PrefsManager.GetTextureRes())
+		if(inGameMenu && dropdowns.textureResDropdown.value != PrefsManager.GetTextureRes())
 			dropdowns.textureResDropdown.value = PrefsManager.GetTextureRes();
 
 		CheckPanelFocus();

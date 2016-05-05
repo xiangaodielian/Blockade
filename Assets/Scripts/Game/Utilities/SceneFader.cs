@@ -50,14 +50,13 @@ public class SceneFader : MonoBehaviour {
 	void Update(){
 		if(fadingIn)
 			FadeIn();
+		else if(fadingOut)
+			FadeOut();
 		
 		if(faderDetails.instantFadeAfterPause){
 			if(Time.timeSinceLevelLoad - pauseStart >= faderDetails.pauseDuration && pauseStart != 0f)
 				fadingOut = true;
 		}
-
-		if(fadingOut)
-			FadeOut();
 	}
 	
 	#endregion
@@ -123,6 +122,5 @@ public class SceneFader : MonoBehaviour {
 	private void FadeToOutColor(){
 		faderDetails.fadeImage.color = Color.Lerp(faderDetails.fadeImage.color, faderDetails.fadeOutColor, faderDetails.fadeOutSpeed * Time.deltaTime);
 	}
-	
 	#endregion
 }
