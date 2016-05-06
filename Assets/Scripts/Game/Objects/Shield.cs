@@ -97,24 +97,14 @@ public class Shield : MonoBehaviour {
 	
 	//Light Shield segment when hit by Ball
 	void OnTriggerEnter(Collider col){
-		if(col.tag != "Wall"){
-			#if UNITY_WEBGL
-			shieldLight.intensity = maxLightIntensity * 1.3f;
-			#else
+		if(col.tag != "Wall")
 			shieldLight.intensity = maxLightIntensity;
-			#endif
-		}
 	}
 
 	//Light Shield segment when hit by Ball
 	void OnCollisionEnter(Collision col){
-		if(col.collider.tag != "Wall"){
-			#if UNITY_WEBGL
-			shieldLight.intensity = maxLightIntensity * 1.3f;
-			#else
+		if(col.collider.tag != "Wall")
 			shieldLight.intensity = maxLightIntensity;
-			#endif
-		}
 	}
 	
 	//Toggles ability for Shield to rotate when hit
@@ -127,22 +117,12 @@ public class Shield : MonoBehaviour {
 		float minRange = 1.4f;
 		float maxRange = 1.5f;
 		float pulseSpeed = 0.1f;
-
-		#if UNITY_WEBGL
-		maxRange = 1.7f;
-		pulseSpeed = 0.3f;
-		#endif
 		
 		shieldLight.range = minRange + Mathf.PingPong(Time.time * pulseSpeed, maxRange-minRange);
 		
-		//Drop Intensity to restingLightIntensity (* 1.5 on WebGL) if above (i.e. after segment is hit)
-		#if UNITY_WEBGL
-		if(shieldLight.intensity != restingLightIntensity * 1.3f && dissolve)
-			shieldLight.intensity = Mathf.Lerp(shieldLight.intensity, restingLightIntensity * 1.3f, Time.deltaTime * 2f);
-		#else
+		//Drop Intensity to restingLightIntensity if above (i.e. after segment is hit)
 		if(shieldLight.intensity != restingLightIntensity && dissolve)
 			shieldLight.intensity = Mathf.Lerp(shieldLight.intensity, restingLightIntensity, Time.deltaTime * 2f);
-		#endif
 	}
 	
 	public void DissolveIn(){

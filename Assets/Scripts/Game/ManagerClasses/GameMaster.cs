@@ -127,10 +127,10 @@ public class GameMaster : MonoBehaviour {
 		else
 			manifestPathPrefix = AssetBundleManager.instance.mainAssetBundleURL;
 
-		#if UNITY_STANDALONE || UNITY_EDITOR
+		#if UNITY_STANDALONE_WIN || UNITY_EDITOR
 		manifestPathSuffix = "Standalone/Win_x86/Win_x86";
-		#elif UNITY_WEBGL
-		manifestPathSuffix = "WebGL/WebGL";
+		#elif UNITY_STANDALONE_OSX
+		manifestPathSuffix = "Standalone/OSX/OSX";
 		#endif
 
 		switch(level){

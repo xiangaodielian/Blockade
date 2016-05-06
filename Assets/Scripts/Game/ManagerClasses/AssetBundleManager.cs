@@ -76,23 +76,12 @@ public class AssetBundleManager : MonoBehaviour{
 				string[] dependencies = manifest.GetAllDependencies(name);
 				if(dependencies.Length > 0){
 					foreach(string dependent in dependencies){
-						if(!bundleQueue.Contains(dependent)){
-							#if UNITY_WEBGL
-							if(!dependent.Contains(".hd") && !dependent.Contains(".ud"))
-								bundleQueue.Enqueue(dependent);
-							#else
+						if(!bundleQueue.Contains(dependent))
 							bundleQueue.Enqueue(dependent);
-							#endif
-						}
 					}
 				}
 
-				#if UNITY_WEBGL
-				if(!name.Contains(".hd") && !name.Contains(".ud"))
-					bundleQueue.Enqueue(name);
-				#else
 				bundleQueue.Enqueue(name);
-				#endif
 			}
 
 			string bundlePath = GetBundlePath();
@@ -104,7 +93,7 @@ public class AssetBundleManager : MonoBehaviour{
 			//Download and cache all bundles in Queue and immediately unload them from memory
 			//except for "gui" and "levels" bundles
 			while(bundleQueue.Count > 0){
-				yield return StartCoroutine(LoadAssetBundle(bundlePath, bundleQueue.Dequeue(), bundleIndex));
+				StartCoroutine(LoadAssetBundle(bundlePath, bundleQueue.Dequeue(), bundleIndex));
 				bundleIndex++;
 			}
 		}
@@ -269,8 +258,6 @@ public class AssetBundleManager : MonoBehaviour{
 		pathSuffix = "Standalone/Win_x86/";
 		#elif UNITY_STANDALONE_OSX
 		pathSuffix = "Standalone/OSX/";
-		#elif UNITY_WEBGL
-		pathSuffix = "WebGL/";
 		#endif
 
 		return pathPrefix + pathSuffix;
