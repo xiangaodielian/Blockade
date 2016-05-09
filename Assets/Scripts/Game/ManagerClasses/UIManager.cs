@@ -3,7 +3,7 @@
   Manages all GUI elements and
   their functions
   Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
+  Latest Revision - 8 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -141,6 +141,10 @@ public class UIManager : MonoBehaviour {
 		interviewerTutorialPanel.transform.SetParent(this.transform);
 		interviewerTutorialPanel.transform.localScale = Vector3.one;
 		interviewerTutorialPanel.transform.localPosition = Vector3.zero;
+	}
+
+	public void UpdateCheck(){
+		mainMenu.GetComponent<MainMenu>().UpdateCheck();
 	}
 
 	public void ProceedToLevel(string level, bool async){

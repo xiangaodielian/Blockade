@@ -4,7 +4,7 @@
   including setting Textures, Audio,
   Meshes, etc.
   Writen by Joe Arthur
-  Latest Revision - 4 Apr, 2016
+  Latest Revision - 8 May, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -112,6 +112,18 @@ public class ResourceManager{
 			clip =  AssetBundleManager.instance.LoadAsset<AudioClip>(track);
 
 		return clip;
+	}
+
+	#endregion
+	#region Prefab
+
+	public static GameObject LoadPrefab(string bundleName, string assetName){
+		GameObject asset = null;
+
+		if(bundleName == "gui")
+			asset = AssetBundleManager.instance.LoadGUIAsset<GameObject>(assetName);
+
+		return asset;
 	}
 
 	#endregion

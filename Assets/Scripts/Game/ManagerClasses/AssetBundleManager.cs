@@ -4,7 +4,7 @@
   AssetBundles from remote and local
   storage
   Writen by Joe Arthur
-  Latest Revision - 4 May, 2016
+  Latest Revision - 8 May, 2016
 /-------------------------------------*/
 
 using UnityEngine;
@@ -42,9 +42,10 @@ public class AssetBundleManager : MonoBehaviour{
 	void Update(){
 		if(downloadProgressArray != null){
 			totalDownloadProgress = 0f;
+
 			foreach(float progress in downloadProgressArray)
 				totalDownloadProgress += progress;
-
+			
 			if(totalDownloadProgress == 1f)
 				downloadProgressArray = null;
 		}
@@ -112,6 +113,9 @@ public class AssetBundleManager : MonoBehaviour{
 					downloadProgressArray[bundleIndex] = www.progress/totalBundles;
 					yield return null;
 				}
+
+				if(downloadProgressArray != null && downloadProgressArray[bundleIndex] != 1f/totalBundles)
+					downloadProgressArray[bundleIndex] = 1f/totalBundles;
 
 				if(www.error != null){
 					Debug.LogError("AssetBundle Error: " + www.error);

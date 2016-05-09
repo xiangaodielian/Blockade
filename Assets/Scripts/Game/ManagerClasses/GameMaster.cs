@@ -3,7 +3,7 @@
   Controlling class for all
   manager classes
   Writen by Joe Arthur
-  Latest Revision - 5 May, 2016
+  Latest Revision - 8 May, 2016
 /-----------------------------*/
 
 using UnityEngine;
@@ -141,6 +141,8 @@ public class GameMaster : MonoBehaviour {
 				break;
 			
 			case "MainMenu":
+				UIManager.instance.UpdateCheck();
+
 				stars.SetActive(true);
 				ClearGameObjects();
 

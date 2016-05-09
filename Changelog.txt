@@ -82,3 +82,10 @@ v1.9.5:
   
   OTHER:
   -Added rotating image to Splash Screen
+
+v2.0.1:
+  BUGFIX:
+  -Fixed issue where asset loading would get stuck
+
+  GUI:
+  -Added notification panel for Application Updates
