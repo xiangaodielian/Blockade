@@ -43,6 +43,7 @@ public class OptionsMenu : MonoBehaviour {
 
 	[System.Serializable] private class Dropdowns{
 		public Dropdown textureResDropdown = null;
+		public Dropdown difficultyDropdown = null;
 	}
 
 	[System.Serializable] private class Images{
@@ -74,6 +75,7 @@ public class OptionsMenu : MonoBehaviour {
 
 		SetSliderValues();
 		SetToggleValues();
+		SetDropdownValues();
 
 		if(!inGameMenu){
 			#if UNITY_WEBGL
@@ -131,6 +133,7 @@ public class OptionsMenu : MonoBehaviour {
 			});
 
 			dropdowns.textureResDropdown.onValueChanged.AddListener(value => OptionsController.instance.SetTextureRes(value));
+			dropdowns.difficultyDropdown.onValueChanged.AddListener(value => OptionsController.instance.SetDifficulty(value));
 		} else
 			buttons.backButton.onClick.AddListener(() => {
 				InGameUI.instance.InGameMain();
@@ -166,6 +169,11 @@ public class OptionsMenu : MonoBehaviour {
 
 	void SetToggleValues(){
 		toggles.useCursorToggle.isOn = PrefsManager.GetMouseControl();
+	}
+
+	void SetDropdownValues(){
+		dropdowns.difficultyDropdown.value = PrefsManager.GetDifficulty();
+		dropdowns.textureResDropdown.value = PrefsManager.GetTextureRes();
 	}
 
 	void SetBallColorImage(){

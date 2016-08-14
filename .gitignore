@@ -1,8 +1,11 @@
-Builds/
-Library/
-Temp/
-obj/
+[Bb]uilds/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
 
 *.sln
 *.userprefs
 *.csproj
+*.tmp
+
+sysinfo.txt

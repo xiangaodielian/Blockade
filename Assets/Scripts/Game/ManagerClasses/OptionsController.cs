@@ -50,16 +50,34 @@ public class OptionsController : MonoBehaviour {
 	
 	#endregion
 	#region Set Option Functions and Checks
-	
+
+	/*-----GAMEPLAY-----*/
 	public void SetUseCursor(bool useCursor){
 		InputManager.instance.useCursorMovement = useCursor;
 		PrefsManager.SetMouseControl(useCursor);
 	}
 
+	public void SetDifficulty(int value){
+		if(value != PrefsManager.GetDifficulty())
+			PrefsManager.SetDifficulty(value);
+	}
+
+	// Sets Color of Ball (Red = 0, Green = 1, Blue = 2)
+	public void SetBallColor(int color, float value){
+		if(color == 0)
+			ballColor.r = value;
+		if(color == 1)
+			ballColor.g = value;
+		if(color == 2)
+			ballColor.b = value;
+	}
+
+	/*-----VIDEO-----*/
 	public void SetTextureRes(int res){
 		PrefsManager.SetTextureRes(res);
 	}
 
+	/*-----AUDIO-----*/
 	public void SetAudioClip(){
 		audioSource.clip = ResourceManager.LoadAudioClip(false, "Bounce");
 	}
@@ -73,16 +91,6 @@ public class OptionsController : MonoBehaviour {
 		musicVolume = value;
 		if(MusicPlayer.instance)
 			MusicPlayer.instance.SetVolume(value);
-	}
-	
-	// Sets Color of Ball (Red = 0, Green = 1, Blue = 2)
-	public void SetBallColor(int color, float value){
-		if(color == 0)
-			ballColor.r = value;
-		if(color == 1)
-			ballColor.g = value;
-		if(color == 2)
-			ballColor.b = value;
 	}
 
 	public bool SliderCheck(float musCheck, float sfxCheck){

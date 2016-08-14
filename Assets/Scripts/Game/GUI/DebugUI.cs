@@ -3,7 +3,7 @@
   Manages Debug UI including console,
   cheats, and debug info display
   Writen by Joe Arthur
-  Latest Revision - 24 Mar, 2016
+  Latest Revision - 14 May, 2016
 /----------------------------------*/
 
 using UnityEngine;
@@ -19,7 +19,6 @@ public class DebugUI : MonoBehaviour {
 	const string ADD_ZAZZ = "itneedsmorezazz";
 	const string MULTIBALL = "fishandloaves";
 	const string DEBUG_INFO = "bigbrother";
-	const string INTERVIEWER_MODE = "imaskingthequestions";
 
 	#endregion
 	#region Variables
@@ -117,6 +116,7 @@ public class DebugUI : MonoBehaviour {
 			case UNLOCK_ALL:
 				debugFields.responseText.text = "ALL LEVELS UNLOCKED!";
 				PrefsManager.SetLevelUnlocked(20);
+				PrefsManager.SetLatestCheckpoint(20);
 				break;
 
 			case MAX_LIVES:

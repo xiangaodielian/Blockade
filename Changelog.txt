@@ -1,5 +1,5 @@
 Blockade Changelog
-Updated 7 April, 2016
+Updated 14 May, 2016
 
 v1.9.0: Initial Debug Release
   DEBUG COMMANDS (F10 to open Console):
@@ -89,3 +89,8 @@ v2.0.1:
 
   GUI:
   -Added notification panel for Application Updates
+
+v2.0.2:
+  BUGFIX:
+  -Fixed issue where Shield Movement wouldn't trigger when starting from Level 4 or lower
+  -Fixed issue where using "thisisgonbebig" Debug Command wouldn't keep levels unlocked

@@ -33,6 +33,7 @@ public class PrefsManager{
 	const string TEXTURE_RESOLUTION = "texture_resolution";
 	const string MASTER_VOLUME = "master_volume";
 	const string MASTER_SFX_VOLUME = "master_sfx_volume";
+	const string DIFFICULTY = "difficulty";
 	
 	#endregion
 	#region Volume Functions
@@ -105,6 +106,14 @@ public class PrefsManager{
 			return true;
 
 		return false;
+	}
+
+	public static int GetDifficulty(){
+		return PlayerPrefs.GetInt(DIFFICULTY, 1);
+	}
+
+	public static void SetDifficulty(int value){
+		PlayerPrefs.SetInt(DIFFICULTY, value);
 	}
 
 	public static Color GetBallColor(){

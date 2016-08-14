@@ -35,7 +35,8 @@ public class Ball : MonoBehaviour {
 	private Color ballColor;
 	private AudioSource audioSource;
 	private bool isSticky = false;
-	private float velMultiplier = 1f;
+	private float ballVelMultiplier = 1f;
+	private float difficultySpeedMultipler = 1f;
 	private Material curMat = null;
 	
 	#endregion
@@ -43,8 +44,10 @@ public class Ball : MonoBehaviour {
 	
 	void Start(){
 		ballColor = PrefsManager.GetBallColor();
+
 		normalParticles = GetComponentInChildren<ParticleSystem>();
 		normalParticles.startColor = ballColor;
+
 		curMat = GetComponentInChildren<MeshRenderer>().material;
 		curMat.SetColor("_FalloffColor", ballColor);
 		GetComponentInChildren<MeshRenderer>().material = curMat;
@@ -55,7 +58,7 @@ public class Ball : MonoBehaviour {
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
 
-
+		difficultySpeedMultipler = ((float)PrefsManager.GetDifficulty() + 2f) / 3f;
 		
 		//Multiball Case
 		if(Paddle.instance.hasStarted){
@@ -70,7 +73,7 @@ public class Ball : MonoBehaviour {
 				}
 			}
 			
-			rigidBody.velocity = new Vector2(Random.Range(0f,1f),Random.Range(0f,1f)).normalized*otherVel.magnitude;
+			rigidBody.velocity = new Vector2(Random.Range(0f, 1f), Random.Range(0f, 1f)).normalized * otherVel.magnitude;
 		}
 
 		ResourceManager.SetMaterialTextures(this.gameObject);
@@ -90,16 +93,16 @@ public class Ball : MonoBehaviour {
 			ExplosiveGlowPulse();
 
 		if(lockToPaddle){
-			transform.position = Paddle.instance.transform.position + new Vector3(0f,0.35f,0f);
+			transform.position = Paddle.instance.transform.position + new Vector3(0f, 0.35f, 0f);
 			rigidBody.velocity = Vector3.zero;
 		}
 	}
 
 	void FixedUpdate(){
 		if(!lockToPaddle){
-			if(rigidBody.velocity.magnitude < baseBallSpeed*velMultiplier-1f || rigidBody.velocity.magnitude > baseBallSpeed*velMultiplier+1f){
+			if(rigidBody.velocity.magnitude < baseBallSpeed * ballVelMultiplier * difficultySpeedMultipler - 1f || rigidBody.velocity.magnitude > baseBallSpeed * ballVelMultiplier * difficultySpeedMultipler + 1f){
 				Vector3 newVel = rigidBody.velocity.normalized;
-				newVel *= baseBallSpeed*velMultiplier;
+				newVel *= baseBallSpeed * ballVelMultiplier * difficultySpeedMultipler;
 
 				Vector3 returnVel = new Vector3();
 				returnVel.x = Mathf.Lerp(rigidBody.velocity.x, newVel.x, 7f * Time.fixedDeltaTime);
@@ -116,7 +119,7 @@ public class Ball : MonoBehaviour {
 
 	public void LaunchBall(){
 		lockToPaddle = false;
-		velMultiplier = 1f;
+		ballVelMultiplier = 1f;
 		rigidBody.velocity = new Vector3(0f, 1f, 0f);
 		UIManager.instance.ToggleLaunchPrompt(false);
 
@@ -214,7 +217,7 @@ public class Ball : MonoBehaviour {
 	// SpeedUp or SlowDown
 	public void SetVelocity(float scale){
 		rigidBody.velocity *= scale;
-		velMultiplier *= scale;
+		ballVelMultiplier *= scale;
 	}
 	
 	// Split into two Balls

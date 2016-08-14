@@ -129,7 +129,7 @@ public class ResourceManager{
 	#endregion
 
 	public static IEnumerator UnloadUnusedResources(){
-		AssetBundleManager.instance.UnloadUnusedBundles();
 		yield return Resources.UnloadUnusedAssets();
+		AssetBundleManager.instance.UnloadUnusedBundles();
 	}
 }

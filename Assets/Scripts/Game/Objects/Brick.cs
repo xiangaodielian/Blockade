@@ -133,7 +133,7 @@ public class Brick : MonoBehaviour {
 		if(gameObject.tag == "Breakable")
 			isBreakable = true;
 		
-		pointValue = 50*hitPoints;
+		pointValue = 50 * hitPoints * (PrefsManager.GetDifficulty() + 1);
 		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
 		
 		if(powerupDetails.randomPowerup)

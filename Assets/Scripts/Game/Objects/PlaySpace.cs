@@ -27,6 +27,7 @@ public class PlaySpace : MonoBehaviour {
 	private float timer = 0;
 	private Animator animator;
 	private AudioSource audioSource;
+	private bool movingShields = false;
 	
 	#endregion
 	#region Mono Functionc
@@ -58,6 +59,8 @@ public class PlaySpace : MonoBehaviour {
 				timer = 0f;
 			}
 		}
+
+		LevelCheck();
 	}
 	
 	#endregion
@@ -76,14 +79,21 @@ public class PlaySpace : MonoBehaviour {
 		foreach(GameObject shield in shields)
 			shield.GetComponent<Shield>().DissolveIn();
 			
-		if(LevelManager.GetLevelNum() >= 5)
-			SetMovingShields(true);
-		else
+		LevelCheck();
+	}
+
+	void LevelCheck(){
+		if(LevelManager.GetLevelNum() >= 5){
+			if(!movingShields)
+				SetMovingShields(true);
+		} else
 			SetMovingShields(false);
 	}
 	
 	//Set Shields as capable of rotation on hit
 	void SetMovingShields(bool b){
+		movingShields = b;
+
 		foreach(GameObject longCollider in longColliders)
 			longCollider.SetActive(!b);
 			
