@@ -21,7 +21,7 @@ public class ResourceManager{
 		if(objectName.Contains("Button"))
 			objectName = objectName.Replace("Button", "");
 
-		Texture2D guiTex = AssetBundleManager.instance.LoadGUIAsset<Texture2D>(objectName);
+		Texture2D guiTex = GameMaster.GMInstance.abManager.LoadGUIAsset<Texture2D>(objectName);
 
 		return Sprite.Create(guiTex, new Rect(0f, 0f, guiTex.width, guiTex.height), new Vector2(0.5f, 0.5f));
 	}
@@ -45,41 +45,41 @@ public class ResourceManager{
 			//Uses: AlbedoTransparency (RGB), MetalRoughMap (RGB-A),
 			//BumpMap (RGB/Normal), and HeightMap (RGB)
 			if(mat.shader.name == "Custom/PBR/MetalRough"){
-				mat.mainTexture = AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
-				mat.SetTexture("_MetalRoughMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_MetalRough"));
-				mat.SetTexture("_BumpMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Normal"));
-				mat.SetTexture("_HeightMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Height"));
+				mat.mainTexture = GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
+				mat.SetTexture("_MetalRoughMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_MetalRough"));
+				mat.SetTexture("_BumpMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Normal"));
+				mat.SetTexture("_HeightMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Height"));
 			}
 			//Set Textures for Custom/Transparent/MetalRoughAlphaBlend Shader
 			//Uses: AlbedoTransparency (RGB-A), MetalRoughMap (RGB-A),
 			//BumpMap (RGB/Normal), and HeightMap (RGB)
 			else if(mat.shader.name == "Custom/Transparent/MetalRoughAlphaBlend"){
-				mat.mainTexture =  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
-				mat.SetTexture("_MetalRoughMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_MetalRough"));
-				mat.SetTexture("_BumpMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Normal"));
-				mat.SetTexture("_HeightMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Height"));
+				mat.mainTexture =  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
+				mat.SetTexture("_MetalRoughMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_MetalRough"));
+				mat.SetTexture("_BumpMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Normal"));
+				mat.SetTexture("_HeightMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Height"));
 			}
 			//Set Textures for Custom/Transparent/MetalRoughAlphaBlend Shader
 			//Uses: BumpMap (RGB/Normal)
 			else if(mat.shader.name == "Custom/Transparent/Glass"){
-				mat.SetTexture("_BumpMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Normal"));
+				mat.SetTexture("_BumpMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Normal"));
 			}
 			//Set Textures for Custom/Transparent/DissolveTransparent Shader
 			//Uses: DiffuseTex (RGB), BumpMap (RGB/Normal),
 			//and DissolveTex (RGB)
 			else if(mat.shader.name == "Custom/Transparent/DissolveTransparent"){
-				mat.SetTexture("_DiffuseTex",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Diffuse"));
-				mat.SetTexture("_BumpMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Normal"));
-				mat.SetTexture("_DissolveTex",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Dissolve"));
+				mat.SetTexture("_DiffuseTex",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Diffuse"));
+				mat.SetTexture("_BumpMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Normal"));
+				mat.SetTexture("_DissolveTex",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Dissolve"));
 			}
 			//Set Textures for Unity Standard Shader
 			//Uses: AlbedoTransparency (RGB), MetallicGlossMap (RGBA),
 			//BumpMap (RGB/Normal), and ParallaxMap (RGB)
 			else if(mat.shader.name == "Standard"){
-				mat.mainTexture =  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
-				mat.SetTexture("_MetallicGlossMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_MetalRough"));
-				mat.SetTexture("_BumpMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Normal"));
-				mat.SetTexture("_ParallaxMap",  AssetBundleManager.instance.LoadAsset<Texture2D>(texPath + "_Height"));
+				mat.mainTexture =  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_AlbedoTransparency");
+				mat.SetTexture("_MetallicGlossMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_MetalRough"));
+				mat.SetTexture("_BumpMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Normal"));
+				mat.SetTexture("_ParallaxMap",  GameMaster.GMInstance.abManager.LoadAsset<Texture2D>(texPath + "_Height"));
 			}
 		}
 	}
@@ -103,15 +103,8 @@ public class ResourceManager{
 	#endregion
 	#region Audio
 
-	public static AudioClip LoadAudioClip(bool music, string track){
-		AudioClip clip = null;
-
-		if(music)
-			clip =  AssetBundleManager.instance.LoadAsset<AudioClip>(track);
-		else
-			clip =  AssetBundleManager.instance.LoadAsset<AudioClip>(track);
-
-		return clip;
+	public static AudioClip LoadAudioClip(string track){
+		return GameMaster.GMInstance.abManager.LoadAsset<AudioClip>(track);
 	}
 
 	#endregion
@@ -121,7 +114,7 @@ public class ResourceManager{
 		GameObject asset = null;
 
 		if(bundleName == "gui")
-			asset = AssetBundleManager.instance.LoadGUIAsset<GameObject>(assetName);
+			asset = GameMaster.GMInstance.abManager.LoadGUIAsset<GameObject>(assetName);
 
 		return asset;
 	}
@@ -130,6 +123,7 @@ public class ResourceManager{
 
 	public static IEnumerator UnloadUnusedResources(){
 		yield return Resources.UnloadUnusedAssets();
-		AssetBundleManager.instance.UnloadUnusedBundles();
+
+		GameMaster.GMInstance.abManager.UnloadUnusedBundles();
 	}
 }

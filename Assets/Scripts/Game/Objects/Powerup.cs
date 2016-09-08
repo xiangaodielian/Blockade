@@ -62,47 +62,47 @@ public class Powerup : MonoBehaviour {
 		switch (powerupType) {
 			case PowerupType.SpeedUp:
 				curMesh = meshArray[0];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[0]);
 				break;
 			case PowerupType.SlowDown:
 				curMesh = meshArray[1];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[1]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[1]);
 				break;
 			case PowerupType.Expand:
 				curMesh = meshArray[2];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[2]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[2]);
 				break;
 			case PowerupType.Shrink:
 				curMesh = meshArray[3];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[2]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[2]);
 				break;
 			case PowerupType.Lasers:
 				curMesh = meshArray[4];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[3]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[3]);
 				break;
 			case PowerupType.Explode:
 				curMesh = meshArray[5];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[4]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[4]);
 				break;
 			case PowerupType.Multiball:
 				curMesh = meshArray[6];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[5]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[5]);
 				break;
 			case PowerupType.IronBall:
 				curMesh = meshArray[7];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[6]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[6]);
 				break;
 			case PowerupType.FeatherBall:
 				curMesh = meshArray[8];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[7]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[7]);
 				break;
 			case PowerupType.StickyBall:
 				curMesh = meshArray[9];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[8]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[8]);
 				break;
 			case PowerupType.Mirror:
 				curMesh = meshArray[10];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[9]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[9]);
 				break;
 			default:
 				Debug.LogError ("No Type Chosen For " + gameObject);
@@ -120,7 +120,7 @@ public class Powerup : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(curAudioClip,player.transform.position,PrefsManager.GetMasterSFXVolume());
 			player.CollectPowerup(powerupType);
 			Destroy(gameObject);
-			GameMaster.instance.gameValues.totalScore += pointValue;
+			GameMaster.GMInstance.playerManager.AddToPlayerScore(pointValue);
 		}
 			
 	}

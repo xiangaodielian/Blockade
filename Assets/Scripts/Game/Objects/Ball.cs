@@ -1,21 +1,20 @@
-﻿/*----------------------------/
-  Ball Class - Blockade
-  Controlling class for Ball
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 5 May, 2016
-/-----------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Ball : MonoBehaviour {
 	
 	#region Variables
-	
 
-	public enum BallState {Normal, Sticky, Iron, Feather, Explosive};
+	public enum BallState{
+		Normal, 
+		Sticky, 
+		Iron, 
+		Feather, 
+		Explosive
+	};
+
 	[Tooltip("Current State that the ball is in (i.e. Normal, Iron, Explosive, etc).")]
 	public BallState ballState = BallState.Normal;
 	[HideInInspector] public Rigidbody rigidBody;
@@ -32,6 +31,7 @@ public class Ball : MonoBehaviour {
 	[SerializeField] private ParticleSystem normalParticles = null;
 	[SerializeField] private ParticleSystem explosiveParticles = null;
 
+	private UnityAction launchBallListener;
 	private Color ballColor;
 	private AudioSource audioSource;
 	private bool isSticky = false;
@@ -42,6 +42,10 @@ public class Ball : MonoBehaviour {
 	#endregion
 	#region MonoDevelop Functions
 	
+	void Awake(){
+		launchBallListener = new UnityAction(LaunchBall);
+	}
+
 	void Start(){
 		ballColor = PrefsManager.GetBallColor();
 
@@ -56,12 +60,12 @@ public class Ball : MonoBehaviour {
 
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
-		audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+		audioSource.clip = ResourceManager.LoadAudioClip(audioClips[0]);
 
 		difficultySpeedMultipler = ((float)PrefsManager.GetDifficulty() + 2f) / 3f;
 		
 		//Multiball Case
-		if(Paddle.instance.hasStarted){
+		if(GameMaster.GMInstance.playerManager.activePlayer.hasStarted){
 			Vector2 otherVel = new Vector2();
 			Ball[] otherBalls = FindObjectsOfType<Ball>();
 			foreach(Ball ball in otherBalls){
@@ -78,6 +82,14 @@ public class Ball : MonoBehaviour {
 
 		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
+
+	void OnEnable(){
+		EventManager.StartListening(EventManager.EventNames.launchBall, launchBallListener);
+	}
+
+	void OnDisable(){
+		EventManager.StopListening(EventManager.EventNames.launchBall, launchBallListener);
+	}
 	
 	void Update(){
 		//Set Ball SFX Volume if changed
@@ -85,7 +97,8 @@ public class Ball : MonoBehaviour {
 			audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		
 		//Pre-Launch
-		if(!Paddle.instance.hasStarted && !GameMaster.instance.gamePaused && GameMaster.instance.allowStart)
+		// && GameMaster.GMInstance.allowStart
+		if(!GameMaster.GMInstance.playerManager.activePlayer.hasStarted && !TimeManager.gamePaused)
 			lockToPaddle = true;
 		
 		//Explosive Ball Pulse
@@ -93,7 +106,7 @@ public class Ball : MonoBehaviour {
 			ExplosiveGlowPulse();
 
 		if(lockToPaddle){
-			transform.position = Paddle.instance.transform.position + new Vector3(0f, 0.35f, 0f);
+			transform.position = GameMaster.GMInstance.playerManager.activePlayer.transform.position + new Vector3(0f, 0.35f, 0f);
 			rigidBody.velocity = Vector3.zero;
 		}
 	}
@@ -117,14 +130,16 @@ public class Ball : MonoBehaviour {
 	#endregion
 	#region Utility Functions
 
-	public void LaunchBall(){
-		lockToPaddle = false;
-		ballVelMultiplier = 1f;
-		rigidBody.velocity = new Vector3(0f, 1f, 0f);
-		UIManager.instance.ToggleLaunchPrompt(false);
+	void LaunchBall(){
+		if(lockToPaddle){
+			lockToPaddle = false;
+			ballVelMultiplier = 1f;
+			rigidBody.velocity = new Vector3(0f, 1f, 0f);
+			GUIManager.instance.inGameGUI.TogglePrompt(false);
 
-		if(ballState == BallState.Sticky)
-			audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+			if(ballState == BallState.Sticky)
+				audioSource.clip = ResourceManager.LoadAudioClip(audioClips[0]);
+		}
 	}
 
 	//Pulse Emissive Glow when Explosive
@@ -138,20 +153,20 @@ public class Ball : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision collision){
-		float tweak = 10f*(transform.position.x-Paddle.instance.transform.position.x);
+		float tweak = 10f*(transform.position.x - GameMaster.GMInstance.playerManager.activePlayer.transform.position.x);
 		Vector3 tweakVector = new Vector3(tweak,0f,0f);
 		
 		// Stick to Paddle when StickyBall active
 		if(isSticky && collision.gameObject.tag == "Player"){
 			if(rigidBody.velocity != Vector3.zero){
-				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[3]);
+				audioSource.clip = ResourceManager.LoadAudioClip(audioClips[3]);
 				audioSource.Play();
 				lockToPaddle = true;
 			}
 		}
 		
 		// Ball does not trigger Sound when hitting Bricks
-		if(Paddle.instance.hasStarted){
+		if(GameMaster.GMInstance.playerManager.activePlayer.hasStarted){
 			if(collision.gameObject.tag != "Breakable")
 				audioSource.Play();
 			if(collision.gameObject.tag == "Player")
@@ -168,7 +183,7 @@ public class Ball : MonoBehaviour {
 				curMat = materialArray[0];
 				curMat.SetColor("_FalloffColor", ballColor);
 				normalParticles.Play();
-				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+				audioSource.clip = ResourceManager.LoadAudioClip(audioClips[0]);
 				break;
 			
 			case BallState.Sticky:
@@ -183,7 +198,7 @@ public class Ball : MonoBehaviour {
 				explosiveParticles.Stop();
 				curMat = materialArray[2];
 				curMat.SetColor("_Color", Color.white);
-				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[1]);
+				audioSource.clip = ResourceManager.LoadAudioClip(audioClips[1]);
 				break;
 				
 			case BallState.Feather:
@@ -192,7 +207,7 @@ public class Ball : MonoBehaviour {
 				explosiveParticles.Stop();
 				curMat = materialArray[3];
 				curMat.SetColor("_Color", Color.white);
-				audioSource.clip = ResourceManager.LoadAudioClip(false, audioClips[2]);
+				audioSource.clip = ResourceManager.LoadAudioClip(audioClips[2]);
 				break;
 				
 			case BallState.Explosive:
@@ -268,7 +283,7 @@ public class Ball : MonoBehaviour {
 	
 	//Explosive Ball hit Brick
 	public void BallExploded(){
-		AudioClip clip = ResourceManager.LoadAudioClip(false, audioClips[4]);
+		AudioClip clip = ResourceManager.LoadAudioClip(audioClips[4]);
 		AudioSource.PlayClipAtPoint(clip, transform.position, PrefsManager.GetMasterSFXVolume());
 		ballState = BallState.Normal;
 		ChangeMaterial();

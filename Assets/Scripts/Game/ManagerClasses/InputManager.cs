@@ -1,45 +1,48 @@
-﻿/*-----------------------------------/
-  InputManager Class - Blockade
-  Manages all Input including
-  Player Movement and Button Presses
-  Writen by Joe Arthur
-  Latest Revision - 11 Apr, 2016
-/-----------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 
 public class InputManager : MonoBehaviour {
 
 	#region Variables
 
-	//Singleton Instance of InputManager
-	public static InputManager instance {get; private set;}
-	public bool useCursorMovement = false;		//Defaults to movement using Keyboard
+	public static bool useCursorMovement = false;		//Defaults to movement using Keyboard
+	public bool allowPlayerMovement = false;
+
+	private UnityAction dissolveFinishListener;
+	private UnityAction levelFisnishListener;
 
 	#endregion
 	#region Mono Functions
 
 	void Awake(){
-		if(instance != null && instance != this)
-			Destroy(gameObject);
-		instance = this;
-
+		dissolveFinishListener = new UnityAction(AllowPlayerMovement);
+		levelFisnishListener = new UnityAction(DisallowPlayerMovement);
 		useCursorMovement = PrefsManager.GetMouseControl();
+	}
+
+	void OnEnable(){
+		EventManager.StartListening(EventManager.EventNames.dissolveFinish, dissolveFinishListener);
+		EventManager.StartListening(EventManager.EventNames.levelFinish, levelFisnishListener);
+	}
+
+	void onDisable(){
+		EventManager.StopListening(EventManager.EventNames.dissolveFinish, dissolveFinishListener);
+		EventManager.StopListening(EventManager.EventNames.levelFinish, levelFisnishListener);
 	}
 
 	void Update(){
 		//InGame Menu
-		if(Input.GetButtonDown("InGameMenu") && GameMaster.instance.inGame)
-			UIManager.instance.ToggleInGameMenu();
+		if(Input.GetKeyDown(KeyCode.Escape) && LevelManager.GetCurrentLevel().Contains("Level"))
+			GUIManager.instance.inGameGUI.ToggleMenu();
 
 		//Debug Console
-		if(Input.GetButtonDown("DebugConsole"))
-			UIManager.instance.ToggleDebugConsole();
+		if(Input.GetKeyDown(KeyCode.F10))
+			GUIManager.instance.debugUI.ToggleDebugConsole();
 
 		//Movement
-		if(!GameMaster.instance.gamePaused && GameMaster.instance.allowStart){
-			if(Paddle.instance){
+		if(!TimeManager.gamePaused && allowPlayerMovement){
+			if(GameMaster.GMInstance.playerManager.activePlayer != null){
 				if(useCursorMovement){
 					if(Input.mousePresent)
 						MoveWithMouse();
@@ -47,12 +50,12 @@ public class InputManager : MonoBehaviour {
 						MoveWithTouch();
 				} else
 					MoveWithKeyboard();
-			}
 
-			// Control Laser Firing
-			if(Paddle.instance.hasLasers){
-				if(Input.GetButtonDown("Fire"))
-					Paddle.instance.FireLasers();
+				// Control Laser Firing
+				if(GameMaster.GMInstance.playerManager.activePlayer.hasLasers){
+					if(Input.GetButtonDown("Fire"))
+						GameMaster.GMInstance.playerManager.activePlayer.FireLasers();
+				}
 			}
 		}
 	}
@@ -62,20 +65,20 @@ public class InputManager : MonoBehaviour {
 
 	//Control Paddle motion using mouse
 	void MoveWithMouse(){
-		Vector3 newPos = Paddle.instance.transform.position;
+		Vector3 newPos = GameMaster.GMInstance.playerManager.activePlayer.transform.position;
 		Vector3 mousePos = Input.mousePosition;
 		mousePos.z = 10f;
 		mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-		if(Paddle.instance.mirroredMovement)
+		if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
 			newPos.x += 16f - mousePos.x - newPos.x;
 		else
 			newPos.x += mousePos.x - newPos.x;
 		
-		Paddle.instance.MovePaddle(newPos);
+		GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(newPos);
 
 		if(Input.GetMouseButtonDown(0))
-			Paddle.instance.LaunchBall();
+			EventManager.TriggerEvent(EventManager.EventNames.launchBall);
 	}
 
 	//Control Paddle motion using finger on a touch device
@@ -85,40 +88,51 @@ public class InputManager : MonoBehaviour {
 			touchPos.z = 10f;
 			touchPos = Camera.main.ScreenToWorldPoint(touchPos);
 
-			Paddle.instance.MovePaddle(touchPos);
+			GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(touchPos);
 		}
 	}
 
 	//Control Paddle motion using Keyboard (A,D,<-,-> for motion, hold Shift for dash)
 	void MoveWithKeyboard(){
-		Vector3 newPos = Paddle.instance.transform.position;
+		Vector3 newPos = GameMaster.GMInstance.playerManager.activePlayer.transform.position;
 		float movementMultiplier = 1f;
 
 		if(Input.GetButton("Dash"))
 			movementMultiplier = 3f;
 
 		if(Input.GetAxis("Horizontal") < 0f){
-			if(Paddle.instance.mirroredMovement)
+			if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
 				newPos.x += 0.15f * movementMultiplier;
 			else
 				newPos.x -= 0.15f * movementMultiplier;
 		}
 
 		if(Input.GetAxis("Horizontal") > 0f){
-			if(Paddle.instance.mirroredMovement)
+			if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
 				newPos.x -= 0.15f * movementMultiplier;
 			else
 				newPos.x += 0.15f * movementMultiplier;
 		}
 
-		Paddle.instance.MovePaddle(newPos);
+		GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(newPos);
 
 		if(Input.GetButtonDown("Launch"))
-			Paddle.instance.LaunchBall();
+			EventManager.TriggerEvent(EventManager.EventNames.launchBall);
 	}
 
 	public void ProcessInputString(string input){
-		UIManager.instance.SendDebugCommand(input);
+		GUIManager.instance.debugUI.ProcessCommand(input);
+	}
+
+	#endregion
+	#region Delegates
+
+	void AllowPlayerMovement(){
+		allowPlayerMovement = true;
+	}
+
+	void DisallowPlayerMovement(){
+		allowPlayerMovement = false;
 	}
 
 	#endregion

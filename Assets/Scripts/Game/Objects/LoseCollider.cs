@@ -1,11 +1,3 @@
-/*-----------------------------------/
-  LoseCollider Class - Blockade
-  Controlling class for LoseCollider
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 7 Apr, 2016
-/----------------------------------*/
-
 using UnityEngine;
 using System.Collections;
 
@@ -17,7 +9,7 @@ public class LoseCollider : MonoBehaviour {
 	void Start(){
 		audioSouce = GetComponent<AudioSource>();
 		audioSouce.volume = PrefsManager.GetMasterSFXVolume();
-		audioSouce.clip = ResourceManager.LoadAudioClip(false, "LostBall");
+		audioSouce.clip = ResourceManager.LoadAudioClip("LostBall");
 	}
 	
 	//Reset Level or Go To Lose Screen if Applicable
@@ -28,11 +20,14 @@ public class LoseCollider : MonoBehaviour {
 		if(collider.tag == "Ball"){
 			audioSouce.Play();
 			if(ballArray.Length == 1){
-				if(GameMaster.instance.gameValues.playerLives > 0){
-					GameMaster.instance.gameValues.playerLives--;
-					GameMaster.instance.ResetCurrentLevel();
-				} else
-					GameMaster.instance.ChangeToLevel("Lose");
+				if(GameMaster.GMInstance.playerManager.GetPlayerLives() > 0){
+					GameMaster.GMInstance.playerManager.AddToPlayerLives(-1);
+					LevelManager.instance.ResetCurrentLevel();
+				} else{
+					GUIManager.instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.loseMenu);
+					LevelManager.instance.SetPreviousLevel();
+					LevelManager.instance.ChangeToLevel("EndGame");
+				}
 			}
 
 			Destroy(collider.gameObject);

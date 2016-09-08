@@ -89,7 +89,7 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	void Update(){
-		if(!OptionsController.instance.SliderCheck(sliders.musicVolumeSlider.value, sliders.sfxVolumeSlider.value))
+		if(!OptionsManager.instance.SliderCheck(sliders.musicVolumeSlider.value, sliders.sfxVolumeSlider.value))
 			SetSliderValues();
 
 		if(toggles.useCursorToggle.isOn != PrefsManager.GetMouseControl())
@@ -107,42 +107,42 @@ public class OptionsMenu : MonoBehaviour {
 	void SetListeners(){
 		if(!inGameMenu){
 			buttons.defaultsButton.onClick.AddListener(() => {
-				OptionsController.instance.ResetDefaults();
+				OptionsManager.instance.ResetDefaults();
 				ResetDefaultValues();
 			});
 			buttons.backButton.onClick.AddListener(() => {
 				curPanelFocus = 0;
-				UIManager.instance.MenuFadeTransition("MainMenu");
-				OptionsController.instance.SaveOptions();
+				GUIManager.instance.MenuFadeTransition("MainMenu");
+				OptionsManager.instance.SaveOptions();
 			});
 			buttons.gameplayButton.onClick.AddListener(() => curPanelFocus = 0);
 			buttons.videoButton.onClick.AddListener(() => curPanelFocus = 1);
 			buttons.audioButton.onClick.AddListener(() => curPanelFocus = 2);
 
 			sliders.ballColorRedSlider.onValueChanged.AddListener(value => {
-				OptionsController.instance.SetBallColor(0, value);
+				OptionsManager.instance.SetBallColor(0, value);
 				SetBallColorImage();
 			});
 			sliders.ballColorGreenSlider.onValueChanged.AddListener(value => {
-				OptionsController.instance.SetBallColor(1, value);
+				OptionsManager.instance.SetBallColor(1, value);
 				SetBallColorImage();
 			});
 			sliders.ballColorBlueSlider.onValueChanged.AddListener(value => {
-				OptionsController.instance.SetBallColor(2, value);
+				OptionsManager.instance.SetBallColor(2, value);
 				SetBallColorImage();
 			});
 
-			dropdowns.textureResDropdown.onValueChanged.AddListener(value => OptionsController.instance.SetTextureRes(value));
-			dropdowns.difficultyDropdown.onValueChanged.AddListener(value => OptionsController.instance.SetDifficulty(value));
+			dropdowns.textureResDropdown.onValueChanged.AddListener(value => OptionsManager.instance.SetTextureRes(value));
+			dropdowns.difficultyDropdown.onValueChanged.AddListener(value => OptionsManager.instance.SetDifficulty(value));
 		} else
 			buttons.backButton.onClick.AddListener(() => {
-				InGameUI.instance.InGameMain();
-				OptionsController.instance.SaveOptions();
+				GUIManager.instance.inGameGUI.InGameMain();
+				OptionsManager.instance.SaveOptions();
 			});
 
-		sliders.musicVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetMusicVolume(value));
-		sliders.sfxVolumeSlider.onValueChanged.AddListener(value => OptionsController.instance.SetSFXVolume(value));
-		toggles.useCursorToggle.onValueChanged.AddListener(value => { OptionsController.instance.SetUseCursor(value);
+		sliders.musicVolumeSlider.onValueChanged.AddListener(value => OptionsManager.instance.SetMusicVolume(value));
+		sliders.sfxVolumeSlider.onValueChanged.AddListener(value => OptionsManager.instance.SetSFXVolume(value));
+		toggles.useCursorToggle.onValueChanged.AddListener(value => { OptionsManager.instance.SetUseCursor(value);
 																	  SetDescriptiveText(value);}); 
 	}
 

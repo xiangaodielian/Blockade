@@ -1,12 +1,5 @@
-﻿/*--------------------------------------/
-  Paddle Class - Blockade
-  Controlling class for Paddle (Player)
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 4 May, 2016
-/--------------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,21 +9,20 @@ public class Paddle : MonoBehaviour {
 	
 	#region Variables
 
-	//Singleton instance for Paddle
-	public static Paddle instance {get; private set;}
-
 	[HideInInspector] public bool hasStarted = false;
 	[HideInInspector] public bool firstBall = true;
 	[HideInInspector] public bool hasLasers = false;
 	[HideInInspector] public bool mirroredMovement = false;			//FALSE - normal motion TRUE - reversed motion
 
-	[SerializeField] private GameObject ballPrefab = null;
 	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
 	[Tooltip("Transform for Left Laser parent group.")]
 	[SerializeField] private Transform leftLaserPos = null;			//Position of Left LaserTurret
 	[Tooltip("Transform for Right Laser parent group.")]
 	[SerializeField] private Transform rightLaserPos = null;		//Position of Right LaserTurret
 
+	private UnityAction levelResetListener;
+	private UnityAction launchBallListener;
+	private static Paddle instance;
 	private Vector3 targetScale = new Vector3();
 	private AudioSource audioSource;
 	private Animator animator;
@@ -42,35 +34,38 @@ public class Paddle : MonoBehaviour {
 	void Awake(){
 		if(instance != null && instance != this)
 			Destroy(gameObject);
+
 		instance = this;
 
 		DontDestroyOnLoad(gameObject);
+
+		levelResetListener = new UnityAction(ResetToDefaultState);
+		launchBallListener = new UnityAction(LaunchBall);
 	}
 
 	void Start(){
 		targetScale = transform.localScale;
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
-		audioSource.clip = ResourceManager.LoadAudioClip(false, "Laser");
+		audioSource.clip = ResourceManager.LoadAudioClip("Laser");
 		animator = GetComponent<Animator>();
 		ResourceManager.SetMaterialTextures(this.gameObject);
 	}
+
+	void OnEnable(){
+		EventManager.StartListening(EventManager.EventNames.levelReset, levelResetListener);
+		EventManager.StartListening(EventManager.EventNames.launchBall, launchBallListener);
+	}
+
+	void OnDisable(){
+		EventManager.StopListening(EventManager.EventNames.levelReset, levelResetListener);
+		EventManager.StopListening(EventManager.EventNames.launchBall, launchBallListener);
+	}
 	
 	void Update(){
-		if(GameMaster.instance.allowStart){
-			if(ballArray == null)
-				SpawnBall();
-
-			if(ballArray.Length != FindObjectsOfType<Ball>().Length){
-				ballArray = FindObjectsOfType<Ball>();
-				if(ballArray.Length == 0)
-					SpawnBall();
-			}
-		}
-
 		// Expand/Shrink scale over time
 		if(targetScale != transform.localScale)
-			transform.localScale = Vector3.Lerp(transform.localScale,targetScale,3f*Time.deltaTime);
+			transform.localScale = Vector3.Lerp(transform.localScale, targetScale, 3f * Time.deltaTime);
 	}
 	
 	#endregion
@@ -85,36 +80,29 @@ public class Paddle : MonoBehaviour {
 		this.transform.position = paddlePos;
 	}
 
-	public void LaunchBall(){
-		foreach(Ball ball in ballArray){
-			if(ball.lockToPaddle){
-				ball.LaunchBall();
-				if(firstBall){
-					firstBall = false;
-					InGameUI.instance.SetTimeDifference((int)Time.timeSinceLevelLoad);
-				}
-
-				if(!hasStarted)
-					hasStarted = true;
-			}
+	void LaunchBall(){
+		if(firstBall){
+			firstBall = false;
+			GUIManager.instance.inGameGUI.SetTimeDifference((int)Time.timeSinceLevelLoad);
 		}
+
+		if(!hasStarted)
+			hasStarted = true;
 	}
 	
-	public void SpawnBall(){
+	public void ResetToDefaultState(){
 		mirroredMovement = false;
 		//Retract Lasers
 		if(hasLasers){
 			animator.SetTrigger("laserStateTrigger");
 			hasLasers = false;
 		}
+
 		targetScale = new Vector3(1f,transform.localScale.y,transform.localScale.z);
 		hasStarted = false;
-		ballArray = new Ball[1];
-		ballArray[0] = Instantiate(ballPrefab).GetComponent<Ball>();
 	}
 	
 	public void CollectPowerup(Powerup.PowerupType powerupType){
-		
 		switch(powerupType){
 			case Powerup.PowerupType.Expand:
 				Expand(1);
@@ -173,7 +161,7 @@ public class Paddle : MonoBehaviour {
 				break;
 		}
 
-		InGameUI.instance.DisplayPowerupNotification(powerupType);
+		GUIManager.instance.inGameGUI.DisplayPowerupNotification(powerupType);
 	}
 	
 	#endregion

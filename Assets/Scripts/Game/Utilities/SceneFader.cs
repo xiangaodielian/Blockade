@@ -1,12 +1,4 @@
-﻿/*-----------------------------------/
-  SceneFader Class - Blockade
-  Controls Fade Transitions between
-  scenes and Menu Screens
-  Writen by Joe Arthur
-  Latest Revision - 3 Apr, 2016
-/----------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SceneFader : MonoBehaviour {
@@ -83,19 +75,19 @@ public class SceneFader : MonoBehaviour {
 		if(!screenLoaded){
 			switch(screenToLoad){
 				case "MainMenu":
-					UIManager.instance.OpenMainMenu();
+					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.mainMenu));
 					break;
 
 				case "OptionsMenu":
-					UIManager.instance.OpenOptionsMenu();
+					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.optionsMenu));
 					break;
 
 				case "LevelSelectMenu":
-					UIManager.instance.OpenLevelSelectMenu();
+					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.levelSelect));
 					break;
 
 				case "HighScoresMenu":
-					UIManager.instance.OpenHighScoreMenu();
+					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.highScore));
 					break;
 
 				default:
@@ -111,7 +103,7 @@ public class SceneFader : MonoBehaviour {
 			pauseStart = 0f;
 			faderDetails.fadeImage.color = faderDetails.fadeOutColor;
 			if(faderDetails.transitionType == FaderDetails.TransitionType.SceneChange)
-				GameMaster.instance.ChangeToLevel("MainMenu");
+				LevelManager.instance.ChangeToLevel("MainMenu");
 		}
 	}
 	

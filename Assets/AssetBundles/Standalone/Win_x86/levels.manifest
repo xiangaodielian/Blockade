@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4292257168
+CRC: 4086045385
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 78f75af39cd458e04fac2bbb23dd89b6
+    Hash: ee18b2efd8e13733f71438200f40908a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: dd332cd3a563c12939907be8c6aa32c5
+    Hash: 9332d7848cc9ad7643e30a06f29446c4
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -67,6 +67,8 @@ Assets:
 - Assets/_Scenes/Levels/Level_07.unity
 - Assets/_Scenes/Levels/Level_18.unity
 - Assets/_Scenes/Levels/Level_20.unity
+- Assets/_Scenes/Menus/EndGame.unity
+- Assets/_Scenes/Menus/MainMenu.unity
 - Assets/_Scenes/Levels/Level_12.unity
 - Assets/_Scenes/Levels/Level_01.unity
 - Assets/_Scenes/Levels/Level_17.unity

@@ -1,11 +1,4 @@
-﻿/*---------------------------------/
-  LevelSelectMenu Class - Blockade
-  Manages Level Selection Menu
-  Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
-/--------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -54,7 +47,7 @@ public class LevelSelectMenu : MonoBehaviour {
 		screenTwoNewPos = levels11To20.transform.position;
 	}
 	
-	void Update(){
+	void OnGUI(){
 		if(highestUnlocked != PrefsManager.GetLevelUnlocked()){
 			highestUnlocked = PrefsManager.GetLevelUnlocked();
 			SetLevelImages();
@@ -96,15 +89,20 @@ public class LevelSelectMenu : MonoBehaviour {
 			else
 				levelToLoad += index.ToString();
 
-			button.onClick.AddListener(() => { UIManager.instance.ProceedToLevel(levelToLoad, true);
-											   MusicPlayer.instance.NextTrack();
-											   ShowLoadScreen(); });
+			button.onClick.AddListener(() => { 
+				StartCoroutine(LevelManager.instance.ChangeToLevelAsync(levelToLoad));
+				MusicPlayer.instance.NextTrack();
+				ShowLoadScreen(); 
+			});
+
 			index++;
 		}
 
-		buttons.resumeButton.onClick.AddListener(() => { UIManager.instance.ProceedToLevel("LatestCheckpoint", true);
-														 MusicPlayer.instance.NextTrack(); });
-		buttons.backButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
+		buttons.resumeButton.onClick.AddListener(() => {
+			LevelManager.instance.ChangeToLevelAsync("LatestCheckpoint");
+			MusicPlayer.instance.NextTrack(); 
+		});
+		buttons.backButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 	
 	public void NextLevelScreen(){

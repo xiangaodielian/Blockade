@@ -1,13 +1,4 @@
-﻿/*-------------------------------------/
-  AssetBundleManager Class - Universal
-  Manages the loading/caching of
-  AssetBundles from remote and local
-  storage
-  Writen by Joe Arthur
-  Latest Revision - 8 May, 2016
-/-------------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,12 +6,10 @@ public class AssetBundleManager : MonoBehaviour{
 	
 	#region Variables
 
-	public static AssetBundleManager instance {get; private set;}
-
 	public string mainAssetBundleURL = "";
 	[Tooltip("Use AssetBundles from local file system (use to test).")]
 	public bool useLocalBundles = false;
-	[HideInInspector] public float totalDownloadProgress = 0f;
+	[HideInInspector] public static float totalDownloadProgress = 0f;
 
 	private AssetBundleManifest manifest;						//Main bundle manifest
 	private Dictionary<string, AssetBundle> assetBundleDict;	//Currently loaded bundles
@@ -32,10 +21,6 @@ public class AssetBundleManager : MonoBehaviour{
 	#region Mono Functions
 
 	void Awake(){
-		if(instance != null && instance != this)
-			Destroy(gameObject);
-		instance = this;
-
 		assetBundleDict = new Dictionary<string, AssetBundle>();
 	}
 
@@ -265,6 +250,29 @@ public class AssetBundleManager : MonoBehaviour{
 		#endif
 
 		return pathPrefix + pathSuffix;
+	}
+
+	#endregion
+	#region Delegates
+
+	public void SceneChange(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode){
+		if(scene.name == "Splash"){
+			string manifestPathPrefix = "";
+			string manifestPathSuffix = "";
+
+			if(useLocalBundles)
+				manifestPathPrefix = "file://" + Application.dataPath + "/AssetBundles/";
+			else
+				manifestPathPrefix = mainAssetBundleURL;
+
+			#if UNITY_STANDALONE_WIN || UNITY_EDITOR
+			manifestPathSuffix = "Standalone/Win_x86/Win_x86";
+			#elif UNITY_STANDALONE_OSX
+			manifestPathSuffix = "Standalone/OSX/OSX";
+			#endif
+
+			StartCoroutine(LoadBundleManifest(manifestPathPrefix + manifestPathSuffix));
+		}
 	}
 
 	#endregion

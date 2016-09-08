@@ -46,13 +46,13 @@ public class MusicPlayer : MonoBehaviour {
 	#region Music Utlity Functions
 	
 	public void MenuMusicSet(){
-		audioSource.clip = ResourceManager.LoadAudioClip(true, trackNames.menuMusic);
+		audioSource.clip = ResourceManager.LoadAudioClip(trackNames.menuMusic);
 
 		//Clear Queue and add inGame track
 		if(clipQueue.Count != 0)
 			clipQueue.Clear();
 
-		clipQueue.Enqueue(ResourceManager.LoadAudioClip(true, trackNames.inGame));
+		clipQueue.Enqueue(ResourceManager.LoadAudioClip(trackNames.inGame));
 	}
 
 	public void NextTrack(){

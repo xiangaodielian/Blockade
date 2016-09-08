@@ -27,25 +27,25 @@ public class LoadScreen : MonoBehaviour {
 
 	void Update(){
 		if(isLevelLoadScreen){
-			if(GameMaster.instance.async != null){
-				loadingSlider.value = GameMaster.instance.async.progress;
-				if(GameMaster.instance.async.isDone){
+			if(LevelManager.instance.asyncOp != null){
+				loadingSlider.value = LevelManager.instance.asyncOp.progress;
+				if(LevelManager.instance.asyncOp.isDone){
 					loadingSlider.value = 0f;
 					gameObject.SetActive(false);
 				}
 			}
 		} else{
-			if(AssetBundleManager.instance.totalDownloadProgress > 0f){
-				loadingSlider.value = AssetBundleManager.instance.totalDownloadProgress;
-				if(AssetBundleManager.instance.totalDownloadProgress < 0.5f)
+			if(AssetBundleManager.totalDownloadProgress > 0f){
+				loadingSlider.value = AssetBundleManager.totalDownloadProgress;
+				if(AssetBundleManager.totalDownloadProgress < 0.5f)
 					loadingMessageText.text = MESSAGE_ONE;
-				else if(AssetBundleManager.instance.totalDownloadProgress < 0.7f)
+				else if(AssetBundleManager.totalDownloadProgress < 0.7f)
 					loadingMessageText.text = MESSAGE_TWO;
-				else if(AssetBundleManager.instance.totalDownloadProgress < 0.8f)
+				else if(AssetBundleManager.totalDownloadProgress < 0.8f)
 					loadingMessageText.text = MESSAGE_THREE;
-				else if(AssetBundleManager.instance.totalDownloadProgress < 0.85f)
+				else if(AssetBundleManager.totalDownloadProgress < 0.85f)
 					loadingMessageText.text = MESSAGE_FOUR;
-				else if(AssetBundleManager.instance.totalDownloadProgress == 1f)
+				else if(AssetBundleManager.totalDownloadProgress == 1f)
 					GetComponentInParent<SceneFader>().faderDetails.instantFadeAfterPause = true;
 			}
 		}

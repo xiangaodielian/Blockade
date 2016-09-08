@@ -11,6 +11,9 @@ public class EndLevelMenu : MonoBehaviour {
 	[SerializeField] private Buttons buttons = null;
 
 	void Awake(){
-		buttons.continueButton.onClick.AddListener(() => UIManager.instance.ProceedToNextLevel());
+		buttons.continueButton.onClick.AddListener(() => {
+			GUIManager.instance.inGameGUI.StopTimer();
+			GUIManager.instance.inGameGUI.ToggleEndLevelPanel(false);
+		});
 	}
 }

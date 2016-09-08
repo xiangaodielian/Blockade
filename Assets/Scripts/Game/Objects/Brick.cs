@@ -1,12 +1,4 @@
-﻿/*----------------------------/
-  Brick Class - Blockade
-  Controlling class for Brick
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 6 Apr, 2016
-/-----------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System;
 #if UNITY_EDITOR
@@ -53,7 +45,7 @@ public class Brick : MonoBehaviour {
 	#endregion
 	#region MonoDevelop Functions
 	
-	void Start() {
+	void Start(){
 		#if UNITY_EDITOR
 		if(!EditorApplication.isPlaying)
 			bodyMaterial = GetComponent<MeshRenderer>().sharedMaterials[1];
@@ -68,7 +60,7 @@ public class Brick : MonoBehaviour {
 		ResourceManager.SetMaterialTextures(this.gameObject);
 		
 		if(isBreakable)
-			GameMaster.instance.AddBrickToList(this.gameObject);
+			GameObjectManager.AddBrickToList(this.gameObject);
 	}
 	
 	void Update(){
@@ -89,35 +81,35 @@ public class Brick : MonoBehaviour {
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[0];
 				curIntensity = materialArrays.glowIntensities[0];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[0]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[0]);
 				hitPoints = 1;
 				break;
 			case BrickType.TWO:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[1];
 				curIntensity = materialArrays.glowIntensities[1];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[1]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[1]);
 				hitPoints = 2;
 				break;
 			case BrickType.THREE:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[2];
 				curIntensity = materialArrays.glowIntensities[2];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[2]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[2]);
 				hitPoints = 3;
 				break;
 			case BrickType.FOUR:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[3];
 				curIntensity = materialArrays.glowIntensities[3];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[3]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[3]);
 				hitPoints = 4;
 				break;
 			case BrickType.FIVE:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[4];
 				curIntensity = materialArrays.glowIntensities[4];
-				curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[4]);
+				curAudioClip = ResourceManager.LoadAudioClip(audioClips[4]);
 				hitPoints = 5;
 				break;
 			case BrickType.UNBREAKABLE:
@@ -151,7 +143,7 @@ public class Brick : MonoBehaviour {
 		curIntensity = materialArrays.glowIntensities[colorIndex];
 			
 		bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
-		curAudioClip = ResourceManager.LoadAudioClip(false, audioClips[colorIndex]);
+		curAudioClip = ResourceManager.LoadAudioClip(audioClips[colorIndex]);
 	}
 	
 	void OnCollisionEnter(Collision collision){
@@ -163,7 +155,8 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void HandleHits(){
-		AudioSource.PlayClipAtPoint(curAudioClip,transform.position,PrefsManager.GetMasterSFXVolume());
+		AudioSource.PlayClipAtPoint(curAudioClip, transform.position, PrefsManager.GetMasterSFXVolume());
+
 		if(collidingBall){
 			if(collidingBall.ballState == Ball.BallState.Explosive){
 				Vector3 explosionPos = transform.position;
@@ -198,7 +191,7 @@ public class Brick : MonoBehaviour {
 			if(powerupDetails.hasPowerup)
 				DropPowerup();
 				
-			GameMaster.instance.BrickDestroyed(pointValue, this.gameObject);
+			GameObjectManager.BrickDestroyed(pointValue, this.gameObject);
 			Destroy(gameObject);
 		} else {
 			ChangeBrickColor();

@@ -1,12 +1,4 @@
-﻿/*-----------------------------------------/
-  CameraManager Class - Blockade
-  Controlling class for all Camera related
-  functions and animations
-  Writen by Joe Arthur
-  Latest Revision - 4 May, 2016
-/-----------------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
 
@@ -35,7 +27,6 @@ public class CameraManager : MonoBehaviour {
 
 	void Start(){
 		SetCamera();
-		SetBloom();
 	}
 
 	void SetCamera(){
@@ -48,17 +39,5 @@ public class CameraManager : MonoBehaviour {
 			this.transform.position = sixteenTenPos;
 			cam.fieldOfView = sixteenTenFOV;
 		}
-	}
-
-	void SetBloom(){
-		bloom = GetComponent<Bloom>();
-
-		#if UNITY_WEBGL
-		bloom.bloomThreshold = 0.75f;
-		bloom.bloomIntensity = 0.75f;
-		#else
-		bloom.bloomThreshold = 1.75f;
-		bloom.bloomIntensity = 1.03f;
-		#endif
 	}
 }

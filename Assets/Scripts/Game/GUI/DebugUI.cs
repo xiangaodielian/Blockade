@@ -1,12 +1,4 @@
-﻿/*-----------------------------------/
-  DebugUI Class - Blockade
-  Manages Debug UI including console,
-  cheats, and debug info display
-  Writen by Joe Arthur
-  Latest Revision - 14 May, 2016
-/----------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -42,7 +34,7 @@ public class DebugUI : MonoBehaviour {
 
 	void Start(){
 		debugInput = debugFields.debugInput;
-		debugInput.onEndEdit.AddListener((value) => InputManager.instance.ProcessInputString(value));
+		debugInput.onEndEdit.AddListener((value) => GameMaster.GMInstance.inputManager.ProcessInputString(value));
 		debugInput.gameObject.SetActive(false);
 		debugFields.responseText.text = "";
 		debugInfo.SetActive(false);
@@ -53,8 +45,8 @@ public class DebugUI : MonoBehaviour {
 			UpdateDebugInfo();
 
 		if(debugInput.gameObject.activeSelf){
-			if(GameMaster.instance.inGame && !GameMaster.instance.gamePaused)
-				GameMaster.instance.GamePause();
+			if(LevelManager.GetCurrentLevel().Contains("Level") && !TimeManager.gamePaused)
+				TimeManager.Pause();
 		}
 
 		if(!debugInput.isFocused)
@@ -68,12 +60,12 @@ public class DebugUI : MonoBehaviour {
 	public void ToggleDebugConsole(){
 		debugInput.gameObject.SetActive(!debugInput.gameObject.activeSelf);
 		if(debugInput.gameObject.activeSelf){
-			if(GameMaster.instance.inGame && !GameMaster.instance.gamePaused)
-				GameMaster.instance.GamePause();
+			if(LevelManager.GetCurrentLevel().Contains("Level") && !TimeManager.gamePaused)
+				TimeManager.Pause();
 			SetFocus();
 		} else{
-			if(GameMaster.instance.inGame && GameMaster.instance.gamePaused)
-				GameMaster.instance.GamePause();
+			if(LevelManager.GetCurrentLevel().Contains("Level") && TimeManager.gamePaused)
+				TimeManager.Pause();
 		}
 	}
 
@@ -120,9 +112,10 @@ public class DebugUI : MonoBehaviour {
 				break;
 
 			case MAX_LIVES:
-				if(GameMaster.instance.inGame){
+				if(LevelManager.GetCurrentLevel().Contains("Level")){
 					debugFields.responseText.text = "MAX LIVES!";
-					GameMaster.instance.gameValues.playerLives = 99;
+
+					GameMaster.GMInstance.playerManager.SetPlayerLives(99);
 				} else
 					debugFields.responseText.text = "TRY THIS ONE IN GAME!";
 				break;
@@ -132,7 +125,7 @@ public class DebugUI : MonoBehaviour {
 				break;
 
 			case MULTIBALL:
-				if(GameMaster.instance.inGame){
+				if(LevelManager.GetCurrentLevel().Contains("Level")){
 					debugFields.responseText.text = "MULTIBALL MAYHEM!";
 					AddMultiball();
 				} else

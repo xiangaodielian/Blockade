@@ -1,16 +1,10 @@
-﻿/*------------------------------/
-  EndGameMenu Class - Blockade
-  Controlling class for EndGame
-  GUIs
-  Writen by Joe Arthur
-  Latest Revision - 3 Apr, 2016
-/------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
 public class EndGameMenu : MonoBehaviour {
+
+	#region Variables
 
 	[System.Serializable] private class Buttons{
 		public Button tryAgainButton = null;
@@ -18,12 +12,29 @@ public class EndGameMenu : MonoBehaviour {
 	}
 
 	[SerializeField] private Buttons buttons = null;
+	[SerializeField] private Text scoreText = null;
+
+	#endregion
+	#region Mono Functions
 
 	void Awake(){
-		buttons.continueButton.onClick.AddListener(() => { UIManager.instance.ProceedToLevel("MainMenu", false);
-														   UIManager.instance.OpenHighScoreMenu();});
+		scoreText.text = "YOUR SCORE: " + GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
+
+		SetOnClick();
+	}
+
+	#endregion
+	#region Utility
+
+	void SetOnClick(){
+		buttons.continueButton.onClick.AddListener(() => {
+			LevelManager.instance.ChangeToLevel("MainMenu");
+			GUIManager.instance.DestroyEndGameMenus();
+		});
 
 		if(buttons.tryAgainButton)
-			buttons.tryAgainButton.onClick.AddListener(() => UIManager.instance.ReloadPreviousLevel());
+			buttons.tryAgainButton.onClick.AddListener(() => LevelManager.instance.RestartLevel());
 	}
+
+	#endregion
 }

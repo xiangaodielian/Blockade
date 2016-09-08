@@ -1,13 +1,4 @@
-﻿/*----------------------------/
-  Shield Class - Blockade
-  Controlling class for Shield
-  object acting as the Playspace
-  border and its functions
-  Writen by Joe Arthur
-  Latest Revision - 4 May, 2016
-/-----------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -62,7 +53,10 @@ public class Shield : MonoBehaviour {
 				shieldMat.SetFloat("_BlendAmount", blendAmount);
 				shieldMat.SetFloat("_EdgeWidth", 0f);
 				shieldAnchorPos = transform.localPosition;
-				UIManager.instance.BeginGame();
+
+				EventManager.TriggerEvent(EventManager.EventNames.dissolveFinish);
+
+				GUIManager.instance.inGameGUI.TogglePrompt(true);
 			}
 		}
 		
@@ -97,8 +91,7 @@ public class Shield : MonoBehaviour {
 	
 	//Light Shield segment when hit by Ball
 	void OnTriggerEnter(Collider col){
-		if(col.tag != "Wall")
-			shieldLight.intensity = maxLightIntensity;
+		shieldLight.intensity = maxLightIntensity;
 	}
 
 	//Light Shield segment when hit by Ball

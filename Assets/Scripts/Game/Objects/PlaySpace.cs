@@ -24,7 +24,7 @@ public class PlaySpace : MonoBehaviour {
 	[Tooltip("The Long Colliders that are active when Shields aren't rotating.")]
 	[SerializeField] private GameObject[] longColliders = new GameObject[3];		//Array of Long Box Colliders
 	
-	private float timer = 0;
+	private float timer = 0f;
 	private Animator animator;
 	private AudioSource audioSource;
 	private bool movingShields = false;
@@ -36,19 +36,19 @@ public class PlaySpace : MonoBehaviour {
 		if(instance != null && instance != this)
 			Destroy(gameObject);
 		instance = this;
+
+		animator = GetComponent<Animator>();
+		audioSource = GetComponent<AudioSource>();
 	}
 	
 	void Start(){
-		animator = GetComponent<Animator>();
-		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
-		audioSource.clip = ResourceManager.LoadAudioClip(false, "ShieldDeploy");
+		audioSource.clip = ResourceManager.LoadAudioClip("ShieldDeploy");
 		
 		foreach(GameObject shield in shields)
 			shield.AddComponent<Shield>();
 
 		ResourceManager.SetMaterialTextures(this.gameObject);
-
 	}
 	
 	void Update(){

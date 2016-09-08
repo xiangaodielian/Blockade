@@ -30,7 +30,7 @@ public class HighScoresUI : MonoBehaviour {
 	#region MonoDevelop Functions
 	
 	void Awake(){
-		buttons.continueButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("MainMenu"));
+		buttons.continueButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("MainMenu"));
 	}
 
 	void Start(){
@@ -55,21 +55,21 @@ public class HighScoresUI : MonoBehaviour {
 			if(!enterHighScore)
 				HighScoreCheck();
 			else{
-				highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.gameValues.totalScore.ToString();
+				highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
 				foreach(char c in Input.inputString){
 					if(c >= 'a' && c <= 'z' && inputName.Length < 3){
 						inputName += c;
-						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.gameValues.totalScore.ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
 					} else if(c == '\b' && inputName.Length > 0){
 						inputName = inputName.Substring(0,inputName.Length-1);
-						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.instance.gameValues.totalScore.ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
 					}
 					if(c == '\r'){
 						PrefsManager.SetHighScoreName(replaceScore+1,inputName);
-						PrefsManager.SetHighScore(replaceScore+1,GameMaster.instance.gameValues.totalScore);
+						PrefsManager.SetHighScore(replaceScore+1,GameMaster.GMInstance.playerManager.GetPlayerScore());
 						enterHighScore = false;
 						finishedEntering = true;
-						GameMaster.instance.gameValues.totalScore = 0;
+						GameMaster.GMInstance.playerManager.SetPlayerScore(0);
 						inputName = "";
 					}
 				}
@@ -81,7 +81,7 @@ public class HighScoresUI : MonoBehaviour {
 	
 	void HighScoreCheck(){
 		for(int i=1;i<6;i++){
-			if(GameMaster.instance.gameValues.totalScore > PrefsManager.GetHighScore(i)){
+			if(GameMaster.GMInstance.playerManager.GetPlayerScore() > PrefsManager.GetHighScore(i)){
 				replaceScore = i-1;
 				enterHighScore = true;
 				break;

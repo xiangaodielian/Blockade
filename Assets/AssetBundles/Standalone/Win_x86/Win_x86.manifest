@@ -1,4 +1,5 @@
 ManifestFileVersion: 0
+CRC: 2859494531
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -6,17 +7,17 @@ AssetBundleManifest:
       Dependencies:
         Dependency_0: textures.ud
     Info_1:
-      Name: gui
-      Dependencies: {}
-    Info_2:
-      Name: audio
-      Dependencies: {}
-    Info_3:
       Name: textures.hd
       Dependencies: {}
-    Info_4:
+    Info_2:
       Name: textures.sd
       Dependencies: {}
-    Info_5:
+    Info_3:
       Name: textures.ud
+      Dependencies: {}
+    Info_4:
+      Name: gui
+      Dependencies: {}
+    Info_5:
+      Name: audio
       Dependencies: {}

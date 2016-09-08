@@ -1,14 +1,9 @@
-﻿/*--------------------------------/
-  MainMenu Class - Blockade
-  Controls GUI for Main Menu
-  Writen by Joe Arthur
-  Latest Revision - 8 May, 2016
-/--------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour {
+
+	#region Variables
 
 	[System.Serializable] private class Buttons{
 		public Button startButton = null;
@@ -23,17 +18,23 @@ public class MainMenu : MonoBehaviour {
 	private string runningVersion = "";
 	private GameObject updatePanel;
 
-	void Start(){
-		buttons.startButton.onClick.AddListener(() => UIManager.instance.ToggleInterviewConfirm(true));
-		buttons.highScoresButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("HighScoresMenu"));
-		buttons.optionsButton.onClick.AddListener(() => UIManager.instance.MenuFadeTransition("OptionsMenu"));
-		buttons.quitButton.onClick.AddListener(() => UIManager.instance.QuitRequest());
+	#endregion
+	#region Mono Functions
 
-		runningVersion = GameObject.Find("VersionText").GetComponent<Text>().text;
-		runningVersion = runningVersion.Replace("VERSION ", "");
+	void Start(){
+		buttons.startButton.onClick.AddListener(() => GUIManager.instance.ToggleInterviewConfirm(true));
+		buttons.highScoresButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("HighScoresMenu"));
+		buttons.optionsButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("OptionsMenu"));
+		buttons.quitButton.onClick.AddListener(() => GUIManager.instance.ToggleQuitConfirm(true));
 	}
 
+	#endregion
+	#region Utility
+
 	public void UpdateCheck(){
+		runningVersion = GameObject.Find("VersionText").GetComponent<Text>().text;
+		runningVersion = runningVersion.Replace("VERSION ", "");
+
 		updatePanel = ResourceManager.LoadPrefab("gui", updatePanelPrefab);
 		updatePanel = Instantiate(updatePanel);
 		updatePanel.transform.SetParent(this.transform);
@@ -44,4 +45,13 @@ public class MainMenu : MonoBehaviour {
 		else
 			Destroy(updatePanel);
 	}
+
+	public void SetButtonInteraction(bool isInteractable){
+		buttons.startButton.interactable = isInteractable;
+		buttons.highScoresButton.interactable = isInteractable;
+		buttons.optionsButton.interactable = isInteractable;
+		buttons.quitButton.interactable = isInteractable;
+	}
+
+	#endregion
 }

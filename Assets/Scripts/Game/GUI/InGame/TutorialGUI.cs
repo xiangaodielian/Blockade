@@ -1,11 +1,4 @@
-﻿/*------------------------------/
-  TutorialGUI Class - Blockade
-  Controls all GUI for Tutorials
-  Writen by Joe Arthur
-  Latest Revision - 11 Apr, 2016
-/------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TutorialGUI : MonoBehaviour {
@@ -43,11 +36,13 @@ public class TutorialGUI : MonoBehaviour {
 
 		if(!inGame){
 			tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.interviewerTutorialImage);
-			continueButton.onClick.AddListener(() => { ShowLoadScreen();
-													   UIManager.instance.ProceedToLevel("Level_15", true);
-													   GameMaster.instance.gameValues.playerLives = 99;});
+			continueButton.onClick.AddListener(() => {
+				ShowLoadScreen();
+				StartCoroutine(LevelManager.instance.ChangeToLevelAsync("Level_15"));
+				GameMaster.GMInstance.playerManager.SetPlayerLives(99);
+			});
 		} else
-			continueButton.onClick.AddListener(() => InGameUI.instance.ToggleInGameTutorials(false, 0));
+			continueButton.onClick.AddListener(() => GUIManager.instance.inGameGUI.ToggleInGameTutorials(false, 0));
 	}
 
 	void ShowLoadScreen(){

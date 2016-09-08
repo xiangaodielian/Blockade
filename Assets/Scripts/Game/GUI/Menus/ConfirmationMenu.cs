@@ -1,11 +1,4 @@
-﻿/*------------------------------------/
-  MainMenu Class - Blockade
-  Controls GUI for Confirmation Menus
-  Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
-/------------------------------------*/
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -26,17 +19,21 @@ public class ConfirmationMenu : MonoBehaviour {
 
 	void SetOnClick(){
 		if(buttons.quitButton)
-			buttons.cancelButton.onClick.AddListener(() => UIManager.instance.ToggleQuitConfirm(false));
+			buttons.cancelButton.onClick.AddListener(() => GUIManager.instance.ToggleQuitConfirm(false));
 
 		if(buttons.cancelButton)
 			buttons.quitButton.onClick.AddListener(() => LevelManager.QuitApplication());
 
 		if(buttons.confirmButton)
-			buttons.confirmButton.onClick.AddListener(() => { UIManager.instance.OpenInterviewerTutorial();
-															  MusicPlayer.instance.NextTrack(); });
+			buttons.confirmButton.onClick.AddListener(() => {
+				GUIManager.instance.InstantiateInterviewerTutorial();
+				MusicPlayer.instance.NextTrack();
+			});
 
 		if(buttons.noButton)
-			buttons.noButton.onClick.AddListener(() => { UIManager.instance.ToggleInterviewConfirm(false);
-														 UIManager.instance.MenuFadeTransition("LevelSelectMenu");});
+			buttons.noButton.onClick.AddListener(() => {
+				GUIManager.instance.ToggleInterviewConfirm(false);
+				GUIManager.instance.MenuFadeTransition("LevelSelectMenu");
+			});
 	}
 }
