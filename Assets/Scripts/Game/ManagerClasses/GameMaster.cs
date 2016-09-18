@@ -13,7 +13,7 @@ public class GameMaster : MonoBehaviour {
 	#region variables
 	
 	//Singleton Instance of GameMaster
-	public static GameMaster GMInstance {get; private set;}
+	public static GameMaster Instance {get; private set;}
 
 	[System.Serializable] private class Prefabs{
 		public GameObject splashPrefab = null;
@@ -23,11 +23,10 @@ public class GameMaster : MonoBehaviour {
 	}
 
 	/*-----MANAGERS-----*/
-	public InputManager inputManager {get; private set;}
-	public PlayerManager playerManager {get; private set;}
-	public GameObjectManager gameObjectManager {get; private set;}
-	public OptionsManager optionsManager {get; private set;}
-	public AssetBundleManager abManager {get; private set;}
+	public InputManager InputManager {get; private set;}
+	public PlayerManager PlayerManager {get; private set;}
+	public GameObjectManager GameObjectManager {get; private set;}
+	public OptionsManager OptionsManager {get; private set;}
 	/*------------------*/
 
 	[SerializeField] private Prefabs prefabs = null;
@@ -35,11 +34,11 @@ public class GameMaster : MonoBehaviour {
 	#endregion
 	#region Mono Functions
 	
-	void Awake(){
-		if(GMInstance != null && GMInstance != this)
+	private void Awake(){
+		if(Instance != null && Instance != this)
 			Destroy(gameObject);
 
-		GMInstance = this;
+		Instance = this;
 
 		DontDestroyOnLoad(gameObject);
 
@@ -50,32 +49,29 @@ public class GameMaster : MonoBehaviour {
 	#endregion
 	#region Manager Init
 
-	void InstantiatePrefabs(){
+	private void InstantiatePrefabs(){
 
-		//Music Player
 		if(MusicPlayer.instance)
 			DestroyImmediate(MusicPlayer.instance.gameObject);
 
 		Instantiate(prefabs.musicPlayerPrefab);
-		MusicPlayer.instance.transform.SetParent(this.transform);
+		MusicPlayer.instance.transform.SetParent(transform);
 
-		//Camera
 		if(CameraManager.instance)
 			DestroyImmediate(CameraManager.instance.gameObject);
 
 		Instantiate(prefabs.cameraPrefab);
-		CameraManager.instance.transform.SetParent(this.transform);
+		CameraManager.instance.transform.SetParent(transform);
 
 		Instantiate(prefabs.guiManagerPrefab).GetComponent<GUIManager>();
-		GUIManager.instance.transform.SetParent(this.transform);
+		GUIManager.Instance.transform.SetParent(transform);
 	}
 
-	void AssignManagers(){
-		inputManager = GetComponent<InputManager>();
-		playerManager = GetComponent<PlayerManager>();
-		gameObjectManager = GetComponent<GameObjectManager>();
-		optionsManager = GetComponent<OptionsManager>();
-		abManager = GetComponent<AssetBundleManager>();
+	private void AssignManagers(){
+		InputManager = GetComponent<InputManager>();
+		PlayerManager = GetComponent<PlayerManager>();
+		GameObjectManager = GetComponent<GameObjectManager>();
+		OptionsManager = GetComponent<OptionsManager>();
 	}
 
 	#endregion

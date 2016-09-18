@@ -69,10 +69,10 @@ public class LevelSelectMenu : MonoBehaviour {
 	private void SetLevelImages(){
 		for(int i=0;i<buttons.levelButtons.Length;i++){
 			if(i<highestUnlocked){
-				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGUITexture(buttons.levelButtons[i].name);
+				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGuiTexture(buttons.levelButtons[i].name);
 				buttons.levelButtons[i].enabled = true;
 			} else{
-				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGUITexture("LevelLocked");
+				buttons.levelButtons[i].GetComponent<Image>().sprite = ResourceManager.SetGuiTexture("LevelLocked");
 				buttons.levelButtons[i].enabled = false;
 			}
 		}
@@ -90,7 +90,7 @@ public class LevelSelectMenu : MonoBehaviour {
 				levelToLoad += index.ToString();
 
 			button.onClick.AddListener(() => { 
-				StartCoroutine(LevelManager.instance.ChangeToLevelAsync(levelToLoad));
+				StartCoroutine(LevelManager.Instance.ChangeToLevelAsync(levelToLoad));
 				MusicPlayer.instance.NextTrack();
 				ShowLoadScreen(); 
 			});
@@ -99,10 +99,10 @@ public class LevelSelectMenu : MonoBehaviour {
 		}
 
 		buttons.resumeButton.onClick.AddListener(() => {
-			LevelManager.instance.ChangeToLevelAsync("LatestCheckpoint");
+			LevelManager.Instance.ChangeToLevelAsync("LatestCheckpoint");
 			MusicPlayer.instance.NextTrack(); 
 		});
-		buttons.backButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("MainMenu"));
+		buttons.backButton.onClick.AddListener(() => GUIManager.Instance.MenuFadeTransition("MainMenu"));
 	}
 	
 	public void NextLevelScreen(){

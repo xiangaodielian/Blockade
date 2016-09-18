@@ -15,9 +15,9 @@ public class TutorialCollider : MonoBehaviour {
 	void OnTriggerEnter(Collider col){
 		if(col.tag == "Powerup" && triggerTutorial && PrefsManager.GetLevelUnlocked() <= PrefsManager.GetCurrentLevel()){
 			if(col.GetComponent<Powerup>().powerupType == Powerup.PowerupType.SpeedUp)
-				GUIManager.instance.inGameGUI.ToggleInGameTutorials(true, 1);
+				GUIManager.Instance.InGameGui.ToggleInGameTutorials(true, 1);
 			else
-				GUIManager.instance.inGameGUI.ToggleInGameTutorials(true, 2);
+				GUIManager.Instance.InGameGui.ToggleInGameTutorials(true, 2);
 
 			triggerTutorial = false;
 		}

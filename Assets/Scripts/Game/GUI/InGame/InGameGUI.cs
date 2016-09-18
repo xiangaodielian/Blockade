@@ -70,10 +70,10 @@ public class InGameGUI : MonoBehaviour {
 		if(runTimer)
 			UpdateTimeText();
 		
-		if(displayedGUI.livesText.text != GameMaster.GMInstance.playerManager.GetPlayerLives().ToString())
+		if(displayedGUI.livesText.text != GameMaster.Instance.PlayerManager.GetPlayerLives().ToString())
 			UpdateLivesText();
 			
-		if(displayedGUI.scoreText.text != GameMaster.GMInstance.playerManager.GetPlayerScore().ToString())
+		if(displayedGUI.scoreText.text != GameMaster.Instance.PlayerManager.GetPlayerScore().ToString())
 			UpdateScoreText();
 			
 		if(displayedGUI.livesImage.color != PrefsManager.GetBallColor())
@@ -122,15 +122,15 @@ public class InGameGUI : MonoBehaviour {
 	
 	//Update Lives Remaining Display
 	private void UpdateLivesText(){
-		if(GameMaster.GMInstance.playerManager.GetPlayerLives() < 10)
-			displayedGUI.livesText.text = "X 0"+GameMaster.GMInstance.playerManager.GetPlayerLives().ToString();
+		if(GameMaster.Instance.PlayerManager.GetPlayerLives() < 10)
+			displayedGUI.livesText.text = "X 0"+GameMaster.Instance.PlayerManager.GetPlayerLives().ToString();
 		else
-			displayedGUI.livesText.text = "X "+GameMaster.GMInstance.playerManager.GetPlayerLives().ToString();
+			displayedGUI.livesText.text = "X "+GameMaster.Instance.PlayerManager.GetPlayerLives().ToString();
 	}
 	
 	//Update Current Score Display
 	private void UpdateScoreText(){
-		displayedGUI.scoreText.text = GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
+		displayedGUI.scoreText.text = GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
 	}
 	
 	public void TogglePrompt(bool isOn){
@@ -143,9 +143,9 @@ public class InGameGUI : MonoBehaviour {
 			TimeManager.Pause();
 
 		if(!inGameMainMenuPanel.activeSelf && !optionsPanel.activeSelf)
-			GUIManager.instance.PlayMenuToggleSound(true);
+			GUIManager.Instance.PlayMenuToggleSound(true);
 		else
-			GUIManager.instance.PlayMenuToggleSound(false);
+			GUIManager.Instance.PlayMenuToggleSound(false);
 
 		if(optionsPanel.activeSelf)
 			optionsPanel.SetActive(false);
@@ -183,7 +183,7 @@ public class InGameGUI : MonoBehaviour {
 		}else if(!isActive){
 			Destroy(endLevelPanel);
 			endLevelPanel = null;
-			LevelManager.instance.ChangeToLevel("Next");
+			LevelManager.Instance.ChangeToLevel("Next");
 			TimeManager.Pause();
 		}
 	}
@@ -307,7 +307,7 @@ public class InGameGUI : MonoBehaviour {
 				timeBonusText.text = elapsedMin+":"+elapsedSec+" = "+timeBonus;
 		}
 		
-		GameMaster.GMInstance.playerManager.AddToPlayerScore(timeBonus);
+		GameMaster.Instance.PlayerManager.AddToPlayerScore(timeBonus);
 	}
 
 	#endregion

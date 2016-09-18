@@ -1,21 +1,13 @@
-﻿/*-----------------------------------/
-  LoadScreen Class - Blockade
-  Controls Loading Bar and Text for
-  Splash Screen loading
-  Writen by Joe Arthur
-  Latest Revision - 3 Apr, 2016
-/----------------------------------*/
-
+﻿using System;
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class LoadScreen : MonoBehaviour {
 
-	const string MESSAGE_ONE = "LOADING ASSETS...";
-	const string MESSAGE_TWO = "POSITIONING BLOCKS...";
-	const string MESSAGE_THREE = "Aasjhyemfhlkhmal";
-	const string MESSAGE_FOUR = "REMOVING CAT FROM KEYBOARD...";
+	private const string MessageOne = "LOADING ASSETS...";
+    private const string MessageTwo = "POSITIONING BLOCKS...";
+    private const string MessageThree = "Aasjhyemfhlkhmal";
+    private const string MessageFour = "REMOVING CAT FROM KEYBOARD...";
 
 	[SerializeField] private Slider loadingSlider = null;
 	[SerializeField] private Text loadingMessageText = null;
@@ -27,27 +19,27 @@ public class LoadScreen : MonoBehaviour {
 
 	void Update(){
 		if(isLevelLoadScreen){
-			if(LevelManager.instance.asyncOp != null){
-				loadingSlider.value = LevelManager.instance.asyncOp.progress;
-				if(LevelManager.instance.asyncOp.isDone){
-					loadingSlider.value = 0f;
-					gameObject.SetActive(false);
-				}
-			}
+		    if(LevelManager.Instance.asyncOp == null)
+                return;
+
+		    loadingSlider.value = LevelManager.Instance.asyncOp.progress;
+
+            if(LevelManager.Instance.asyncOp.isDone){
+		        loadingSlider.value = 0f;
+		        gameObject.SetActive(false);
+		    }
 		} else{
-			if(AssetBundleManager.totalDownloadProgress > 0f){
-				loadingSlider.value = AssetBundleManager.totalDownloadProgress;
-				if(AssetBundleManager.totalDownloadProgress < 0.5f)
-					loadingMessageText.text = MESSAGE_ONE;
-				else if(AssetBundleManager.totalDownloadProgress < 0.7f)
-					loadingMessageText.text = MESSAGE_TWO;
-				else if(AssetBundleManager.totalDownloadProgress < 0.8f)
-					loadingMessageText.text = MESSAGE_THREE;
-				else if(AssetBundleManager.totalDownloadProgress < 0.85f)
-					loadingMessageText.text = MESSAGE_FOUR;
-				else if(AssetBundleManager.totalDownloadProgress == 1f)
-					GetComponentInParent<SceneFader>().faderDetails.instantFadeAfterPause = true;
-			}
+			loadingSlider.value = AssetBundleManager.TotalDownloadProgress;
+			if(AssetBundleManager.TotalDownloadProgress < 0.5f)
+				loadingMessageText.text = MessageOne;
+			else if(AssetBundleManager.TotalDownloadProgress < 0.7f)
+				loadingMessageText.text = MessageTwo;
+			else if(AssetBundleManager.TotalDownloadProgress < 0.8f)
+				loadingMessageText.text = MessageThree;
+			else if(AssetBundleManager.TotalDownloadProgress < 0.85f)
+				loadingMessageText.text = MessageFour;
+			else if(Math.Abs(AssetBundleManager.TotalDownloadProgress - 1f) < 0.025f)
+				GetComponentInParent<SceneFader>().faderDetails.instantFadeAfterPause = true;
 		}
 	}
 }

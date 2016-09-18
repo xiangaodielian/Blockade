@@ -18,7 +18,7 @@ public class EndGameMenu : MonoBehaviour {
 	#region Mono Functions
 
 	void Awake(){
-		scoreText.text = "YOUR SCORE: " + GameMaster.GMInstance.playerManager.GetPlayerScore().ToString();
+		scoreText.text = "YOUR SCORE: " + GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
 
 		SetOnClick();
 	}
@@ -28,12 +28,12 @@ public class EndGameMenu : MonoBehaviour {
 
 	void SetOnClick(){
 		buttons.continueButton.onClick.AddListener(() => {
-			LevelManager.instance.ChangeToLevel("MainMenu");
-			GUIManager.instance.DestroyEndGameMenus();
+			LevelManager.Instance.ChangeToLevel("MainMenu");
+			GUIManager.Instance.DestroyEndGameMenus();
 		});
 
 		if(buttons.tryAgainButton)
-			buttons.tryAgainButton.onClick.AddListener(() => LevelManager.instance.RestartLevel());
+			buttons.tryAgainButton.onClick.AddListener(() => LevelManager.Instance.RestartLevel());
 	}
 
 	#endregion

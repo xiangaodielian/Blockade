@@ -20,13 +20,13 @@ public class LoseCollider : MonoBehaviour {
 		if(collider.tag == "Ball"){
 			audioSouce.Play();
 			if(ballArray.Length == 1){
-				if(GameMaster.GMInstance.playerManager.GetPlayerLives() > 0){
-					GameMaster.GMInstance.playerManager.AddToPlayerLives(-1);
-					LevelManager.instance.ResetCurrentLevel();
+				if(GameMaster.Instance.PlayerManager.GetPlayerLives() > 0){
+					GameMaster.Instance.PlayerManager.AddToPlayerLives(-1);
+					LevelManager.Instance.ResetCurrentLevel();
 				} else{
-					GUIManager.instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.loseMenu);
-					LevelManager.instance.SetPreviousLevel();
-					LevelManager.instance.ChangeToLevel("EndGame");
+					GUIManager.Instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.LoseMenu);
+					LevelManager.Instance.SetPreviousLevel();
+					LevelManager.Instance.ChangeToLevel("EndGame");
 				}
 			}
 

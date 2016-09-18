@@ -35,14 +35,14 @@ public class TutorialGUI : MonoBehaviour {
 		}
 
 		if(!inGame){
-			tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.interviewerTutorialImage);
+			tutorialImage.sprite = ResourceManager.SetGuiTexture(imageNames.interviewerTutorialImage);
 			continueButton.onClick.AddListener(() => {
 				ShowLoadScreen();
-				StartCoroutine(LevelManager.instance.ChangeToLevelAsync("Level_15"));
-				GameMaster.GMInstance.playerManager.SetPlayerLives(99);
+				StartCoroutine(LevelManager.Instance.ChangeToLevelAsync("Level_15"));
+				GameMaster.Instance.PlayerManager.SetPlayerLives(99);
 			});
 		} else
-			continueButton.onClick.AddListener(() => GUIManager.instance.inGameGUI.ToggleInGameTutorials(false, 0));
+			continueButton.onClick.AddListener(() => GUIManager.Instance.InGameGui.ToggleInGameTutorials(false, 0));
 	}
 
 	void ShowLoadScreen(){
@@ -52,7 +52,7 @@ public class TutorialGUI : MonoBehaviour {
 	public void SetTutorial(int tutNum){
 		switch(tutNum){
 			case 0:
-				tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.inGameBrickTutorial);
+				tutorialImage.sprite = ResourceManager.SetGuiTexture(imageNames.inGameBrickTutorial);
 				tutorialImage.transform.localPosition = tutorialPositions.inGameBrickTutorialPos;
 				movementText.enabled = true;
 				if(PrefsManager.GetMouseControl())
@@ -62,19 +62,19 @@ public class TutorialGUI : MonoBehaviour {
 				break;
 
 			case 1:
-				tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.inGamePowerupTutorial);
+				tutorialImage.sprite = ResourceManager.SetGuiTexture(imageNames.inGamePowerupTutorial);
 				tutorialImage.transform.localPosition = tutorialPositions.inGamePowerupTutorialPos1;
 				movementText.enabled = false;
 				break;
 
 			case 2:
-				tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.inGamePowerupTutorial);
+				tutorialImage.sprite = ResourceManager.SetGuiTexture(imageNames.inGamePowerupTutorial);
 				tutorialImage.transform.localPosition = tutorialPositions.inGamePowerupTutorialPos2;
 				movementText.enabled = false;
 				break;
 
 			case 3:
-				tutorialImage.sprite = ResourceManager.SetGUITexture(imageNames.inGameUnbreakableTutorial);
+				tutorialImage.sprite = ResourceManager.SetGuiTexture(imageNames.inGameUnbreakableTutorial);
 				tutorialImage.transform.localPosition = tutorialPositions.inGameUnbreakableTutorialPos;
 				movementText.enabled = false;
 				break;

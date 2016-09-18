@@ -22,10 +22,10 @@ public class MainMenu : MonoBehaviour {
 	#region Mono Functions
 
 	void Start(){
-		buttons.startButton.onClick.AddListener(() => GUIManager.instance.ToggleInterviewConfirm(true));
-		buttons.highScoresButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("HighScoresMenu"));
-		buttons.optionsButton.onClick.AddListener(() => GUIManager.instance.MenuFadeTransition("OptionsMenu"));
-		buttons.quitButton.onClick.AddListener(() => GUIManager.instance.ToggleQuitConfirm(true));
+		buttons.startButton.onClick.AddListener(() => GUIManager.Instance.ToggleInterviewConfirm(true));
+		buttons.highScoresButton.onClick.AddListener(() => GUIManager.Instance.MenuFadeTransition("HighScoresMenu"));
+		buttons.optionsButton.onClick.AddListener(() => GUIManager.Instance.MenuFadeTransition("OptionsMenu"));
+		buttons.quitButton.onClick.AddListener(() => GUIManager.Instance.ToggleQuitConfirm(true));
 	}
 
 	#endregion

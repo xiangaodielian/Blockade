@@ -12,8 +12,8 @@ public class EndLevelMenu : MonoBehaviour {
 
 	void Awake(){
 		buttons.continueButton.onClick.AddListener(() => {
-			GUIManager.instance.inGameGUI.StopTimer();
-			GUIManager.instance.inGameGUI.ToggleEndLevelPanel(false);
+			GUIManager.Instance.InGameGui.StopTimer();
+			GUIManager.Instance.InGameGui.ToggleEndLevelPanel(false);
 		});
 	}
 }

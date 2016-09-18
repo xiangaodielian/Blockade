@@ -31,11 +31,11 @@ public class GameObjectManager : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		EventManager.StartListening(EventManager.EventNames.levelReset, levelResetListener);
+		EventManager.StartListening(EventManager.EventNames.LevelReset, levelResetListener);
 	}
 
 	void OnDisable(){
-		EventManager.StopListening(EventManager.EventNames.levelReset, levelResetListener);
+		EventManager.StopListening(EventManager.EventNames.LevelReset, levelResetListener);
 	}
 
 	#endregion
@@ -59,13 +59,13 @@ public class GameObjectManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="pointValue">Point value of the Brick.</param>
 	public static void BrickDestroyed(int pointValue, GameObject brick){
-		GameMaster.GMInstance.playerManager.AddToPlayerScore(pointValue);
+		GameMaster.Instance.PlayerManager.AddToPlayerScore(pointValue);
 		RemoveBrickFromList(brick);
 
 		if(breakableBricks.Count == 0){
-			GameMaster.GMInstance.playerManager.activePlayer.hasStarted = false;
-			GUIManager.instance.inGameGUI.ToggleEndLevelPanel(true);
-			GUIManager.instance.inGameGUI.CalculateTimeBonus();
+			GameMaster.Instance.PlayerManager.activePlayer.hasStarted = false;
+			GUIManager.Instance.InGameGui.ToggleEndLevelPanel(true);
+			GUIManager.Instance.InGameGui.CalculateTimeBonus();
 		}
 	}
 
@@ -90,7 +90,7 @@ public class GameObjectManager : MonoBehaviour {
 		if(PlaySpace.instance)
 			Destroy(PlaySpace.instance.gameObject);
 
-		GameMaster.GMInstance.playerManager.DestroyPlayer();
+		GameMaster.Instance.PlayerManager.DestroyPlayer();
 
 		Ball[] ballsInScene = FindObjectsOfType<Ball>();
 		if(ballsInScene.Length > 0){

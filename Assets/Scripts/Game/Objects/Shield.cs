@@ -54,9 +54,9 @@ public class Shield : MonoBehaviour {
 				shieldMat.SetFloat("_EdgeWidth", 0f);
 				shieldAnchorPos = transform.localPosition;
 
-				EventManager.TriggerEvent(EventManager.EventNames.dissolveFinish);
+				EventManager.TriggerEvent(EventManager.EventNames.DissolveFinish);
 
-				GUIManager.instance.inGameGUI.TogglePrompt(true);
+				GUIManager.Instance.InGameGui.TogglePrompt(true);
 			}
 		}
 		

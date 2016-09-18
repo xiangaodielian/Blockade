@@ -53,13 +53,13 @@ public class Paddle : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		EventManager.StartListening(EventManager.EventNames.levelReset, levelResetListener);
-		EventManager.StartListening(EventManager.EventNames.launchBall, launchBallListener);
+		EventManager.StartListening(EventManager.EventNames.LevelReset, levelResetListener);
+		EventManager.StartListening(EventManager.EventNames.LaunchBall, launchBallListener);
 	}
 
 	void OnDisable(){
-		EventManager.StopListening(EventManager.EventNames.levelReset, levelResetListener);
-		EventManager.StopListening(EventManager.EventNames.launchBall, launchBallListener);
+		EventManager.StopListening(EventManager.EventNames.LevelReset, levelResetListener);
+		EventManager.StopListening(EventManager.EventNames.LaunchBall, launchBallListener);
 	}
 	
 	void Update(){
@@ -83,7 +83,7 @@ public class Paddle : MonoBehaviour {
 	void LaunchBall(){
 		if(firstBall){
 			firstBall = false;
-			GUIManager.instance.inGameGUI.SetTimeDifference((int)Time.timeSinceLevelLoad);
+			GUIManager.Instance.InGameGui.SetTimeDifference((int)Time.timeSinceLevelLoad);
 		}
 
 		if(!hasStarted)
@@ -161,7 +161,7 @@ public class Paddle : MonoBehaviour {
 				break;
 		}
 
-		GUIManager.instance.inGameGUI.DisplayPowerupNotification(powerupType);
+		GUIManager.Instance.InGameGui.DisplayPowerupNotification(powerupType);
 	}
 	
 	#endregion

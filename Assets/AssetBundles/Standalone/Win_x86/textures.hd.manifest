@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2584360903
+CRC: 301444449
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f5bdd9b84d8313e0a3b50b23a7c842d8
+    Hash: 00ae5324c597577d800838e403277078
   TypeTreeHash:
     serializedVersion: 2
     Hash: 6759894fca659e2049f05064db45ce61
@@ -19,10 +19,8 @@ Assets:
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_SlowDown_Normal.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_ExplosiveBall_MetalRough.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Mirror_Height.png
-- Assets/Materials/Structures/Playspace/Textures/HD/Playspace_ShieldProjector_Lights_Height.png
 - Assets/Materials/Actors/Paddle/Textures/HD/Paddle_LaserDoors_MetalRough.png
 - Assets/Materials/Actors/Paddle/Textures/HD/Paddle_PaddleBase_Normal.png
-- Assets/Materials/Actors/Paddle/Textures/HD/Paddle_Booster_Height.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_ShieldProjector_Body_MetalRough.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_Doors_MetalRough.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_ExplosiveBall_Height.png
@@ -52,7 +50,6 @@ Assets:
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_SideWall_Body_MetalRough.png
 - Assets/Materials/Props/Brick/Textures/HD/Brick_Border_Normal.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_ShieldProjector_Body_Normal.png
-- Assets/Materials/Structures/Playspace/Textures/HD/Playspace_TopWall_Lights_Normal.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_Ship_Body_Normal.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_Ship_Body_MetalRough.png
 - Assets/Materials/Props/Ball/Textures/HD/Ball_FeatherBall_AlbedoTransparency.png
@@ -70,7 +67,6 @@ Assets:
 - Assets/Materials/Actors/Paddle/Textures/HD/Paddle_LaserTurret_AlbedoTransparency.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_SlowDown_AlbedoTransparency.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_SpeedUp_Normal.png
-- Assets/Materials/Actors/Paddle/Textures/HD/Paddle_Booster_Normal.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Expand_AlbedoTransparency.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Multiball_Height.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_Shrink_MetalRough.png
@@ -94,14 +90,11 @@ Assets:
 - Assets/Materials/Props/Ball/Textures/HD/Ball_FeatherBall_Height.png
 - Assets/Materials/Props/Brick/Textures/HD/Brick_Border_Height.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_FeatherBall_AlbedoTransparency.png
-- Assets/Materials/Structures/Playspace/Textures/HD/Playspace_ShieldProjector_Lights_Normal.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_TopWall_Body_Height.png
 - Assets/Materials/Props/Ball/Textures/HD/Ball_StickyBall_Normal.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_SlowDown_MetalRough.png
 - Assets/Materials/Structures/Playspace/Textures/HD/Playspace_Doors_Normal.png
-- Assets/Materials/Structures/Playspace/Textures/HD/Playspace_Ship_Lights_Normal.png
 - Assets/Materials/Props/Ball/Textures/HD/Ball_IronBall_MetalRough.png
-- Assets/Materials/Structures/Playspace/Textures/HD/Playspace_SideWall_Lights_Normal.png
 - Assets/Materials/Props/Laser/Textures/HD/Laser_Body_Normal.png
 - Assets/Materials/Props/Powerup/Textures/HD/Powerup_SlowDown_Height.png
 - Assets/Materials/Props/Ball/Textures/HD/Ball_FeatherBall_MetalRough.png

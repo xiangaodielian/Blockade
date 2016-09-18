@@ -6,6 +6,6 @@ public class ButtonSound : MonoBehaviour, IPointerDownHandler {
 
 	public void OnPointerDown(PointerEventData eventData){
 		if(GetComponent<Button>().interactable)
-			GUIManager.instance.PlayButtonSound();
+			GUIManager.Instance.PlayButtonSound();
 	}
 }

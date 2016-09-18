@@ -13,13 +13,13 @@ public class InGameMainMenu : MonoBehaviour {
 	[SerializeField] private Buttons buttons = null;
 
 	void Awake(){
-		buttons.resumeButton.onClick.AddListener(() => GUIManager.instance.inGameGUI.ToggleMenu());
-		buttons.optionsButton.onClick.AddListener(() => GUIManager.instance.inGameGUI.InGameOptions());
+		buttons.resumeButton.onClick.AddListener(() => GUIManager.Instance.InGameGui.ToggleMenu());
+		buttons.optionsButton.onClick.AddListener(() => GUIManager.Instance.InGameGui.InGameOptions());
 		buttons.exitButton.onClick.AddListener(() => {
-			GUIManager.instance.inGameGUI.ToggleMenu();
+			GUIManager.Instance.InGameGui.ToggleMenu();
 			GameObjectManager.ClearGameObjects();
-			GUIManager.instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.mainMenu);
-			LevelManager.instance.ChangeToLevel("MainMenu");
+			GUIManager.Instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.MainMenu);
+			LevelManager.Instance.ChangeToLevel("MainMenu");
 		});
 	}
 }

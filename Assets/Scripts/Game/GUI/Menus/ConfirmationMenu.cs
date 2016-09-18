@@ -19,21 +19,21 @@ public class ConfirmationMenu : MonoBehaviour {
 
 	void SetOnClick(){
 		if(buttons.quitButton)
-			buttons.cancelButton.onClick.AddListener(() => GUIManager.instance.ToggleQuitConfirm(false));
+			buttons.cancelButton.onClick.AddListener(() => GUIManager.Instance.ToggleQuitConfirm(false));
 
 		if(buttons.cancelButton)
 			buttons.quitButton.onClick.AddListener(() => LevelManager.QuitApplication());
 
 		if(buttons.confirmButton)
 			buttons.confirmButton.onClick.AddListener(() => {
-				GUIManager.instance.InstantiateInterviewerTutorial();
+				GUIManager.Instance.InstantiateInterviewerTutorial();
 				MusicPlayer.instance.NextTrack();
 			});
 
 		if(buttons.noButton)
 			buttons.noButton.onClick.AddListener(() => {
-				GUIManager.instance.ToggleInterviewConfirm(false);
-				GUIManager.instance.MenuFadeTransition("LevelSelectMenu");
+				GUIManager.Instance.ToggleInterviewConfirm(false);
+				GUIManager.Instance.MenuFadeTransition("LevelSelectMenu");
 			});
 	}
 }

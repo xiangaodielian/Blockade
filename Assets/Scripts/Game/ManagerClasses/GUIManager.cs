@@ -23,29 +23,28 @@ public class GUIManager : MonoBehaviour {
 		public GameObject interviewerTutorialPanel = null;
 	}
 
-	[System.Serializable] private class GUISounds{
-		public string buttonHighlight = "";
+	[System.Serializable] private class GuiSounds{
 		public string buttonClick = "";
 		public string inGameMenuOpen = "";
 		public string inGameMenuClose = "";
 	}
 
 	public enum TargetMenuOptions{
-		mainMenu,
-		levelSelect,
-		optionsMenu,
-		highScore,
-		winMenu,
-		loseMenu
+		MainMenu,
+		LevelSelect,
+		OptionsMenu,
+		HighScore,
+		WinMenu,
+		LoseMenu
 	};
 
-	public static GUIManager instance {get; private set;}
+	public static GUIManager Instance {get; private set;}
 
-	public InGameGUI inGameGUI {get; private set;}
-	public DebugUI debugUI {get; private set;}
+	public InGameGUI InGameGui {get; private set;}
+	public DebugUI DebugUi {get; private set;}
 
 	[SerializeField] private MenuPrefabs menuPrefabs = null;
-	[SerializeField] private GUISounds guiSounds = null;
+	[SerializeField] private GuiSounds guiSounds = null;
 
 	private GameObject targetMenu = null;
 	private GameObject activeMenu = null;
@@ -65,16 +64,16 @@ public class GUIManager : MonoBehaviour {
 	#region Mono Functions
 	
 	void Awake(){
-		if(instance != null && instance != this)
+		if(Instance != null && Instance != this)
 			Destroy(gameObject);
 
-		instance = this;
+		Instance = this;
 
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 
-		debugUI = Instantiate(menuPrefabs.debugUI).GetComponent<DebugUI>();
-		debugUI.transform.SetParent(this.transform, false);
+		DebugUi = Instantiate(menuPrefabs.debugUI).GetComponent<DebugUI>();
+		DebugUi.transform.SetParent(transform, false);
 	}
 	
 	#endregion
@@ -170,17 +169,17 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	void InstantiateInGameGUI(){
-		if(inGameGUI == null){
-			inGameGUI = Instantiate(menuPrefabs.inGameUI).GetComponent<InGameGUI>();
-			inGameGUI.transform.SetParent(this.transform);
-			inGameGUI.transform.localScale = Vector3.one;
-			inGameGUI.transform.localPosition = Vector3.zero;
+		if(InGameGui == null){
+			InGameGui = Instantiate(menuPrefabs.inGameUI).GetComponent<InGameGUI>();
+			InGameGui.transform.SetParent(this.transform);
+			InGameGui.transform.localScale = Vector3.one;
+			InGameGui.transform.localPosition = Vector3.zero;
 		}
 	}
 
 	public void DestroyInGameGUI(TargetMenuOptions menu){
-		Destroy(inGameGUI.gameObject);
-		inGameGUI = null;
+		Destroy(InGameGui.gameObject);
+		InGameGui = null;
 
 		StartCoroutine(SetTargetMenu(menu));
 	}
@@ -207,7 +206,7 @@ public class GUIManager : MonoBehaviour {
 			Destroy(loseMenu);
 			loseMenu = null;
 
-			StartCoroutine(SetTargetMenu(TargetMenuOptions.highScore));
+			StartCoroutine(SetTargetMenu(TargetMenuOptions.HighScore));
 		}
 	}
 
@@ -227,11 +226,11 @@ public class GUIManager : MonoBehaviour {
 	#region Utility
 
 	public IEnumerator SetTargetMenu(TargetMenuOptions menu){
-		if(menu == TargetMenuOptions.winMenu || menu == TargetMenuOptions.loseMenu){
+		if(menu == TargetMenuOptions.WinMenu || menu == TargetMenuOptions.LoseMenu){
 			while(winMenu == null && loseMenu == null)
 				yield return null;
 
-			if(menu == TargetMenuOptions.winMenu)
+			if(menu == TargetMenuOptions.WinMenu)
 				targetMenu = winMenu;
 			else
 				targetMenu = loseMenu;
@@ -240,19 +239,19 @@ public class GUIManager : MonoBehaviour {
 				yield return null;
 
 			switch(menu){
-				case TargetMenuOptions.mainMenu:
+				case TargetMenuOptions.MainMenu:
 					targetMenu = mainMenu;
 					break;
 
-				case TargetMenuOptions.levelSelect:
+				case TargetMenuOptions.LevelSelect:
 					targetMenu = levelSelectMenu;
 					break;
 
-				case TargetMenuOptions.optionsMenu:
+				case TargetMenuOptions.OptionsMenu:
 					targetMenu = optionsMenu;
 					break;
 
-				case TargetMenuOptions.highScore:
+				case TargetMenuOptions.HighScore:
 					targetMenu = highScoresMenu;
 					break;
 			}
@@ -291,7 +290,7 @@ public class GUIManager : MonoBehaviour {
 			DestroyEndGameMenus();
 			DestroyInterviewerTutorial();
 			InstantiateInGameGUI();
-			inGameGUI.TogglePrompt(true);
+			InGameGui.TogglePrompt(true);
 		}
 	}
 

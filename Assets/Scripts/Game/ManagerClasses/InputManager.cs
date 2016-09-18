@@ -22,27 +22,27 @@ public class InputManager : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		EventManager.StartListening(EventManager.EventNames.dissolveFinish, dissolveFinishListener);
-		EventManager.StartListening(EventManager.EventNames.levelFinish, levelFisnishListener);
+		EventManager.StartListening(EventManager.EventNames.DissolveFinish, dissolveFinishListener);
+		EventManager.StartListening(EventManager.EventNames.LevelFinish, levelFisnishListener);
 	}
 
 	void onDisable(){
-		EventManager.StopListening(EventManager.EventNames.dissolveFinish, dissolveFinishListener);
-		EventManager.StopListening(EventManager.EventNames.levelFinish, levelFisnishListener);
+		EventManager.StopListening(EventManager.EventNames.DissolveFinish, dissolveFinishListener);
+		EventManager.StopListening(EventManager.EventNames.LevelFinish, levelFisnishListener);
 	}
 
 	void Update(){
 		//InGame Menu
 		if(Input.GetKeyDown(KeyCode.Escape) && LevelManager.GetCurrentLevel().Contains("Level"))
-			GUIManager.instance.inGameGUI.ToggleMenu();
+			GUIManager.Instance.InGameGui.ToggleMenu();
 
 		//Debug Console
 		if(Input.GetKeyDown(KeyCode.F10))
-			GUIManager.instance.debugUI.ToggleDebugConsole();
+			GUIManager.Instance.DebugUi.ToggleDebugConsole();
 
 		//Movement
 		if(!TimeManager.gamePaused && allowPlayerMovement){
-			if(GameMaster.GMInstance.playerManager.activePlayer != null){
+			if(GameMaster.Instance.PlayerManager.activePlayer != null){
 				if(useCursorMovement){
 					if(Input.mousePresent)
 						MoveWithMouse();
@@ -52,9 +52,9 @@ public class InputManager : MonoBehaviour {
 					MoveWithKeyboard();
 
 				// Control Laser Firing
-				if(GameMaster.GMInstance.playerManager.activePlayer.hasLasers){
+				if(GameMaster.Instance.PlayerManager.activePlayer.hasLasers){
 					if(Input.GetButtonDown("Fire"))
-						GameMaster.GMInstance.playerManager.activePlayer.FireLasers();
+						GameMaster.Instance.PlayerManager.activePlayer.FireLasers();
 				}
 			}
 		}
@@ -65,20 +65,20 @@ public class InputManager : MonoBehaviour {
 
 	//Control Paddle motion using mouse
 	void MoveWithMouse(){
-		Vector3 newPos = GameMaster.GMInstance.playerManager.activePlayer.transform.position;
+		Vector3 newPos = GameMaster.Instance.PlayerManager.activePlayer.transform.position;
 		Vector3 mousePos = Input.mousePosition;
 		mousePos.z = 10f;
 		mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-		if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
+		if(GameMaster.Instance.PlayerManager.activePlayer.mirroredMovement)
 			newPos.x += 16f - mousePos.x - newPos.x;
 		else
 			newPos.x += mousePos.x - newPos.x;
 		
-		GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(newPos);
+		GameMaster.Instance.PlayerManager.activePlayer.MovePaddle(newPos);
 
 		if(Input.GetMouseButtonDown(0))
-			EventManager.TriggerEvent(EventManager.EventNames.launchBall);
+			EventManager.TriggerEvent(EventManager.EventNames.LaunchBall);
 	}
 
 	//Control Paddle motion using finger on a touch device
@@ -88,40 +88,40 @@ public class InputManager : MonoBehaviour {
 			touchPos.z = 10f;
 			touchPos = Camera.main.ScreenToWorldPoint(touchPos);
 
-			GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(touchPos);
+			GameMaster.Instance.PlayerManager.activePlayer.MovePaddle(touchPos);
 		}
 	}
 
 	//Control Paddle motion using Keyboard (A,D,<-,-> for motion, hold Shift for dash)
 	void MoveWithKeyboard(){
-		Vector3 newPos = GameMaster.GMInstance.playerManager.activePlayer.transform.position;
+		Vector3 newPos = GameMaster.Instance.PlayerManager.activePlayer.transform.position;
 		float movementMultiplier = 1f;
 
 		if(Input.GetButton("Dash"))
 			movementMultiplier = 3f;
 
 		if(Input.GetAxis("Horizontal") < 0f){
-			if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
+			if(GameMaster.Instance.PlayerManager.activePlayer.mirroredMovement)
 				newPos.x += 0.15f * movementMultiplier;
 			else
 				newPos.x -= 0.15f * movementMultiplier;
 		}
 
 		if(Input.GetAxis("Horizontal") > 0f){
-			if(GameMaster.GMInstance.playerManager.activePlayer.mirroredMovement)
+			if(GameMaster.Instance.PlayerManager.activePlayer.mirroredMovement)
 				newPos.x -= 0.15f * movementMultiplier;
 			else
 				newPos.x += 0.15f * movementMultiplier;
 		}
 
-		GameMaster.GMInstance.playerManager.activePlayer.MovePaddle(newPos);
+		GameMaster.Instance.PlayerManager.activePlayer.MovePaddle(newPos);
 
 		if(Input.GetButtonDown("Launch"))
-			EventManager.TriggerEvent(EventManager.EventNames.launchBall);
+			EventManager.TriggerEvent(EventManager.EventNames.LaunchBall);
 	}
 
 	public void ProcessInputString(string input){
-		GUIManager.instance.debugUI.ProcessCommand(input);
+		GUIManager.Instance.DebugUi.ProcessCommand(input);
 	}
 
 	#endregion

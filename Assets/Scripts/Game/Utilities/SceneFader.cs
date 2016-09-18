@@ -75,19 +75,19 @@ public class SceneFader : MonoBehaviour {
 		if(!screenLoaded){
 			switch(screenToLoad){
 				case "MainMenu":
-					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.mainMenu));
+					StartCoroutine(GUIManager.Instance.SetTargetMenu(GUIManager.TargetMenuOptions.MainMenu));
 					break;
 
 				case "OptionsMenu":
-					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.optionsMenu));
+					StartCoroutine(GUIManager.Instance.SetTargetMenu(GUIManager.TargetMenuOptions.OptionsMenu));
 					break;
 
 				case "LevelSelectMenu":
-					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.levelSelect));
+					StartCoroutine(GUIManager.Instance.SetTargetMenu(GUIManager.TargetMenuOptions.LevelSelect));
 					break;
 
 				case "HighScoresMenu":
-					StartCoroutine(GUIManager.instance.SetTargetMenu(GUIManager.TargetMenuOptions.highScore));
+					StartCoroutine(GUIManager.Instance.SetTargetMenu(GUIManager.TargetMenuOptions.HighScore));
 					break;
 
 				default:
@@ -103,7 +103,7 @@ public class SceneFader : MonoBehaviour {
 			pauseStart = 0f;
 			faderDetails.fadeImage.color = faderDetails.fadeOutColor;
 			if(faderDetails.transitionType == FaderDetails.TransitionType.SceneChange)
-				LevelManager.instance.ChangeToLevel("MainMenu");
+				LevelManager.Instance.ChangeToLevel("MainMenu");
 		}
 	}
 	

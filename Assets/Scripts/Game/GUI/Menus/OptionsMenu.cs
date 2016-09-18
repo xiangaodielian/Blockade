@@ -112,7 +112,7 @@ public class OptionsMenu : MonoBehaviour {
 			});
 			buttons.backButton.onClick.AddListener(() => {
 				curPanelFocus = 0;
-				GUIManager.instance.MenuFadeTransition("MainMenu");
+				GUIManager.Instance.MenuFadeTransition("MainMenu");
 				OptionsManager.instance.SaveOptions();
 			});
 			buttons.gameplayButton.onClick.AddListener(() => curPanelFocus = 0);
@@ -136,7 +136,7 @@ public class OptionsMenu : MonoBehaviour {
 			dropdowns.difficultyDropdown.onValueChanged.AddListener(value => OptionsManager.instance.SetDifficulty(value));
 		} else
 			buttons.backButton.onClick.AddListener(() => {
-				GUIManager.instance.inGameGUI.InGameMain();
+				GUIManager.Instance.InGameGui.InGameMain();
 				OptionsManager.instance.SaveOptions();
 			});
 

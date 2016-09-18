@@ -120,7 +120,7 @@ public class Powerup : MonoBehaviour {
 				AudioSource.PlayClipAtPoint(curAudioClip,player.transform.position,PrefsManager.GetMasterSFXVolume());
 			player.CollectPowerup(powerupType);
 			Destroy(gameObject);
-			GameMaster.GMInstance.playerManager.AddToPlayerScore(pointValue);
+			GameMaster.Instance.PlayerManager.AddToPlayerScore(pointValue);
 		}
 			
 	}
