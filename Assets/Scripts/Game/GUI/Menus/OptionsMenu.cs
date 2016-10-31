@@ -1,14 +1,6 @@
-﻿/*----------------------------------/
-  OptionsMenu Class - Blockade
-  Controls all GUI visible in
-  Options Menus (including in-game)
-  Writen by Joe Arthur
-  Latest Revision - 4 May, 2016
-/----------------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using ApplicationManagement;
 
 public class OptionsMenu : MonoBehaviour {
 

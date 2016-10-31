@@ -1,13 +1,5 @@
-﻿/*----------------------------/
-  Laser Class - Blockade
-  Controlling class for Laser
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
-/-----------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Laser : MonoBehaviour {

@@ -1,13 +1,6 @@
-﻿/*----------------------------/
-  Powerup Class - Blockade
-  Controlling class for Powerup
-  object and its functions
-  Writen by Joe Arthur
-  Latest Revision - 29 Mar, 2016
-/-----------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Rigidbody))]

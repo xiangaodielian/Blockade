@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 public class LoadScreen : MonoBehaviour {
 
@@ -19,12 +21,12 @@ public class LoadScreen : MonoBehaviour {
 
 	void Update(){
 		if(isLevelLoadScreen){
-		    if(LevelManager.Instance.asyncOp == null)
+		    if(LevelManager.Instance.AsyncOp == null)
                 return;
 
-		    loadingSlider.value = LevelManager.Instance.asyncOp.progress;
+		    loadingSlider.value = LevelManager.Instance.AsyncOp.progress;
 
-            if(LevelManager.Instance.asyncOp.isDone){
+            if(LevelManager.Instance.AsyncOp.isDone){
 		        loadingSlider.value = 0f;
 		        gameObject.SetActive(false);
 		    }

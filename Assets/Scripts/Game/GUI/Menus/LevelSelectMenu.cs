@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 public class LevelSelectMenu : MonoBehaviour {
 

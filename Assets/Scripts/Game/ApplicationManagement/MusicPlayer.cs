@@ -1,14 +1,7 @@
-﻿/*----------------------------/
-  MusicPlayer Class - Blockade
-  Manages MusicPlayer object
-  and its functions
-  Writen by Joe Arthur
-  Latest Revision - 2 May, 2016
-/-----------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicPlayer : MonoBehaviour {

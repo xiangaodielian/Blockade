@@ -1,14 +1,6 @@
-﻿/*------------------------------/
-  HighScoresUI Class - Blockade
-  Manages High Score page and
-  updates High Score data
-  Writen by Joe Arthur
-  Latest Revision - 3 Apr, 2016
-/-----------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using ApplicationManagement;
 
 public class HighScoresUI : MonoBehaviour {
 	

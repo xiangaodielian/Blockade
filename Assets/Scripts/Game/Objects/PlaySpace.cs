@@ -1,14 +1,6 @@
-﻿/*----------------------------/
-  Playspace Class - Blockade
-  Controlling class for Playspace
-  object (Walls, Background, etc)
-  and its functions
-  Writen by Joe Arthur
-  Latest Revision - 13 Apr, 2016
-/-----------------------------*/
-
-using UnityEngine;
-using System.Collections;
+﻿using UnityEngine;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]

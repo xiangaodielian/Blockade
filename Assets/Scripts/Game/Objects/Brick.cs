@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [ExecuteInEditMode]
 public class Brick : MonoBehaviour {
@@ -23,24 +23,33 @@ public class Brick : MonoBehaviour {
 		public GameObject explosionPrefab = null;
 	}
 
-	public enum BrickType {ONE, TWO, THREE, FOUR, FIVE, UNBREAKABLE};
+    public enum BrickType {
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Unbreakable
+    };
 	
 	[SerializeField] private string[] audioClips = new string[5];
 	[SerializeField] private MaterialArrays materialArrays = null;
 	[SerializeField] private PowerupDetails powerupDetails = null;
 	[Tooltip("Number of hits it takes to destroy the Brick.")]
-	[SerializeField] private BrickType brickType = BrickType.ONE;
+	[SerializeField] private BrickType brickType = BrickType.One;
 
-	private Powerup powerup = null;
+    private static int breakableCount;
+
+    private Powerup powerup;
 	private Color curColor = Color.white;
 	private float curIntensity = 1f;
-	private AudioClip curAudioClip = null;
-	private int hitPoints = 0;
-	private int pointValue = 0;
-	private float timesHit = 0;
-	private bool isBreakable = false;
-	private Ball collidingBall = null;
-	private Material bodyMaterial = null;
+    private AudioClip curAudioClip;
+    private int hitPoints;
+    private int pointValue;
+    private float timesHit;
+    private bool isBreakable;
+    private Ball collidingBall;
+    private Material bodyMaterial;
 	
 	#endregion
 	#region MonoDevelop Functions
@@ -57,10 +66,10 @@ public class Brick : MonoBehaviour {
 
 		timesHit = 0f;
 		SetBrick();
-		ResourceManager.SetMaterialTextures(this.gameObject);
-		
-		if(isBreakable)
-			GameObjectManager.AddBrickToList(this.gameObject);
+		ResourceManager.SetMaterialTextures(gameObject);
+
+	    if(isBreakable)
+	        breakableCount++;
 	}
 	
 	void Update(){
@@ -77,42 +86,42 @@ public class Brick : MonoBehaviour {
 	void SetBrick()
 	{
 		switch (brickType) {
-			case BrickType.ONE:
+			case BrickType.One:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[0];
 				curIntensity = materialArrays.glowIntensities[0];
 				curAudioClip = ResourceManager.LoadAudioClip(audioClips[0]);
 				hitPoints = 1;
 				break;
-			case BrickType.TWO:
+			case BrickType.Two:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[1];
 				curIntensity = materialArrays.glowIntensities[1];
 				curAudioClip = ResourceManager.LoadAudioClip(audioClips[1]);
 				hitPoints = 2;
 				break;
-			case BrickType.THREE:
+			case BrickType.Three:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[2];
 				curIntensity = materialArrays.glowIntensities[2];
 				curAudioClip = ResourceManager.LoadAudioClip(audioClips[2]);
 				hitPoints = 3;
 				break;
-			case BrickType.FOUR:
+			case BrickType.Four:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[3];
 				curIntensity = materialArrays.glowIntensities[3];
 				curAudioClip = ResourceManager.LoadAudioClip(audioClips[3]);
 				hitPoints = 4;
 				break;
-			case BrickType.FIVE:
+			case BrickType.Five:
 				gameObject.tag = "Breakable";
 				curColor = materialArrays.brickGlowColors[4];
 				curIntensity = materialArrays.glowIntensities[4];
 				curAudioClip = ResourceManager.LoadAudioClip(audioClips[4]);
 				hitPoints = 5;
 				break;
-			case BrickType.UNBREAKABLE:
+			case BrickType.Unbreakable:
 				curColor = materialArrays.brickGlowColors[5];
 				curIntensity = materialArrays.glowIntensities[5];
 				hitPoints = -1;
@@ -190,9 +199,17 @@ public class Brick : MonoBehaviour {
 		if(timesHit >= hitPoints && hitPoints > 0){
 			if(powerupDetails.hasPowerup)
 				DropPowerup();
-				
-			GameObjectManager.BrickDestroyed(pointValue, this.gameObject);
-			Destroy(gameObject);
+
+            //Send BrickDestroyed Event
+            GameMaster.Instance.PlayerManager.AddToPlayerScore(pointValue);
+            breakableCount--;
+		    if(breakableCount == 0) {
+		        GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted = false;
+		        GUIManager.Instance.InGameGui.ToggleEndLevelPanel(true);
+		        GUIManager.Instance.InGameGui.CalculateTimeBonus();
+		    }
+		    
+            Destroy(gameObject);
 		} else {
 			ChangeBrickColor();
 		}

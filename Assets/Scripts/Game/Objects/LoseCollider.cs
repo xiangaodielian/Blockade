@@ -1,5 +1,6 @@
 using UnityEngine;
-using System.Collections;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(AudioSource))]
 public class LoseCollider : MonoBehaviour {

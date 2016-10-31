@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Ball : MonoBehaviour {
@@ -31,7 +32,6 @@ public class Ball : MonoBehaviour {
 	[SerializeField] private ParticleSystem normalParticles = null;
 	[SerializeField] private ParticleSystem explosiveParticles = null;
 
-	private UnityAction launchBallListener;
 	private Color ballColor;
 	private AudioSource audioSource;
 	private bool isSticky = false;
@@ -41,10 +41,6 @@ public class Ball : MonoBehaviour {
 	
 	#endregion
 	#region MonoDevelop Functions
-	
-	void Awake(){
-		launchBallListener = new UnityAction(LaunchBall);
-	}
 
 	void Start(){
 		ballColor = PrefsManager.GetBallColor();
@@ -65,7 +61,7 @@ public class Ball : MonoBehaviour {
 		difficultySpeedMultipler = ((float)PrefsManager.GetDifficulty() + 2f) / 3f;
 		
 		//Multiball Case
-		if(GameMaster.Instance.PlayerManager.activePlayer.hasStarted){
+		if(GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted){
 			Vector2 otherVel = new Vector2();
 			Ball[] otherBalls = FindObjectsOfType<Ball>();
 			foreach(Ball ball in otherBalls){
@@ -84,11 +80,11 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnEnable(){
-		EventManager.StartListening(EventManager.EventNames.LaunchBall, launchBallListener);
+        EventManager.Instance.AddListener<InputManager.BallLaunchEvent>(OnBallLaunch);
 	}
 
 	void OnDisable(){
-		EventManager.StopListening(EventManager.EventNames.LaunchBall, launchBallListener);
+        EventManager.Instance.RemoveListener<InputManager.BallLaunchEvent>(OnBallLaunch);
 	}
 	
 	void Update(){
@@ -98,7 +94,7 @@ public class Ball : MonoBehaviour {
 		
 		//Pre-Launch
 		// && GameMaster.Instance.allowStart
-		if(!GameMaster.Instance.PlayerManager.activePlayer.hasStarted && !TimeManager.gamePaused)
+		if(!GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted && !TimeManager.gamePaused)
 			lockToPaddle = true;
 		
 		//Explosive Ball Pulse
@@ -106,7 +102,7 @@ public class Ball : MonoBehaviour {
 			ExplosiveGlowPulse();
 
 		if(lockToPaddle){
-			transform.position = GameMaster.Instance.PlayerManager.activePlayer.transform.position + new Vector3(0f, 0.35f, 0f);
+			transform.position = GameMaster.Instance.PlayerManager.ActivePlayer.transform.position + new Vector3(0f, 0.35f, 0f);
 			rigidBody.velocity = Vector3.zero;
 		}
 	}
@@ -153,7 +149,7 @@ public class Ball : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision collision){
-		float tweak = 10f*(transform.position.x - GameMaster.Instance.PlayerManager.activePlayer.transform.position.x);
+		float tweak = 10f*(transform.position.x - GameMaster.Instance.PlayerManager.ActivePlayer.transform.position.x);
 		Vector3 tweakVector = new Vector3(tweak,0f,0f);
 		
 		// Stick to Paddle when StickyBall active
@@ -166,7 +162,7 @@ public class Ball : MonoBehaviour {
 		}
 		
 		// Ball does not trigger Sound when hitting Bricks
-		if(GameMaster.Instance.PlayerManager.activePlayer.hasStarted){
+		if(GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted){
 			if(collision.gameObject.tag != "Breakable")
 				audioSource.Play();
 			if(collision.gameObject.tag == "Player")
@@ -288,6 +284,13 @@ public class Ball : MonoBehaviour {
 		ballState = BallState.Normal;
 		ChangeMaterial();
 	}
-	
-	#endregion
+
+    #endregion
+    #region Delegate Listeners
+
+    private void OnBallLaunch(InputManager.BallLaunchEvent e) {
+        LaunchBall();
+    }
+
+    #endregion
 }

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
+using ApplicationManagement;
+using ApplicationManagement.ResourceControl;
 
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
@@ -9,10 +8,10 @@ public class Paddle : MonoBehaviour {
 	
 	#region Variables
 
-	[HideInInspector] public bool hasStarted = false;
+	[HideInInspector] public bool hasStarted;
 	[HideInInspector] public bool firstBall = true;
-	[HideInInspector] public bool hasLasers = false;
-	[HideInInspector] public bool mirroredMovement = false;			//FALSE - normal motion TRUE - reversed motion
+	[HideInInspector] public bool hasLasers;
+	[HideInInspector] public bool mirroredMovement;			        //FALSE - normal motion TRUE - reversed motion
 
 	[SerializeField] private GameObject laserPrefab = null;			//Ref to Laser Prefab
 	[Tooltip("Transform for Left Laser parent group.")]
@@ -20,15 +19,16 @@ public class Paddle : MonoBehaviour {
 	[Tooltip("Transform for Right Laser parent group.")]
 	[SerializeField] private Transform rightLaserPos = null;		//Position of Right LaserTurret
 
-	private UnityAction levelResetListener;
-	private UnityAction launchBallListener;
 	private static Paddle instance;
-	private Vector3 targetScale = new Vector3();
+	private Vector3 targetScale;
 	private AudioSource audioSource;
 	private Animator animator;
-	private Ball[] ballArray = null;
-	
-	#endregion
+
+    public Paddle() {
+        mirroredMovement = false;
+    }
+
+    #endregion
 	#region MonoDevelop Functions
 	
 	void Awake(){
@@ -38,9 +38,6 @@ public class Paddle : MonoBehaviour {
 		instance = this;
 
 		DontDestroyOnLoad(gameObject);
-
-		levelResetListener = new UnityAction(ResetToDefaultState);
-		launchBallListener = new UnityAction(LaunchBall);
 	}
 
 	void Start(){
@@ -49,17 +46,17 @@ public class Paddle : MonoBehaviour {
 		audioSource.volume = PrefsManager.GetMasterSFXVolume();
 		audioSource.clip = ResourceManager.LoadAudioClip("Laser");
 		animator = GetComponent<Animator>();
-		ResourceManager.SetMaterialTextures(this.gameObject);
+		ResourceManager.SetMaterialTextures(gameObject);
 	}
 
 	void OnEnable(){
-		EventManager.StartListening(EventManager.EventNames.LevelReset, levelResetListener);
-		EventManager.StartListening(EventManager.EventNames.LaunchBall, launchBallListener);
+        EventManager.Instance.AddListener<LevelManager.LevelResetEvent>(OnLevelReset);
+        EventManager.Instance.AddListener<InputManager.BallLaunchEvent>(OnBallLaunch);
 	}
 
 	void OnDisable(){
-		EventManager.StopListening(EventManager.EventNames.LevelReset, levelResetListener);
-		EventManager.StopListening(EventManager.EventNames.LaunchBall, launchBallListener);
+        EventManager.Instance.RemoveListener<LevelManager.LevelResetEvent>(OnLevelReset);
+        EventManager.Instance.RemoveListener<InputManager.BallLaunchEvent>(OnBallLaunch);
 	}
 	
 	void Update(){
@@ -73,14 +70,14 @@ public class Paddle : MonoBehaviour {
 
 	//Move Paddle based on inputPos from MousePos or TouchPos
 	public void MovePaddle(Vector3 inputPos){		
-		Collider collider = GetComponent<Collider>();
-		Vector3 paddlePos = this.transform.position;
-		paddlePos.x = Mathf.Clamp(inputPos.x,0.5f+collider.bounds.extents.x,15.5f-collider.bounds.extents.x);
-			
-		this.transform.position = paddlePos;
+		Collider col = GetComponent<Collider>();
+		Vector3 paddlePos = transform.position;
+		paddlePos.x = Mathf.Clamp(inputPos.x,0.5f+col.bounds.extents.x,15.5f-col.bounds.extents.x);
+
+        transform.position = paddlePos;
 	}
 
-	void LaunchBall(){
+	private void LaunchBall(){
 		if(firstBall){
 			firstBall = false;
 			GUIManager.Instance.InGameGui.SetTimeDifference((int)Time.timeSinceLevelLoad);
@@ -103,7 +100,9 @@ public class Paddle : MonoBehaviour {
 	}
 	
 	public void CollectPowerup(Powerup.PowerupType powerupType){
-		switch(powerupType){
+        Ball[] ballArray = FindObjectsOfType<Ball>();
+
+        switch(powerupType){
 			case Powerup.PowerupType.Expand:
 				Expand(1);
 				break;
@@ -193,6 +192,18 @@ public class Paddle : MonoBehaviour {
 			Instantiate(laserPrefab,rightLaserPos.position,Quaternion.identity);
 		}
 	}
-	
-	#endregion
+
+    #endregion
+
+    #region Delegate Listeners
+
+    private void OnLevelReset(LevelManager.LevelResetEvent e) {
+        ResetToDefaultState();
+    }
+
+    private void OnBallLaunch(InputManager.BallLaunchEvent e) {
+        LaunchBall();
+    }
+
+    #endregion
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using ApplicationManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(BoxCollider))]
@@ -7,8 +7,11 @@ using System.Collections;
 public class Shield : MonoBehaviour {
 	
 	#region Variables
+    /*----EVENTS----*/
+    public class DissolveFInishEvent : GameEvent { }
+    /*--------------*/
 
-	[Tooltip("Angle of Constraint for rotation of Shield when allowed.")]
+    [Tooltip("Angle of Constraint for rotation of Shield when allowed.")]
 	[SerializeField] private float rotateConstraintAngle = 20f;
 	[SerializeField] private float maxLightIntensity = 7f;
 	[SerializeField] private float restingLightIntensity = 3f;
@@ -54,7 +57,7 @@ public class Shield : MonoBehaviour {
 				shieldMat.SetFloat("_EdgeWidth", 0f);
 				shieldAnchorPos = transform.localPosition;
 
-				EventManager.TriggerEvent(EventManager.EventNames.DissolveFinish);
+				EventManager.Instance.Raise(new DissolveFInishEvent());
 
 				GUIManager.Instance.InGameGui.TogglePrompt(true);
 			}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using ApplicationManagement;
 
 public class SceneFader : MonoBehaviour {
 	

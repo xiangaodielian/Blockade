@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using ApplicationManagement;
 
 public class EndGameMenu : MonoBehaviour {
 
