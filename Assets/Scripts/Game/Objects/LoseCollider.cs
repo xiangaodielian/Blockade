@@ -21,8 +21,8 @@ public class LoseCollider : MonoBehaviour {
 		if(collider.tag == "Ball"){
 			audioSouce.Play();
 			if(ballArray.Length == 1){
-				if(GameMaster.Instance.PlayerManager.GetPlayerLives() > 0){
-					GameMaster.Instance.PlayerManager.AddToPlayerLives(-1);
+				if(PlayerManager.Instance.GetPlayerLives() > 0){
+					PlayerManager.Instance.AddToPlayerLives(-1);
 					LevelManager.Instance.ResetCurrentLevel();
 				} else{
 					GUIManager.Instance.DestroyInGameGUI(GUIManager.TargetMenuOptions.LoseMenu);

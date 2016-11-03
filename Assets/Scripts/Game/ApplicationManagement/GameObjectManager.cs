@@ -1,11 +1,28 @@
-﻿using System;
+﻿/*
+ * GameObjectManager Class
+ * Handles Instantiation and Destruction of all GameObjects
+ */
+
+using System;
 using UnityEngine;
-using System.Collections.Generic;
+using ApplicationManagement.DebugTools;
 
 namespace ApplicationManagement {
     public class GameObjectManager : MonoBehaviour {
 
         #region Variables
+
+        /*----EVENTS----*/
+        public class SpawnPowerupEvent : GameEvent {
+            public Vector3 powerupLocation;
+            public Powerup.PowerupType powerupType;
+
+            public SpawnPowerupEvent(Vector3 location, Powerup.PowerupType type) {
+                powerupLocation = location;
+                powerupType = type;
+            }
+        }
+        /*--------------*/
 
         [System.Serializable]
         private class Prefabs {
@@ -15,23 +32,32 @@ namespace ApplicationManagement {
             public GameObject powerupPrefab = null;
         }
 
+        public static GameObjectManager Instance { get; private set; }
+
         [SerializeField] private Prefabs prefabs = null;
 
-        private static List<GameObject> breakableBricks = new List<GameObject>();
         private static GameObject stars;
 
         #endregion
 
         #region Mono Functions
 
-        void OnEnable() {
-            EventManager.Instance.AddListener<LevelManager.LevelResetEvent>(OnLevelReset);
-            EventManager.Instance.AddListener<LevelManager.SceneChangeEvent>(OnSceneChange);
+        private void Awake() {
+            if(Instance != null && Instance != this)
+                Destroy(gameObject);
+            Instance = this;
         }
 
-        void OnDisable() {
+        private void OnEnable() {
+            EventManager.Instance.AddListener<LevelManager.LevelResetEvent>(OnLevelReset);
+            EventManager.Instance.AddListener<LevelManager.SceneChangeEvent>(OnSceneChange);
+            EventManager.Instance.AddListener<SpawnPowerupEvent>(OnSpawnPowerup);
+        }
+
+        private void OnDisable() {
             EventManager.Instance.RemoveListener<LevelManager.LevelResetEvent>(OnLevelReset);
             EventManager.Instance.RemoveListener<LevelManager.SceneChangeEvent>(OnSceneChange);
+            EventManager.Instance.RemoveListener<SpawnPowerupEvent>(OnSpawnPowerup);
         }
 
         #endregion
@@ -42,8 +68,11 @@ namespace ApplicationManagement {
         /// Populates the powerups of current bricks.
         /// </summary>
         private static void PopulatePowerups() {
-            foreach(GameObject brick in breakableBricks)
-                brick.GetComponent<Brick>().SetPowerup();
+            Brick[] bricksInScene = FindObjectsOfType<Brick>();
+            foreach(Brick brick in bricksInScene) {
+                if(brick.tag == "Breakable")
+                    brick.SetPowerup();
+            }
         }
 
         private void StartStars() {
@@ -55,6 +84,13 @@ namespace ApplicationManagement {
             Instantiate(prefabs.ballPrefab);
         }
 
+        private void SpawnPowerup(Vector3 location, Powerup.PowerupType type) {
+            Powerup powerup = prefabs.powerupPrefab.GetComponent<Powerup>();
+            powerup.powerupType = type;
+
+            Instantiate(prefabs.powerupPrefab, location, Quaternion.identity);
+        }
+
         /// <summary>
         /// Clears all active GameObjects.
         /// </summary>
@@ -63,10 +99,10 @@ namespace ApplicationManagement {
                 Destroy(PlaySpace.instance.gameObject);
 
             try {
-                GameMaster.Instance.PlayerManager.DestroyPlayer();
+                PlayerManager.Instance.DestroyPlayer();
             } catch(InvalidOperationException e) {
                 string warning = string.Format("WARNING in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogWarning(warning);
+                DebugManager.Logger.LogWarning(warning);
             }
 
             Ball[] ballsInScene = FindObjectsOfType<Ball>();
@@ -79,8 +115,6 @@ namespace ApplicationManagement {
             if(bricksInScene.Length > 0) {
                 foreach(Brick brick in bricksInScene)
                     Destroy(brick.gameObject);
-
-                breakableBricks = new List<GameObject>();
             }
 
             Powerup[] powerupsInScene = FindObjectsOfType<Powerup>();
@@ -104,8 +138,6 @@ namespace ApplicationManagement {
                 if(e.scene.name == "MainMenu")
                     StartStars();
             } else {
-                breakableBricks = new List<GameObject>();
-
                 Ball[] ballsInScene = FindObjectsOfType<Ball>();
                 if(ballsInScene.Length > 0) {
                     foreach(Ball ball in ballsInScene)
@@ -123,6 +155,10 @@ namespace ApplicationManagement {
                 if(LevelManager.GetLevelNum() > 10)
                     PopulatePowerups();
             }
+        }
+
+        private void OnSpawnPowerup(SpawnPowerupEvent e) {
+            SpawnPowerup(e.powerupLocation, e.powerupType);
         }
 
         #endregion

@@ -92,7 +92,7 @@ public class LevelSelectMenu : MonoBehaviour {
 
 			button.onClick.AddListener(() => { 
 				StartCoroutine(LevelManager.Instance.ChangeToLevelAsync(levelToLoad));
-				MusicPlayer.instance.NextTrack();
+				AudioManager.Instance.NextMusicTrack();
 				ShowLoadScreen(); 
 			});
 
@@ -101,7 +101,7 @@ public class LevelSelectMenu : MonoBehaviour {
 
 		buttons.resumeButton.onClick.AddListener(() => {
 			LevelManager.Instance.ChangeToLevelAsync("LatestCheckpoint");
-			MusicPlayer.instance.NextTrack(); 
+			AudioManager.Instance.NextMusicTrack(); 
 		});
 		buttons.backButton.onClick.AddListener(() => GUIManager.Instance.MenuFadeTransition("MainMenu"));
 	}

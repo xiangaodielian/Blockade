@@ -34,7 +34,7 @@ public class DebugUI : MonoBehaviour {
 
 	void Start(){
 		debugInput = debugFields.debugInput;
-		debugInput.onEndEdit.AddListener((value) => GameMaster.Instance.InputManager.ProcessInputString(value));
+		debugInput.onEndEdit.AddListener((value) => InputManager.Instance.ProcessInputString(value));
 		debugInput.gameObject.SetActive(false);
 		debugFields.responseText.text = "";
 		debugInfo.SetActive(false);
@@ -115,7 +115,7 @@ public class DebugUI : MonoBehaviour {
 				if(LevelManager.GetCurrentLevel().Contains("Level")){
 					debugFields.responseText.text = "MAX LIVES!";
 
-					GameMaster.Instance.PlayerManager.SetPlayerLives(99);
+					PlayerManager.Instance.SetPlayerLives(99);
 				} else
 					debugFields.responseText.text = "TRY THIS ONE IN GAME!";
 				break;

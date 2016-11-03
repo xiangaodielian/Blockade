@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
+using ApplicationManagement.DebugTools;
 using ApplicationManagement.ResourceControl;
 
 namespace ApplicationManagement {
@@ -64,7 +65,7 @@ namespace ApplicationManagement {
                 SceneManager.LoadScene(name);
             } catch(ArgumentException e) {
                 string error = string.Format("ERROR in {0}; {1}\n{2}", e.Source, e.Message, e.StackTrace);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
         }
 
@@ -74,7 +75,7 @@ namespace ApplicationManagement {
                 return SceneManager.LoadSceneAsync(name);
             } catch(ArgumentException e) {
                 string error = string.Format("ERROR in {0}; {1}\n{2}", e.Source, e.Message, e.StackTrace);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
 
             return null;
@@ -95,7 +96,7 @@ namespace ApplicationManagement {
                 SceneManager.LoadSceneAsync(nextLevel);
             } catch(ArgumentException e) {
                 string error = string.Format("ERROR in {0}; {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
         }
 
@@ -108,8 +109,8 @@ namespace ApplicationManagement {
         #region Level Management
 
         public void ChangeToLevel(string level) {
-            if(GameMaster.Instance.PlayerManager.ActivePlayer != null)
-                GameMaster.Instance.PlayerManager.ActivePlayer.firstBall = true;
+            if(PlayerManager.Instance.ActivePlayer != null)
+                PlayerManager.Instance.ActivePlayer.firstBall = true;
 
             if(level == "Next") {
                 if(GetLevelNum() == 20) {
@@ -132,8 +133,8 @@ namespace ApplicationManagement {
         }
 
         public IEnumerator ChangeToLevelAsync(string level) {
-            if(GameMaster.Instance.PlayerManager.ActivePlayer != null)
-                GameMaster.Instance.PlayerManager.ActivePlayer.firstBall = true;
+            if(PlayerManager.Instance.ActivePlayer != null)
+                PlayerManager.Instance.ActivePlayer.firstBall = true;
 
             if(level == "LatestCheckpoint") {
                 int latestCheckpoint = PrefsManager.GetLatestCheckpoint();
@@ -158,8 +159,8 @@ namespace ApplicationManagement {
         }
 
         public void RestartLevel() {
-            GameMaster.Instance.PlayerManager.SetPlayerScore(0);
-            GameMaster.Instance.PlayerManager.SetPlayerLives(3);
+            PlayerManager.Instance.SetPlayerScore(0);
+            PlayerManager.Instance.SetPlayerLives(3);
 
             ChangeToLevel(previousLevel);
         }
@@ -209,13 +210,7 @@ namespace ApplicationManagement {
             if(scene.name == "MainMenu") {
                 EventManager.Instance.Raise(new LevelFinishEvent());
 
-                if(MusicPlayer.instance.isPlaying)
-                    MusicPlayer.instance.StopMusic();
-
-                MusicPlayer.instance.MenuMusicSet();
-                MusicPlayer.instance.StartMusic();
-
-                OptionsManager.instance.SetAudioClip();
+                OptionsManager.Instance.SetAudioClip();
             } else if(scene.name.Contains("Level")) {
                 PrefsManager.SetCurrentLevel(GetLevelNum());
 

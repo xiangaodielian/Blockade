@@ -1,16 +1,22 @@
+/*
+ * GameMaster Class
+ * Responsible for Initiating Game from Splash
+ * Handles all high level Manager Instantiation/Initialization 
+ */
+
 using UnityEngine;
 using System;
 using ApplicationManagement.DebugTools;
 using ApplicationManagement.ResourceControl;
 
 namespace ApplicationManagement {
+    [RequireComponent(typeof(AssetBundleManager))]
+    [RequireComponent(typeof(DebugManager))]
     [RequireComponent(typeof(EventManager))]
     [RequireComponent(typeof(InputManager))]
-    [RequireComponent(typeof(PlayerManager))]
-    [RequireComponent(typeof(GameObjectManager))]
-    [RequireComponent(typeof(TimeManager))]
     [RequireComponent(typeof(LevelManager))]
     [RequireComponent(typeof(OptionsManager))]
+    [RequireComponent(typeof(TimeManager))]
     public class GameMaster : MonoBehaviour {
 
         #region variables
@@ -20,29 +26,28 @@ namespace ApplicationManagement {
         [Serializable]
         private class AssetBundleOptions {
             public string assetBundleUrl = string.Empty;
-            [Tooltip("Use AssetBundles from local file system (use to test).")] public bool useLocalAssetBundles = false;
-            [Tooltip("Write Logs to file on disk if TRUE or use Debug.Log if FALSE.")] public bool writeLogToFile = false;
+            [Tooltip("Use AssetBundles from local file system (use to test).")]
+            public bool useLocalAssetBundles = false;
+        }
+
+        [Serializable]
+        private class DebugOptions {
+            [Tooltip("Write Logs to file on disk if TRUE or use Debug.Log if FALSE.")]
+            public bool writeLogToFile = false;
         }
 
         [Serializable]
         private class Prefabs {
-            public GameObject splashPrefab = null;
-            public GameObject musicPlayerPrefab = null;
-            public GameObject cameraPrefab = null;
+            public GameObject audioManagerPrefab = null;
+            public GameObject cameraManagerPrefab = null;
+            public GameObject gameObjectManagerPrefab = null;
             public GameObject guiManagerPrefab = null;
+            public GameObject playerManagerPrefab = null;
         }
 
-        /*-----MANAGERS-----*/
-        public InputManager InputManager { get; private set; }
-        public PlayerManager PlayerManager { get; private set; }
-        public GameObjectManager GameObjectManager { get; private set; }
-        public OptionsManager OptionsManager { get; private set; }
-        /*------------------*/
-
-        public static IDebugLogger Logger { get; private set; }
-
         [SerializeField] private AssetBundleOptions assetBundleOptions = null;
-        [SerializeField] private Prefabs prefabs = null;
+        [SerializeField] private DebugOptions debugOptions = null;
+        [SerializeField] private Prefabs managerPrefabs = null;
 
         #endregion
 
@@ -51,17 +56,11 @@ namespace ApplicationManagement {
         private void Awake() {
             if(Instance != null && Instance != this)
                 Destroy(gameObject);
-
             Instance = this;
 
             DontDestroyOnLoad(gameObject);
 
-            if(DebugLogger.Instance == null) {
-                Logger = new DebugLogger(assetBundleOptions.writeLogToFile);
-                DebugLogger.Instance = (DebugLogger)Logger;
-            }
-
-            AssignManagers();
+            InitManagers();
             InstantiatePrefabs();
         }
 
@@ -69,41 +68,43 @@ namespace ApplicationManagement {
 
         #region Manager Init
 
+        /// <summary>
+        /// Instantiate and parent Managers that need to be instantiated.
+        /// (Only Managers that spawn other Objects are instantiated.)
+        /// </summary>
         private void InstantiatePrefabs() {
+            if(AudioManager.Instance)
+                DestroyImmediate(AudioManager.Instance.gameObject);
+            Instantiate(managerPrefabs.audioManagerPrefab);
+            AudioManager.Instance.transform.SetParent(transform);
 
-            if(MusicPlayer.instance)
-                DestroyImmediate(MusicPlayer.instance.gameObject);
+            if(CameraManager.Instance)
+                DestroyImmediate(CameraManager.Instance.gameObject);
+            Instantiate(managerPrefabs.cameraManagerPrefab);
+            CameraManager.Instance.transform.SetParent(transform);
 
-            Instantiate(prefabs.musicPlayerPrefab);
-            MusicPlayer.instance.transform.SetParent(transform);
+            if(GameObjectManager.Instance)
+                DestroyImmediate(GameObjectManager.Instance.gameObject);
+            Instantiate(managerPrefabs.gameObjectManagerPrefab);
+            GameObjectManager.Instance.transform.SetParent(transform);
 
-            if(CameraManager.instance)
-                DestroyImmediate(CameraManager.instance.gameObject);
-
-            Instantiate(prefabs.cameraPrefab);
-            CameraManager.instance.transform.SetParent(transform);
-
-            Instantiate(prefabs.guiManagerPrefab).GetComponent<GUIManager>();
+            if(GUIManager.Instance)
+                DestroyImmediate(GUIManager.Instance.gameObject);
+            Instantiate(managerPrefabs.guiManagerPrefab);
             GUIManager.Instance.transform.SetParent(transform);
+
+            if(PlayerManager.Instance)
+                DestroyImmediate(PlayerManager.Instance.gameObject);
+            Instantiate(managerPrefabs.playerManagerPrefab);
+            PlayerManager.Instance.transform.SetParent(transform);
         }
 
-        private void AssignManagers() {
-            InputManager = GetComponent<InputManager>();
-            PlayerManager = GetComponent<PlayerManager>();
-            GameObjectManager = GetComponent<GameObjectManager>();
-            OptionsManager = GetComponent<OptionsManager>();
-
-            gameObject.AddComponent<AssetBundleManager>()
-                .Init(assetBundleOptions.assetBundleUrl, assetBundleOptions.useLocalAssetBundles);
-
-            // Set IAssetBundler refs
-            try {
-                ResourceManager.SetAssetBundler(AssetBundleManager.Instance);
-                LevelManager.SetAssetBundler(AssetBundleManager.Instance);
-            } catch(InvalidOperationException e) {
-                string warning = string.Format("PROBLEM in {0}: {1}", e.Source, e.Message);
-                Logger.LogWarning(warning);
-            }
+        /// <summary>
+        /// Initialize Managers that need to be initialized.
+        /// </summary>
+        private void InitManagers() {
+            DebugManager.Instance.InitLogger(debugOptions.writeLogToFile);
+            AssetBundleManager.Instance.Init(assetBundleOptions.assetBundleUrl, assetBundleOptions.useLocalAssetBundles);
         }
 
         #endregion

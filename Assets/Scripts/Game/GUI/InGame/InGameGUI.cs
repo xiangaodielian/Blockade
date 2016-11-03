@@ -70,10 +70,10 @@ public class InGameGUI : MonoBehaviour {
 		if(runTimer)
 			UpdateTimeText();
 		
-		if(displayedGUI.livesText.text != GameMaster.Instance.PlayerManager.GetPlayerLives().ToString())
+		if(displayedGUI.livesText.text != PlayerManager.Instance.GetPlayerLives().ToString())
 			UpdateLivesText();
 			
-		if(displayedGUI.scoreText.text != GameMaster.Instance.PlayerManager.GetPlayerScore().ToString())
+		if(displayedGUI.scoreText.text != PlayerManager.Instance.GetPlayerScore().ToString())
 			UpdateScoreText();
 			
 		if(displayedGUI.livesImage.color != PrefsManager.GetBallColor())
@@ -122,15 +122,15 @@ public class InGameGUI : MonoBehaviour {
 	
 	//Update Lives Remaining Display
 	private void UpdateLivesText(){
-		if(GameMaster.Instance.PlayerManager.GetPlayerLives() < 10)
-			displayedGUI.livesText.text = "X 0"+GameMaster.Instance.PlayerManager.GetPlayerLives().ToString();
+		if(PlayerManager.Instance.GetPlayerLives() < 10)
+			displayedGUI.livesText.text = "X 0"+PlayerManager.Instance.GetPlayerLives().ToString();
 		else
-			displayedGUI.livesText.text = "X "+GameMaster.Instance.PlayerManager.GetPlayerLives().ToString();
+			displayedGUI.livesText.text = "X "+PlayerManager.Instance.GetPlayerLives().ToString();
 	}
 	
 	//Update Current Score Display
 	private void UpdateScoreText(){
-		displayedGUI.scoreText.text = GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
+		displayedGUI.scoreText.text = PlayerManager.Instance.GetPlayerScore().ToString();
 	}
 	
 	public void TogglePrompt(bool isOn){
@@ -307,7 +307,7 @@ public class InGameGUI : MonoBehaviour {
 				timeBonusText.text = elapsedMin+":"+elapsedSec+" = "+timeBonus;
 		}
 		
-		GameMaster.Instance.PlayerManager.AddToPlayerScore(timeBonus);
+		PlayerManager.Instance.AddToPlayerScore(timeBonus);
 	}
 
 	#endregion

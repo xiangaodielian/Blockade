@@ -47,21 +47,21 @@ public class HighScoresUI : MonoBehaviour {
 			if(!enterHighScore)
 				HighScoreCheck();
 			else{
-				highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
+				highScores[replaceScore].text = inputName.ToUpper()+": "+PlayerManager.Instance.GetPlayerScore().ToString();
 				foreach(char c in Input.inputString){
 					if(c >= 'a' && c <= 'z' && inputName.Length < 3){
 						inputName += c;
-						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+PlayerManager.Instance.GetPlayerScore().ToString();
 					} else if(c == '\b' && inputName.Length > 0){
 						inputName = inputName.Substring(0,inputName.Length-1);
-						highScores[replaceScore].text = inputName.ToUpper()+": "+GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
+						highScores[replaceScore].text = inputName.ToUpper()+": "+PlayerManager.Instance.GetPlayerScore().ToString();
 					}
 					if(c == '\r'){
 						PrefsManager.SetHighScoreName(replaceScore+1,inputName);
-						PrefsManager.SetHighScore(replaceScore+1,GameMaster.Instance.PlayerManager.GetPlayerScore());
+						PrefsManager.SetHighScore(replaceScore+1,PlayerManager.Instance.GetPlayerScore());
 						enterHighScore = false;
 						finishedEntering = true;
-						GameMaster.Instance.PlayerManager.SetPlayerScore(0);
+						PlayerManager.Instance.SetPlayerScore(0);
 						inputName = "";
 					}
 				}
@@ -73,7 +73,7 @@ public class HighScoresUI : MonoBehaviour {
 	
 	void HighScoreCheck(){
 		for(int i=1;i<6;i++){
-			if(GameMaster.Instance.PlayerManager.GetPlayerScore() > PrefsManager.GetHighScore(i)){
+			if(PlayerManager.Instance.GetPlayerScore() > PrefsManager.GetHighScore(i)){
 				replaceScore = i-1;
 				enterHighScore = true;
 				break;

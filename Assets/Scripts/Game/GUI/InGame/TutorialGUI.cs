@@ -41,7 +41,7 @@ public class TutorialGUI : MonoBehaviour {
 			continueButton.onClick.AddListener(() => {
 				ShowLoadScreen();
 				StartCoroutine(LevelManager.Instance.ChangeToLevelAsync("Level_15"));
-				GameMaster.Instance.PlayerManager.SetPlayerLives(99);
+				PlayerManager.Instance.SetPlayerLives(99);
 			});
 		} else
 			continueButton.onClick.AddListener(() => GUIManager.Instance.InGameGui.ToggleInGameTutorials(false, 0));

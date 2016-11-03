@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace ApplicationManagement.DebugTools {
     public class DebugLogger : IDebugLogger {
-
         #region Variables
-
-        public static DebugLogger Instance { get; set; }
 
         private readonly string logPath = Application.dataPath + "/DebugLogs";
         private string curLogFile;
@@ -15,13 +13,35 @@ namespace ApplicationManagement.DebugTools {
 
         #endregion
 
+        #region Utility
+
         public DebugLogger(bool useLogFile) {
 #if UNITY_EDITOR
             writeToFile = useLogFile;
 #else
-        writeToFile = true;
+            writeToFile = true;
 #endif
         }
+
+        private StreamWriter GetLogFile() {
+            if(!Directory.Exists(logPath))
+                Directory.CreateDirectory(logPath);
+
+            curLogFile = CreateFileName();
+
+            return File.AppendText(logPath + "/" + curLogFile);
+        }
+
+        private static string CreateFileName() {
+            DateTime curDateTime = DateTime.Now;
+
+            return string.Format("{0}_{1}_{2}_Log.txt",
+                curDateTime.Year, curDateTime.Month, curDateTime.Day);
+        }
+
+        #endregion
+
+        #region Debug Methods
 
         public void LogInfo(params string[] infoLog) {
             string infoLine = string.Format("[I] {0:G}: ", DateTime.Now);
@@ -68,29 +88,15 @@ namespace ApplicationManagement.DebugTools {
                 Debug.LogError(errorLine);
 
             if(severity > 0) {
+                // TODO Add ErrorQuit Dialogue
 #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
+                EditorApplication.isPlaying = false;
 #else
-//Add ErrorQuit Dialogue
-            Application.Quit();
+                Application.Quit();
 #endif
             }
         }
 
-        private StreamWriter GetLogFile() {
-            if(!Directory.Exists(logPath))
-                Directory.CreateDirectory(logPath);
-
-            curLogFile = CreateFileName();
-
-            return File.AppendText(logPath + "/" + curLogFile);
-        }
-
-        private static string CreateFileName() {
-            DateTime curDateTime = DateTime.Now;
-
-            return string.Format("{0}_{1}_{2}_Log.txt",
-                curDateTime.Year, curDateTime.Month, curDateTime.Day);
-        }
+        #endregion
     }
 }

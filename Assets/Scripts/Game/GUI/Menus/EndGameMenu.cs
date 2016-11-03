@@ -18,7 +18,7 @@ public class EndGameMenu : MonoBehaviour {
 	#region Mono Functions
 
 	void Awake(){
-		scoreText.text = "YOUR SCORE: " + GameMaster.Instance.PlayerManager.GetPlayerScore().ToString();
+		scoreText.text = "YOUR SCORE: " + PlayerManager.Instance.GetPlayerScore().ToString();
 
 		SetOnClick();
 	}

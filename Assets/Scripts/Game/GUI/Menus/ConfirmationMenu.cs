@@ -27,7 +27,7 @@ public class ConfirmationMenu : MonoBehaviour {
 		if(buttons.confirmButton)
 			buttons.confirmButton.onClick.AddListener(() => {
 				GUIManager.Instance.InstantiateInterviewerTutorial();
-				MusicPlayer.instance.NextTrack();
+				AudioManager.Instance.NextMusicTrack();
 			});
 
 		if(buttons.noButton)

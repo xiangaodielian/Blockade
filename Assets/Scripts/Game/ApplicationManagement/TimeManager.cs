@@ -5,7 +5,7 @@ namespace ApplicationManagement {
 
         #region Variables
 
-        [HideInInspector] public static bool gamePaused = false;
+        [HideInInspector] public static bool gamePaused;
 
         #endregion
 

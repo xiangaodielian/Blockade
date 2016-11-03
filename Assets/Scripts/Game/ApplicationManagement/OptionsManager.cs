@@ -8,7 +8,7 @@ namespace ApplicationManagement {
         #region Variables
 
         //Singleton Instance of OptionsController
-        public static OptionsManager instance { get; private set; }
+        public static OptionsManager Instance { get; private set; }
 
         private float musicVolume;
         private float sfxVolume;
@@ -18,15 +18,15 @@ namespace ApplicationManagement {
 
         #endregion
 
-        #region MonoDevelop Functions
+        #region Mono Functions
 
-        void Awake() {
-            if(instance != null && instance != this)
+        private void Awake() {
+            if(Instance != null && Instance != this)
                 Destroy(gameObject);
-            instance = this;
+            Instance = this;
         }
 
-        void Start() {
+        private void Start() {
             musicVolume = PrefsManager.GetMasterMusicVolume();
             sfxVolume = PrefsManager.GetMasterSFXVolume();
             sfxVolumeOld = sfxVolume;
@@ -34,7 +34,7 @@ namespace ApplicationManagement {
             audioSource = GetComponent<AudioSource>();
         }
 
-        void Update() {
+        private void Update() {
             if(sfxVolume != sfxVolumeOld && Input.GetMouseButtonUp(0)) {
                 audioSource.Play();
                 sfxVolumeOld = sfxVolume;
@@ -48,7 +48,7 @@ namespace ApplicationManagement {
         /*-----GAMEPLAY-----*/
 
         public void SetUseCursor(bool useCursor) {
-            InputManager.useCursorMovement = useCursor;
+            InputManager.Instance.SetMouseMovement(useCursor);
             PrefsManager.SetMouseControl(useCursor);
         }
 
@@ -86,8 +86,8 @@ namespace ApplicationManagement {
 
         public void SetMusicVolume(float value) {
             musicVolume = value;
-            if(MusicPlayer.instance)
-                MusicPlayer.instance.SetVolume(value);
+            if(AudioManager.Instance)
+                AudioManager.Instance.SetMusicPlayerVolume(value);
         }
 
         public bool SliderCheck(float musCheck, float sfxCheck) {

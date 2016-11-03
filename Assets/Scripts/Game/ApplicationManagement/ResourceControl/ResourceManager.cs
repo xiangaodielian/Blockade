@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using ApplicationManagement.DebugTools;
 
 namespace ApplicationManagement.ResourceControl {
     public static class ResourceManager {
@@ -28,10 +29,10 @@ namespace ApplicationManagement.ResourceControl {
                 guiTex = assetBundler.LoadAsset<Texture2D>(objectName, BundleType.Gui);
             } catch(ArgumentException e) {
                 string error = string.Format("ERROR in {0} with {1}: {2}", e.Source, e.ParamName, e.Message);
-                GameMaster.Logger.LogError(0, error);
+                DebugManager.Logger.LogError(0, error);
             } catch(KeyNotFoundException e) {
                 string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(0, error);
+                DebugManager.Logger.LogError(0, error);
             }
 
             return Sprite.Create(guiTex, new Rect(0f, 0f, guiTex.width, guiTex.height), new Vector2(0.5f, 0.5f));
@@ -110,10 +111,10 @@ namespace ApplicationManagement.ResourceControl {
                     }
                 } catch(ArgumentException e) {
                     string error = string.Format("ERROR in {0} with {1}: {2}", e.Source, e.ParamName, e.Message);
-                    GameMaster.Logger.LogError(0, error);
+                    DebugManager.Logger.LogError(0, error);
                 } catch(KeyNotFoundException e) {
                     string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                    GameMaster.Logger.LogError(0, error);
+                    DebugManager.Logger.LogError(0, error);
                 }
             }
         }
@@ -145,10 +146,10 @@ namespace ApplicationManagement.ResourceControl {
                 audioClip = assetBundler.LoadAsset<AudioClip>(track, BundleType.Audio);
             } catch(ArgumentException e) {
                 string error = string.Format("ERROR in {0} with {1}: {2}", e.Source, e.ParamName, e.Message);
-                GameMaster.Logger.LogError(0, error);
+                DebugManager.Logger.LogError(0, error);
             } catch(KeyNotFoundException e) {
                 string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(0, error);
+                DebugManager.Logger.LogError(0, error);
             }
 
             return audioClip;
@@ -176,7 +177,7 @@ namespace ApplicationManagement.ResourceControl {
                 assetBundler.UnloadUnusedBundles();
             } catch(KeyNotFoundException e) {
                 string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(0, error);
+                DebugManager.Logger.LogError(0, error);
             }
         }
     }

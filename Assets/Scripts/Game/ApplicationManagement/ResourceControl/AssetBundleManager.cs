@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using ApplicationManagement.DebugTools;
 
 namespace ApplicationManagement.ResourceControl {
     public class AssetBundleManager : MonoBehaviour, IAssetBundler {
@@ -30,8 +30,9 @@ namespace ApplicationManagement.ResourceControl {
         private void Awake() {
             if((Instance != null) && (Instance != this))
                 Destroy(this);
-
             Instance = this;
+
+            SetManagerReferences();
         }
 
         private void OnEnable() {
@@ -64,7 +65,7 @@ namespace ApplicationManagement.ResourceControl {
         ///     loads any dependencies first).
         /// </summary>
         private IEnumerator LoadBundleManifest(string url) {
-            GameMaster.Logger.LogInfo("Retrieving AssetBundle Manifest...");
+            DebugManager.Logger.LogInfo("Retrieving AssetBundle Manifest...");
 
             using(WWW www = new WWW(url)) {
                 yield return www;
@@ -100,7 +101,7 @@ namespace ApplicationManagement.ResourceControl {
                     }
                 } catch(WebException e) {
                     string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                    GameMaster.Logger.LogError(1, error);
+                    DebugManager.Logger.LogError(1, error);
                 }
             }
         }
@@ -112,7 +113,7 @@ namespace ApplicationManagement.ResourceControl {
         /// <param name="bundleName">Name of AssetBundle to load.</param>
         /// <param name="bundleIndex">Only used during initial AssetBundle loading sequence during Splash</param>
         private IEnumerator LoadAssetBundle(string path, string bundleName, int bundleIndex = -1) {
-            GameMaster.Logger.LogInfo(string.Format("Retrieving AssetBundle {0} from {1}", bundleName, path));
+            DebugManager.Logger.LogInfo(string.Format("Retrieving AssetBundle {0} from {1}", bundleName, path));
 
             while(!Caching.ready)
                 yield return null;
@@ -151,7 +152,7 @@ namespace ApplicationManagement.ResourceControl {
         ///     Unloads unused bundles
         /// </summary>
         public void UnloadUnusedBundles() {
-            GameMaster.Logger.LogInfo("Unloading AssetBundles...");
+            DebugManager.Logger.LogInfo("Unloading AssetBundles...");
 
             List<string> keys = new List<string>(assetBundleDict.Keys);
 
@@ -209,7 +210,7 @@ namespace ApplicationManagement.ResourceControl {
                 }
             } catch(WebException e) {
                 string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
 
             AssetBundle curBundle;
@@ -237,7 +238,7 @@ namespace ApplicationManagement.ResourceControl {
                 while(!assetBundleDict.ContainsKey("levels")) {}
             } catch(WebException e) {
                 string error = string.Format("ERROR in {0}: {1}", e.Source, e.Message);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
         }
 
@@ -248,6 +249,16 @@ namespace ApplicationManagement.ResourceControl {
         public void Init(string bundleUrl, bool useLocal) {
             mainAssetBundleUrl = bundleUrl;
             useLocalBundles = useLocal;
+        }
+
+        private void SetManagerReferences() {
+            try {
+                ResourceManager.SetAssetBundler(this);
+                LevelManager.SetAssetBundler(this);
+            } catch(InvalidOperationException e) {
+                string warning = string.Format("PROBLEM in {0}: {1}", e.Source, e.Message);
+                DebugManager.Logger.LogWarning(warning);
+            }
         }
 
         //Returns the path for bundles based on platform
@@ -296,7 +307,7 @@ namespace ApplicationManagement.ResourceControl {
                 StartCoroutine(LoadBundleManifest(manifestPath));
             } catch(WebException exception) {
                 string error = string.Format("ERROR in {0}: {1}", exception.Source, exception.Message);
-                GameMaster.Logger.LogError(1, error);
+                DebugManager.Logger.LogError(1, error);
             }
         }
 

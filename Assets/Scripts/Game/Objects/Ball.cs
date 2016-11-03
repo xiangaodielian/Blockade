@@ -61,7 +61,7 @@ public class Ball : MonoBehaviour {
 		difficultySpeedMultipler = ((float)PrefsManager.GetDifficulty() + 2f) / 3f;
 		
 		//Multiball Case
-		if(GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted){
+		if(PlayerManager.Instance.ActivePlayer.hasStarted){
 			Vector2 otherVel = new Vector2();
 			Ball[] otherBalls = FindObjectsOfType<Ball>();
 			foreach(Ball ball in otherBalls){
@@ -94,7 +94,7 @@ public class Ball : MonoBehaviour {
 		
 		//Pre-Launch
 		// && GameMaster.Instance.allowStart
-		if(!GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted && !TimeManager.gamePaused)
+		if(!PlayerManager.Instance.ActivePlayer.hasStarted && !TimeManager.gamePaused)
 			lockToPaddle = true;
 		
 		//Explosive Ball Pulse
@@ -102,7 +102,7 @@ public class Ball : MonoBehaviour {
 			ExplosiveGlowPulse();
 
 		if(lockToPaddle){
-			transform.position = GameMaster.Instance.PlayerManager.ActivePlayer.transform.position + new Vector3(0f, 0.35f, 0f);
+			transform.position = PlayerManager.Instance.ActivePlayer.transform.position + new Vector3(0f, 0.35f, 0f);
 			rigidBody.velocity = Vector3.zero;
 		}
 	}
@@ -149,7 +149,7 @@ public class Ball : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter(Collision collision){
-		float tweak = 10f*(transform.position.x - GameMaster.Instance.PlayerManager.ActivePlayer.transform.position.x);
+		float tweak = 10f*(transform.position.x - PlayerManager.Instance.ActivePlayer.transform.position.x);
 		Vector3 tweakVector = new Vector3(tweak,0f,0f);
 		
 		// Stick to Paddle when StickyBall active
@@ -162,7 +162,7 @@ public class Ball : MonoBehaviour {
 		}
 		
 		// Ball does not trigger Sound when hitting Bricks
-		if(GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted){
+		if(PlayerManager.Instance.ActivePlayer.hasStarted){
 			if(collision.gameObject.tag != "Breakable")
 				audioSource.Play();
 			if(collision.gameObject.tag == "Player")

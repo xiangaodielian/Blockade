@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using System.Collections;
 using ApplicationManagement.ResourceControl;
 
@@ -11,6 +10,7 @@ namespace ApplicationManagement {
 
         [System.Serializable]
         private class MenuPrefabs {
+            public GameObject splashPrefab = null;
             public GameObject mainMenu = null;
             public GameObject levelSelectMenu = null;
             public GameObject optionsMenu = null;
@@ -51,6 +51,7 @@ namespace ApplicationManagement {
 
         private GameObject targetMenu;
         private GameObject activeMenu;
+        private GameObject splashScreen;
         private GameObject mainMenu;
         private GameObject levelSelectMenu;
         private GameObject optionsMenu;
@@ -128,7 +129,10 @@ namespace ApplicationManagement {
 
         #region Menu Instantiation/Destruction
 
-        void InstantiateMainMenus() {
+        private void InstantiateMainMenus() {
+            if(splashScreen != null)
+                Destroy(splashScreen);
+
             mainMenu = Instantiate(menuPrefabs.mainMenu);
             mainMenu.transform.SetParent(this.transform, false);
 
@@ -297,7 +301,9 @@ namespace ApplicationManagement {
         /// Delegate Listener for OnSceneChange call from SceneManager.sceneLoaded Event.
         /// </summary>
         public void OnSceneChange(LevelManager.SceneChangeEvent e) {
-            if(e.scene.name == "MainMenu") {
+            if(e.scene.name == "Splash")
+                splashScreen = Instantiate(menuPrefabs.splashPrefab);
+            else if(e.scene.name == "MainMenu") {
                 InstantiateMainMenus();
                 mainMenu.GetComponent<MainMenu>().UpdateCheck();
             } else if(e.scene.name == "EndGame")

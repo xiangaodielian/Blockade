@@ -8,15 +8,12 @@ public class MusicPlayer : MonoBehaviour {
 	
 	#region Variables
 	
-	//Singleton instance for MusicPlayer
-	public static MusicPlayer instance {get; private set;}
-	
 	[System.Serializable] private class TrackNames{
 		public string menuMusic = "";
 		public string inGame = "";
 	}
 
-	[HideInInspector] public bool isPlaying = false;
+	[HideInInspector] public bool isPlaying;
 	
 	[SerializeField] private TrackNames trackNames = null;
 
@@ -27,10 +24,6 @@ public class MusicPlayer : MonoBehaviour {
 	#region MonoDevelop Functions
 	
 	void Awake(){
-		if(instance != null && instance != this)
-			Destroy(gameObject);
-		instance = this;
-		
 		audioSource = GetComponent<AudioSource>();
 		audioSource.volume = PrefsManager.GetMasterMusicVolume();
 	}

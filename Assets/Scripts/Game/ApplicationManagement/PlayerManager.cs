@@ -1,4 +1,5 @@
 ﻿using System;
+using ApplicationManagement.DebugTools;
 using UnityEngine;
 
 namespace ApplicationManagement {
@@ -17,6 +18,7 @@ namespace ApplicationManagement {
             public int playerScore = 0;
         }
 
+        public static PlayerManager Instance { get; private set; }
         public Paddle ActivePlayer { get; private set; }
 
         [SerializeField] private Prefabs prefabs = null;
@@ -27,6 +29,12 @@ namespace ApplicationManagement {
         #endregion
 
         #region Mono Functions
+
+        private void Awake() {
+            if(Instance != null && Instance != this)
+                Destroy(gameObject);
+            Instance = this;
+        }
 
         private void OnEnable() {
             EventManager.Instance.AddListener<LevelManager.SceneChangeEvent>(OnSceneChange);
@@ -126,7 +134,7 @@ namespace ApplicationManagement {
                     SpawnPlayer();
                 } catch(InvalidOperationException exception) {
                     string warning = string.Format("WARNING in {0}: {1}", exception.Source, exception.Message);
-                    GameMaster.Logger.LogWarning(warning);
+                    DebugManager.Logger.LogWarning(warning);
                 }
             }
         }

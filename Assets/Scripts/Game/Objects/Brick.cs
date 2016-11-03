@@ -198,13 +198,12 @@ public class Brick : MonoBehaviour {
 		
 		if(timesHit >= hitPoints && hitPoints > 0){
 			if(powerupDetails.hasPowerup)
-				DropPowerup();
+				EventManager.Instance.Raise(new GameObjectManager.SpawnPowerupEvent(transform.position, powerupDetails.powerupType));
 
-            //Send BrickDestroyed Event
-            GameMaster.Instance.PlayerManager.AddToPlayerScore(pointValue);
+            PlayerManager.Instance.AddToPlayerScore(pointValue);
             breakableCount--;
 		    if(breakableCount == 0) {
-		        GameMaster.Instance.PlayerManager.ActivePlayer.hasStarted = false;
+		        PlayerManager.Instance.ActivePlayer.hasStarted = false;
 		        GUIManager.Instance.InGameGui.ToggleEndLevelPanel(true);
 		        GUIManager.Instance.InGameGui.CalculateTimeBonus();
 		    }
@@ -243,13 +242,6 @@ public class Brick : MonoBehaviour {
 				bodyMaterial.SetColor("_EmissionColor", curColor*curIntensity);
 			}
 		}
-	}
-	
-	void DropPowerup(){
-		powerup = powerupDetails.powerupPrefab.GetComponent<Powerup>();
-		powerup.powerupType = powerupDetails.powerupType;
-		
-		Instantiate(powerupDetails.powerupPrefab,transform.position,Quaternion.identity);
 	}
 	
 	public void Explode(){

@@ -9,28 +9,34 @@ namespace ApplicationManagement {
         public class BallLaunchEvent : GameEvent { }
         /*--------------*/
 
-        public static bool useCursorMovement = false; //Defaults to movement using Keyboard
-        public bool allowPlayerMovement = false;
+        public static InputManager Instance { get; private set; }
+
+        private bool useCursorMovement;   //Defaults to movement using Keyboard
+        private bool canPlayerMove;
 
         #endregion
 
         #region Mono Functions
 
-        void Awake() {
+        private void Awake() {
+            if(Instance != null && Instance != this)
+                Destroy(gameObject);
+            Instance = this;
+
             useCursorMovement = PrefsManager.GetMouseControl();
         }
 
-        void OnEnable() {
+        private void OnEnable() {
             EventManager.Instance.AddListener<LevelManager.LevelFinishEvent>(OnLevelFinish);
             EventManager.Instance.AddListener<Shield.DissolveFInishEvent>(OnDissolveFinish);
         }
 
-        void onDisable() {
+        private void onDisable() {
             EventManager.Instance.RemoveListener<LevelManager.LevelFinishEvent>(OnLevelFinish);
             EventManager.Instance.RemoveListener<Shield.DissolveFInishEvent>(OnDissolveFinish);
         }
 
-        void Update() {
+        private void Update() {
             //InGame Menu
             if(Input.GetKeyDown(KeyCode.Escape) && LevelManager.GetCurrentLevel().Contains("Level"))
                 GUIManager.Instance.InGameGui.ToggleMenu();
@@ -40,8 +46,8 @@ namespace ApplicationManagement {
                 GUIManager.Instance.DebugUi.ToggleDebugConsole();
 
             //Movement
-            if(!TimeManager.gamePaused && allowPlayerMovement) {
-                if(GameMaster.Instance.PlayerManager.ActivePlayer != null) {
+            if(!TimeManager.gamePaused && canPlayerMove) {
+                if(PlayerManager.Instance.ActivePlayer != null) {
                     if(useCursorMovement) {
                         if(Input.mousePresent)
                             MoveWithMouse();
@@ -51,9 +57,9 @@ namespace ApplicationManagement {
                         MoveWithKeyboard();
 
                     // Control Laser Firing
-                    if(GameMaster.Instance.PlayerManager.ActivePlayer.hasLasers) {
+                    if(PlayerManager.Instance.ActivePlayer.hasLasers) {
                         if(Input.GetButtonDown("Fire"))
-                            GameMaster.Instance.PlayerManager.ActivePlayer.FireLasers();
+                            PlayerManager.Instance.ActivePlayer.FireLasers();
                     }
                 }
             }
@@ -63,58 +69,74 @@ namespace ApplicationManagement {
 
         #region Utility Functions
 
+        public bool GetMovementAllowed() {
+            return canPlayerMove;
+        }
+
+        public void SetMovementAllowed(bool movementAllowed) {
+            canPlayerMove = movementAllowed;
+        }
+
+        public bool GetMouseMovement() {
+            return useCursorMovement;
+        }
+
+        public void SetMouseMovement(bool useMouse) {
+            useCursorMovement = useMouse;
+        }
+
         //Control Paddle motion using mouse
-        void MoveWithMouse() {
-            Vector3 newPos = GameMaster.Instance.PlayerManager.ActivePlayer.transform.position;
+        private void MoveWithMouse() {
+            Vector3 newPos = PlayerManager.Instance.ActivePlayer.transform.position;
             Vector3 mousePos = Input.mousePosition;
             mousePos.z = 10f;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            if(GameMaster.Instance.PlayerManager.ActivePlayer.mirroredMovement)
+            if(PlayerManager.Instance.ActivePlayer.mirroredMovement)
                 newPos.x += 16f - mousePos.x - newPos.x;
             else
                 newPos.x += mousePos.x - newPos.x;
 
-            GameMaster.Instance.PlayerManager.ActivePlayer.MovePaddle(newPos);
+            PlayerManager.Instance.ActivePlayer.MovePaddle(newPos);
 
             if(Input.GetMouseButtonDown(0))
                 EventManager.Instance.Raise(new BallLaunchEvent());
         }
 
         //Control Paddle motion using finger on a touch device
-        void MoveWithTouch() {
+        private void MoveWithTouch() {
             if(Input.touchCount > 0) {
                 Vector3 touchPos = Input.GetTouch(0).position;
                 touchPos.z = 10f;
                 touchPos = Camera.main.ScreenToWorldPoint(touchPos);
 
-                GameMaster.Instance.PlayerManager.ActivePlayer.MovePaddle(touchPos);
+                PlayerManager.Instance.ActivePlayer.MovePaddle(touchPos);
             }
         }
 
         //Control Paddle motion using Keyboard (A,D,<-,-> for motion, hold Shift for dash)
-        void MoveWithKeyboard() {
-            Vector3 newPos = GameMaster.Instance.PlayerManager.ActivePlayer.transform.position;
+        private void MoveWithKeyboard() {
+            Vector3 newPos = PlayerManager.Instance.ActivePlayer.transform.position;
             float movementMultiplier = 1f;
 
             if(Input.GetButton("Dash"))
                 movementMultiplier = 3f;
 
             if(Input.GetAxis("Horizontal") < 0f) {
-                if(GameMaster.Instance.PlayerManager.ActivePlayer.mirroredMovement)
+                if(PlayerManager.Instance.ActivePlayer.mirroredMovement)
                     newPos.x += 0.15f*movementMultiplier;
                 else
                     newPos.x -= 0.15f*movementMultiplier;
             }
 
             if(Input.GetAxis("Horizontal") > 0f) {
-                if(GameMaster.Instance.PlayerManager.ActivePlayer.mirroredMovement)
+                if(PlayerManager.Instance.ActivePlayer.mirroredMovement)
                     newPos.x -= 0.15f*movementMultiplier;
                 else
                     newPos.x += 0.15f*movementMultiplier;
             }
 
-            GameMaster.Instance.PlayerManager.ActivePlayer.MovePaddle(newPos);
+            PlayerManager.Instance.ActivePlayer.MovePaddle(newPos);
 
             if(Input.GetButtonDown("Launch"))
                 EventManager.Instance.Raise(new BallLaunchEvent());
@@ -128,12 +150,12 @@ namespace ApplicationManagement {
 
         #region Delegate Listeners
 
-        void OnDissolveFinish(Shield.DissolveFInishEvent e) {
-            allowPlayerMovement = true;
+        private void OnDissolveFinish(Shield.DissolveFInishEvent e) {
+            canPlayerMove = true;
         }
 
-        void OnLevelFinish(LevelManager.LevelFinishEvent e) {
-            allowPlayerMovement = false;
+        private void OnLevelFinish(LevelManager.LevelFinishEvent e) {
+            canPlayerMove = false;
         }
 
         #endregion
